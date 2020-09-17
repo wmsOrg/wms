@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hczx.wms.dao.AlarmingDao">
+
+    <!-- 查找设备信息 -->
+    <select id="listAlarmingInfo" resultType="com.hczx.wms.entity.alarmingentities.AlarmingInfoEntity">
+        select
+        id id,
+        name name,
+        level level,
+        category category,
+        discribetion discribetion,
+        createTime createTime,
+        createUserId createUserId,
+        createUserName createUserName,
+        validState validState
+        from alarming
+        <!--        <where>-->
+        <!--            <if test="uname!=null and uname!='' ">-->
+        <!--                and uname like #{uname}-->
+        <!--            </if>-->
+        <!--        </where>-->
+        <if test="page!=null and size!=null">
+            limit #{page},#{size}
+        </if>
+    </select>
+
+    <!-- 查找设备信息数量 -->
+    <select id="countAlarmingInfo" resultType="java.lang.Long">
+        select
+        count(*)
+        from alarming
+        where 1=1
+        <!--        <where>-->
+        <!--            <if test="uname!=null and uname!='' ">-->
+        <!--                and uname like #{uname}-->
+        <!--            </if>-->
+        <!--        </where>-->
+
+    </select>
+
+</mapper>

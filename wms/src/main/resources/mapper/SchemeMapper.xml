@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hczx.wms.dao.SchemeDao">
+
+    <!-- 查找设备信息 -->
+    <select id="listScheme" resultType="com.hczx.wms.entity.schemeentities.SchemeIncreaseEntity">
+        select
+        id id,
+        schemeName schemeName,
+        validState validState,
+        createUserId createUserId,
+        createUserName createUserName,
+        level level,
+        disaster disaster,
+        imageUrl imageUrl,
+        createTime createTime
+        from scheme
+        <!--        <where>-->
+        <!--            <if test="uname!=null and uname!='' ">-->
+        <!--                and uname like #{uname}-->
+        <!--            </if>-->
+        <!--        </where>-->
+        <if test="page!=null and size!=null">
+            limit #{page},#{size}
+        </if>
+    </select>
+
+    <!-- 查找设备信息数量 -->
+    <select id="countEquipmentInfo" resultType="java.lang.Long">
+        select
+        count(*)
+        from scheme
+        where 1=1
+        <!--        <where>-->
+        <!--            <if test="uname!=null and uname!='' ">-->
+        <!--                and uname like #{uname}-->
+        <!--            </if>-->
+        <!--        </where>-->
+
+    </select>
+
+    <!--绑定设备后更新方案-->
+    <update id="updateBindedScheme" parameterType="com.hczx.wms.model.SchemeModel">
+        UPDATE
+        scheme
+        SET maxRows = #{maxRows}
+        ,maxColumns = #{maxColumns}
+        ,imageUrl = #{imageUrl}
+        WHERE id = #{id}
+    </update>
+
+    <select id="queryEquipmentLv1ContentsInPlan" parameterType="com.hczx.wms.entity.planentities.PlanQueryEntity" resultType="com.hczx.wms.entity.enquipmententities.EquipmentLv1inPlanEntity">
+        SELECT
+            level1.totalRowNums totalRowNums,
+            level1.totalColumnNums totalColumnNums,
+            level1.rowNum rowNum,
+		    level1.columnNum columnNum,
+            level1.equipmentIdLv1 equipmentIdLv1,
+            level1.equipmentRfidLv1 equipmentRfidLv1,
+            level1.equipmentNameLv1 equipmentNameLv1,
+            level1.equipmentInLv1 equipmentInLv1,
+            level1.equipmentSelectedLv1 equipmentSelectedLv1,
+            level2.id equipmentIdLv2,
+            level2.equipmentRfid equipmentRfidLv2,
+            level2.equipmentName equipmentNameLv2,
+            level2.inboundState equipmentInLv2
+        FROM
+            (
+            SELECT
+                scheme.maxRows totalRowNums,
+                scheme.maxColumns totalColumnNums,
+                ser.rowNum rowNum,
+		        ser.columnNum columnNum,
+                equipment.id equipmentIdLv1,
+                equipment.equipmentRfid equipmentRfidLv1,
+                equipment.equipmentName equipmentNameLv1,
+                equipment.inboundState equipmentInLv1,
+                CASE
+                    WHEN aser.planId IS NULL OR aser.planId = '' THEN FALSE
+                    ELSE TRUE
+                    END equipmentSelectedLv1
+            FROM
+                scheme
+                LEFT JOIN scheme_equipment_rela ser ON ( scheme.id = ser.schemeId )
+                LEFT JOIN equipment ON ( ser.equipmentId = equipment.id )
+                LEFT JOIN alarm_scheme_equipment_rela aser ON (ser.id = aser.seRelaId AND scheme.id = aser.schemeId AND aser.alarmingId = #{alarmingId} AND aser.planId =#{planId})
+            WHERE
+                scheme.id = #{schemeId}) level1
+            LEFT JOIN equipment level2 ON (level2.equipmentPreId = level1.equipmentIdLv1 AND level2.validState = '1')
+    </select>
+
+    <select id="queryEquipmentLv1InPlan" parameterType="com.hczx.wms.entity.planentities.PlanQueryEntity" resultType="com.hczx.wms.entity.enquipmententities.EquipmentLv1inPlanEntity">
+
+            SELECT
+                scheme.maxRows totalRowNums,
+                scheme.maxColumns totalColumnNums,
+                ser.rowNum rowNum,
+		        ser.columnNum columnNum,
+                equipment.id equipmentIdLv1,
+                equipment.equipmentRfid equipmentRfidLv1,
+                equipment.equipmentName equipmentNameLv1,
+                equipment.inboundState equipmentInLv1,
+                CASE
+                    WHEN aser.planId IS NULL OR aser.planId = '' THEN FALSE
+                    ELSE TRUE
+                    END equipmentSelectedLv1
+            FROM
+                scheme
+                LEFT JOIN scheme_equipment_rela ser ON ( scheme.id = ser.schemeId )
+                LEFT JOIN equipment ON ( ser.equipmentId = equipment.id )
+                LEFT JOIN alarm_scheme_equipment_rela aser ON (ser.id = aser.seRelaId AND scheme.id = aser.schemeId AND aser.alarmingId = #{alarmingId} AND aser.planId = #{planId})
+            WHERE
+                scheme.id = #{schemeId}
+    </select>
+
+</mapper>

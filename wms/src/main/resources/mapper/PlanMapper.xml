@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hczx.wms.dao.PlanDao">
+
+    <!-- 查找设备信息 -->
+    <select id="listPlan" resultType="com.hczx.wms.entity.planentities.PlanQueryEntity">
+        select
+        id id,
+        planName planName,
+        alarmingId alarmingId,
+        schemeId schemeId,
+        useState useState,
+        imageUrl imageUrl,
+        createTime createTime
+        from plan
+        where
+        1=1
+        <if test="alarmingId!=null and alarmingId!='' ">
+            and alarmingId = #{alarmingId}
+        </if>
+        <!--        <where>-->
+        <!--            <if test="uname!=null and uname!='' ">-->
+        <!--                and uname like #{uname}-->
+        <!--            </if>-->
+        <!--        </where>-->
+        <if test="page!=null and size!=null">
+            limit #{page},#{size}
+        </if>
+    </select>
+
+
+</mapper>

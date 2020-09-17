@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hczx.wms.dao.SchemeEquipmentRelaDao">
+
+    <!--根据方案唯一标识解绑设备-->
+    <delete id="removeBySchemeId" parameterType="java.lang.String">
+        DELETE FROM scheme_equipment_rela
+        WHERE schemeId = #{schemeId}
+    </delete>
+
+    <!--根据方案Id查找设备-->
+    <select id="listEquipmentsBySchemeId" parameterType="java.lang.String" resultType="com.hczx.wms.entity.schemeequipmentrelaentities.EquipmentsInSchemeEntity">
+
+        SELECT
+            s.id schemeId,
+            s.schemeName schemeName,
+            s.maxRows maxRows,
+            s.maxColumns maxColumns,
+            ser.id serId,
+            ser.rowNum rowNum,
+            ser.columnNum columnNum,
+            emt.id equipmentId,
+            emt.equipmentRfid equipmentRfid,
+            emt.equipmentName equipmentName,
+            emt.equipmentClass equipmentClass,
+            emt.equipmentClassName equipmentClassName,
+            emt.equipmentCompanyId equipmentCompanyId,
+            emt.equipmentCompanyName equipmentCompanyName
+        FROM
+            scheme s,scheme_equipment_rela ser
+            LEFT JOIN equipment emt ON (ser.equipmentId = emt.id)
+            where s.id = ser.schemeId
+            AND s.validState = '1'
+            AND s.id = #{schemeId}
+        ORDER BY rowNum ASC,columnNum ASC
+    </select>
+
+</mapper>

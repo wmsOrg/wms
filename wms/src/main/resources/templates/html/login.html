@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>网站后台管理模版</title>
+<!-- For-Mobile-Apps-and-Meta-Tags -->
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="keywords" content="" />
+	<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!-- //For-Mobile-Apps-and-Meta-Tags -->
+
+<link href="../../static/css/regist/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="../../static/css/regist/jquerysctipttop.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<h1>后台管理系统</h1>
+<section>
+  <div class="controls w3l">
+    <div class="cbcontrol" id="cbControlRight"><</div>
+    <div class="cbcontrol" id="cbControlLeft">></div>
+    <div class="clear"></div>
+  </div>
+  <div class="stage">
+   
+    <div class="cbImage w3">
+		<h3>找回密码</h3>
+		<form action="#" method="post">
+			<input type="text" class="email" name="email" placeholder="Email" required="" id="email_login">
+			<input type="text" class="number" name="phone number" placeholder="Phone Number" required="" id="mobile_login">
+<!--			<input type="submit" class="done" value="提交">-->
+			<div id="recovery_click" class="login_click">
+				<a id="recovery" href="#">找回</a>
+			</div>
+		</form>
+		<a href="#" class="rterms">Terms and Conditions</a>
+	</div>
+    <div class="cbImage active signin agileits">
+		<h3>登录</h3>
+		<form action="#" method="post">
+			<input type="text" name="Name" class="name" placeholder="Username" required="" id="username_login">
+			<input type="password" name="password" class="password" placeholder="Password" required="" id="password_login">
+<!--			<input type="button" value="登录">-->
+			<div id="login_click" class="login_click">
+				<a id="login" onclick="Authenticate.login()" href="#">登 录</a>
+			</div>
+			<ul class="bottom">
+				<li><a href="#" class="forgot">Forgot Password?</a></li>
+				<li><a href="#" class="terms">Terms and Conditions</a></li>
+			</ul>
+		</form>
+	</div>
+    <div class="cbImage agileinfo">
+
+		<h3>注册</h3>
+		<form id="regist_form" action="#" method="post">
+			<input type="text" class="name" name="username" id="username_regist" placeholder="Username" required="">
+			<input type="password" class="password" name="password" placeholder="Password" id="password_regist"  required="">
+			<input type="password" class="password" name="confirm password" id="confirm_password_regist" placeholder="Confirm Password" required="">
+			<input type="text" class="email" name="mobile" id="mobile_regist" placeholder="mobile" required="">
+<!--			<input type="submit" value="注册">-->
+			<div id="regist_click" class="login_click">
+				<a id="regist" onclick="Authenticate.regist()" href="#">注册</a>
+			</div>
+		</form>
+	</div>
+    <div class="clear"></div>
+  </div>
+  <div class="clear"></div>
+  <div class="footer">
+  <p>&copy; 2016 Sliding Forms Widget. All Rights Reserved | Design by sucaihuo.com</p>
+  </div>
+</section>
+<script src="../../static/js/jquery-2.1.4.min.js" type="text/javascript"></script>
+<script src="../../static/js/regist/coverflow-slideshow.js"></script>
+<script src="../../static/js/regist/authenticate.js"></script>
+
+</body>
+</html>

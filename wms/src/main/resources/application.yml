@@ -1,0 +1,15 @@
+spring:
+  profiles:
+    include: dev,devparams
+  thymeleaf:
+    cache: false #是否使用缓存
+    check-template: true # Check that the template exists before rendering it.
+    check-template-location: true
+    mode: HTML
+    enabled: true #开启thymeleaf视图解析
+    encoding: UTF-8 #编码
+    #前缀
+    prefix: classpath:/templates/
+    #后缀名
+    suffix: .html
+    content-type: text/html
