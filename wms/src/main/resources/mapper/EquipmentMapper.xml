@@ -21,11 +21,15 @@
         validState validState,
         occupyState occupyState
         from equipment
-<!--        <where>-->
-<!--            <if test="uname!=null and uname!='' ">-->
-<!--                and uname like #{uname}-->
-<!--            </if>-->
-<!--        </where>-->
+        <where>
+        1=1
+            <if test="equipmentInfoEntity.equipmentRfid !=null and equipmentInfoEntity.equipmentRfid!='' ">
+                and equipmentRfid = #{equipmentInfoEntity.equipmentRfid}
+            </if>
+            <if test="equipmentInfoEntity.equipmentName !=null and equipmentInfoEntity.equipmentName!='' ">
+                and equipmentName = #{equipmentInfoEntity.equipmentName}
+            </if>
+        </where>
         <if test="page!=null and size!=null">
             limit #{page},#{size}
         </if>
@@ -36,13 +40,15 @@
         select
         count(*)
         from equipment
-        where 1=1
-        <!--        <where>-->
-        <!--            <if test="uname!=null and uname!='' ">-->
-        <!--                and uname like #{uname}-->
-        <!--            </if>-->
-        <!--        </where>-->
-
+        <where>
+            1=1
+            <if test="equipmentInfoEntity.equipmentRfid !=null and equipmentInfoEntity.equipmentRfid!='' ">
+                and equipmentRfid = #{equipmentInfoEntity.equipmentRfid}
+            </if>
+            <if test="equipmentInfoEntity.equipmentName !=null and equipmentInfoEntity.equipmentName!='' ">
+                and equipmentName = #{equipmentInfoEntity.equipmentName}
+            </if>
+        </where>
     </select>
 
     <!-- 查找树形设备信息 -->
@@ -70,6 +76,16 @@
         equipment
         SET validState = '0'
         WHERE id IN
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <update id="updateInboundStateBatchByRfids" parameterType="java.util.ArrayList">
+        UPDATE
+        equipment
+        SET inboundState = #{inboundState}
+        WHERE equipmentRfid IN
         <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
             #{item}
         </foreach>
