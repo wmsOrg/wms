@@ -177,12 +177,12 @@ function gridSystemGenerator() {
     $(".lyrow .preview input").bind("keyup", function() {
         var e = 0;
         var t = "";
-        console.info($(this).val());
+        console.info($(this).val(), '测试');
         var size = $(this).val();
         size = parseInt(size);
         if (!isNaN(size) && size != null && size !="" && size !=0) {
             for (var i = 0; i < size; i++) {
-                t += '<div class="span1 column"><input type="text" style="display: none" name="rowCounts" value=""/><input type="text" style="display: none" name="columnCounts" value=""/><input type="text" style="display: none" name="companyId" value=""/><input type="text" style="display: none" name="equipmentId" value=""/><input type="text" style="display: none" name="equipmentName" value=""/><a href="javascript:void(0);" onclick="VisibleEditLayout.editAIEvent(this);" style="position: absolute;top: 2px; right:2px;" class="label label-important"><i class="icon-edit icon-white"></i>编辑</a></div>'
+                t += '<div class="span5 column"><input type="text" style="display: none" name="rowCounts" value=""/><input type="text" style="display: none" name="columnCounts" value=""/><input type="text" style="display: none" name="companyId" value=""/><input type="text" style="display: none" name="equipmentId" value=""/><input type="text" style="display: none" name="equipmentName" value=""/><a href="javascript:void(0);" onclick="VisibleEditLayout.editAIEvent(this);" style="position: absolute;top: 2px; right:2px;" class="label label-important"><i class="icon-edit icon-white"></i>编辑</a></div>'
             }
             $(this).parent().next().children().html(t);
             $(this).parent().prev().show();
