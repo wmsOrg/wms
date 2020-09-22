@@ -2,7 +2,7 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource # 使用druid数据源
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://192.168.97.155:3306/wms?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&&serverTimezone=GMT
+    url: jdbc:mysql://47.98.243.161:46909/wms?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&&serverTimezone=GMT
     username: root
     password: root
     # 连接池补充配置

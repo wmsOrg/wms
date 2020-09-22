@@ -48,8 +48,8 @@ $(function () {
         }
         maxRowLength = rowlength;
         for (var i = 0; i < rowlength; i++){
-            var columns = rows.eq(parseInt(i)).find("div[class='span1 column ui-sortable']");
-            // var columnsH = rows.eq(parseInt(i)).find("div[class='span1 column ui-sortable']").html();
+            var columns = rows.eq(parseInt(i)).find("div[class='span5 column ui-sortable']");
+            // var columnsH = rows.eq(parseInt(i)).find("div[class='span5 column ui-sortable']").html();
             var columnLength = columns.siblings().length;
             if (columnLength==0){
                 columnLength = columnLength + 1;
@@ -171,6 +171,13 @@ var VisibleEditLayout = new function () {
                     yes: function (index, layero) {
                         var tem = $(layero).find("iframe")[0].contentWindow.bindCallback();
                         // PicCallBack(tem);
+                        layer.close(index);
+
+                        $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span5 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='rowCounts']").val(tem.rowCounts);
+                        $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span5 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='columeCounts']").val(tem.columnCounts);
+                        $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span5 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='companyId']").val(tem.pId);
+                        $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span5 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='equipmentId']").val(tem.id);
+                        $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span5 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='equipmentName']").val(tem.name);
                         if (tem.linkingNo != null && tem.linkingNo != ''){
                             layer.confirm('该设备有关联设备，添加该设备需要将其关联设备一起添加，确定添加吗?', {icon: 3, title:'提示'}, function(index) {
 
@@ -242,8 +249,15 @@ var VisibleEditLayout = new function () {
                     btnclass: ['btn btn-primary', 'btn btn-danger'],
                     yes: function (index, layero) {
                         var tem = $(layero).find("iframe")[0].contentWindow.bindCallback();
-
                         // PicCallBack(tem);
+                        layer.close(index);
+                        // var a = $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span5 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='rowCounts']").val();
+                        $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span5 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='rowCounts']").val(tem.rowCounts);
+                        $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span5 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='columeCounts']").val(tem.columnCounts);
+                        $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span5 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='companyId']").val(tem.pId);
+                        $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span5 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='equipmentId']").val(tem.id);
+                        $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span5 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='equipmentName']").val(tem.name);
+                        $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span5 column ui-sortable']").eq(parseInt(tem.columnCounts)).css("background", "gray");
                         if (tem.linkingNo != null && tem.linkingNo != ''){
                             layer.confirm('该设备有关联设备，添加该设备需要将其关联设备一起添加，确定添加吗?', {icon: 3, title:'提示'}, function(index){
                                 layer.close(index);
@@ -300,7 +314,6 @@ var VisibleEditLayout = new function () {
                         }
                         layer.close(index);
                     }, cancel: function () {
-                        layer.close(index);
                         return true;
                     }
                 });
