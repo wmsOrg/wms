@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
 	<meta charset="UTF-8">
 	<meta name="renderer" content="webkit">
@@ -9,7 +9,7 @@
 	<link rel="stylesheet" type="text/css" href="../static/layui/css/layui.css"/>
 	<link rel="stylesheet" type="text/css" href="../static/css/admin.css"/>
 
-<!--	<link rel="stylesheet" href="../static/css/slideinventory/base.css">-->
+	<!--	<link rel="stylesheet" href="../static/css/slideinventory/base.css">-->
 	<link rel="stylesheet" href="../static/css/slideinventory/home.css">
 	<style>
 
@@ -23,293 +23,361 @@
 	</style>
 </head>
 <body style="height:100%;">
+<input id="alarmingId" type="text" style="display: none" th:value="${alarmingId != null ? alarmingId : ''}">
+<input id="planId" type="text" style="display: none" th:value="${planId != null ? planId : ''}">
+<input id="schemeId" type="text" style="display: none" th:value="${schemeId != null ? schemeId : ''}">
 <div class="wrap-container welcome-container" style="height:100%;">
 	<div class="row" style="height:100%;">
 		<div class="welcome-left-container col-lg-12" style="height:100%;">
 			<div id="currentcategory" class="data-show" style="white-space:nowrap;width:100%;height:100%;overflow:auto;">
-				<ul>
-					<li class="category">
-						<a href="javascript:;" onclick="searchEquipment('123');return false;" class="clearfix">
-							<div class="icon-bg-up bg-green f-l"></div>
-							<div class="icon-bg-down bg-red f-l"></div>
-							<div class="right-text-con">
-								<p class="name">战术箱1</p>
-								<p>内部设备:总计<span class="color-org">89</span>入库<span class="color-green">88</span>出库<span class="color-red">1</span></p>
-							</div>
-						</a>
-					</li>
-					<li class="category">
-						<a href="javascript:;" class="clearfix" onclick="searchEquipment('323');return false;">
-							<div class="icon-bg-up bg-green f-l"></div>
-							<div class="icon-bg-down bg-green f-l"></div>
-							<div class="right-text-con">
-								<p class="name">战术箱2</p>
-								<p>内部设备:总计<span class="color-org">90</span>入库<span class="color-green">90</span>出库<span class="color-red">0</span></p>
-							</div>
-						</a>
-					</li>
-					<li class="category">
-						<a href="javascript:;" class="clearfix">
-							<div class="icon-bg-up bg-green f-l"></div>
-							<div class="icon-bg-down bg-red f-l"></div>
-							<div class="right-text-con">
-								<p class="name">战术箱3</p>
-								<p>内部设备:总计<span class="color-org">89</span>入库<span class="color-green">88</span>出库<span class="color-red">1</span></p>
-							</div>
-						</a>
-					</li>
-					<li class="category">
-						<a href="javascript:;" class="clearfix">
-							<div class="icon-bg-up bg-green f-l"></div>
-							<div class="icon-bg-down bg-red f-l"></div>
-							<div class="right-text-con">
-								<p class="name">战术箱4</p>
-								<p>内部设备:总计<span class="color-org">89</span>入库<span class="color-green">88</span>出库<span class="color-red">1</span></p>
-							</div>
-						</a>
-					</li>
-					<li class="category">
-						<a href="javascript:;" class="clearfix">
-							<div class="icon-bg-up bg-green f-l"></div>
-							<div class="icon-bg-down bg-red f-l"></div>
-							<div class="right-text-con">
-								<p class="name">战术箱5</p>
-								<p>内部设备:总计<span class="color-org">89</span>入库<span class="color-green">88</span>出库<span class="color-red">1</span></p>
-							</div>
-						</a>
-					</li>
-					<li class="category">
-						<a href="javascript:;" class="clearfix">
-							<div class="icon-bg-up bg-green f-l"></div>
-							<div class="icon-bg-down bg-red f-l"></div>
-							<div class="right-text-con">
-								<p class="name">战术箱6</p>
-								<p>内部设备:总计<span class="color-org">89</span>入库<span class="color-green">88</span>出库<span class="color-red">1</span></p>
-							</div>
-						</a>
-					</li>
-					<li class="category">
-						<a href="javascript:;" class="clearfix">
-							<div class="icon-bg-up bg-green f-l"></div>
-							<div class="icon-bg-down bg-red f-l"></div>
-							<div class="right-text-con">
-								<p class="name">战术箱7</p>
-								<p>内部设备:总计<span class="color-org">89</span>入库<span class="color-green">88</span>出库<span class="color-red">1</span></p>
-							</div>
-						</a>
-					</li>
-					<li class="category">
-						<a href="javascript:;" class="clearfix">
-							<div class="icon-bg-up bg-green f-l"></div>
-							<div class="icon-bg-down bg-red f-l"></div>
-							<div class="right-text-con">
-								<p class="name">战术箱8</p>
-								<p>内部设备:总计<span class="color-org">89</span>入库<span class="color-green">88</span>出库<span class="color-red">1</span></p>
-							</div>
-						</a>
-					</li>
-					<li class="category">
-						<a href="javascript:;" class="clearfix">
-							<div class="icon-bg-up bg-green f-l"></div>
-							<div class="icon-bg-down bg-red f-l"></div>
-							<div class="right-text-con">
-								<p class="name">战术箱9</p>
-								<p>内部设备:总计<span class="color-org">89</span>入库<span class="color-green">88</span>出库<span class="color-red">1</span></p>
-							</div>
-						</a>
-					</li>
-					<li class="category">
-						<a href="javascript:;" class="clearfix">
-							<div class="icon-bg-up bg-green f-l"></div>
-							<div class="icon-bg-down bg-red f-l"></div>
-							<div class="right-text-con">
-								<p class="name">战术箱10</p>
-								<p>内部设备:总计<span class="color-org">89</span>入库<span class="color-green">88</span>出库<span class="color-red">1</span></p>
-							</div>
-						</a>
-					</li>
-				</ul>
-				<ul>
-					<li class="category">
-						<a href="javascript:;" class="clearfix">
-							<div class="icon-bg bg-org f-l">
-								<span class="iconfont">&#xe606;</span>
-							</div>
-							<div class="right-text-con">
-								<p class="name">会员数</p>
-								<p><span class="color-org">89</span>数据<span class="iconfont">&#xe628;</span></p>
-							</div>
-						</a>
-					</li>
-					<li class="category">
-						<a href="javascript:;" class="clearfix">
-							<div class="icon-bg bg-blue f-l">
-								<span class="iconfont">&#xe602;</span>
-							</div>
-							<div class="right-text-con">
-								<p class="name">文章数</p>
-								<p><span class="color-blue">189</span>数据<span class="iconfont">&#xe628;</span></p>
-							</div>
-						</a>
-					</li>
-					<li class="category">
-						<a href="javascript:;" class="clearfix">
-							<div class="icon-bg bg-green f-l">
-								<span class="iconfont">&#xe605;</span>
-							</div>
-							<div class="right-text-con">
-								<p class="name">评论数</p>
-								<p><span class="color-green">221</span>数据<span class="iconfont">&#xe60f;</span></p>
-							</div>
-						</a>
-					</li>
-					<li class="category">
-						<a href="javascript:;" class="clearfix">
-							<div class="icon-bg bg-green f-l">
-								<span class="iconfont">&#xe605;</span>
-							</div>
-							<div class="right-text-con">
-								<p class="name">评论数</p>
-								<p><span class="color-green">221</span>数据<span class="iconfont">&#xe60f;</span></p>
-							</div>
-						</a>
-					</li>
-				</ul>
+				<!--				<ul>-->
+				<!--					<li class="category">-->
+				<!--						<a href="javascript:;" onclick="searchEquipment('123');return false;" class="clearfix">-->
+				<!--							<div class="icon-bg-up bg-green f-l"></div>-->
+				<!--							<div class="icon-bg-down bg-red f-l"></div>-->
+				<!--							<div class="right-text-con">-->
+				<!--								<p class="name">战术箱1</p>-->
+				<!--								<p>内部设备:总计<span class="color-org">89</span>入库<span class="color-green">88</span>出库<span class="color-red">1</span></p>-->
+				<!--							</div>-->
+				<!--						</a>-->
+				<!--					</li>-->
+				<!--					<li class="category">-->
+				<!--						<a href="javascript:;" class="clearfix" onclick="searchEquipment('323');return false;">-->
+				<!--							<div class="icon-bg-up bg-green f-l"></div>-->
+				<!--							<div class="icon-bg-down bg-green f-l"></div>-->
+				<!--							<div class="right-text-con">-->
+				<!--								<p class="name">战术箱2</p>-->
+				<!--								<p>内部设备:总计<span class="color-org">90</span>入库<span class="color-green">90</span>出库<span class="color-red">0</span></p>-->
+				<!--							</div>-->
+				<!--						</a>-->
+				<!--					</li>-->
+				<!--					<li class="category">-->
+				<!--						<a href="javascript:;" class="clearfix">-->
+				<!--							<div class="icon-bg-up bg-green f-l"></div>-->
+				<!--							<div class="icon-bg-down bg-red f-l"></div>-->
+				<!--							<div class="right-text-con">-->
+				<!--								<p class="name">战术箱3</p>-->
+				<!--								<p>内部设备:总计<span class="color-org">89</span>入库<span class="color-green">88</span>出库<span class="color-red">1</span></p>-->
+				<!--							</div>-->
+				<!--						</a>-->
+				<!--					</li>-->
+				<!--					<li class="category">-->
+				<!--						<a href="javascript:;" class="clearfix">-->
+				<!--							<div class="icon-bg-up bg-green f-l"></div>-->
+				<!--							<div class="icon-bg-down bg-red f-l"></div>-->
+				<!--							<div class="right-text-con">-->
+				<!--								<p class="name">战术箱4</p>-->
+				<!--								<p>内部设备:总计<span class="color-org">89</span>入库<span class="color-green">88</span>出库<span class="color-red">1</span></p>-->
+				<!--							</div>-->
+				<!--						</a>-->
+				<!--					</li>-->
+				<!--					<li class="category">-->
+				<!--						<a href="javascript:;" class="clearfix">-->
+				<!--							<div class="icon-bg-up bg-green f-l"></div>-->
+				<!--							<div class="icon-bg-down bg-red f-l"></div>-->
+				<!--							<div class="right-text-con">-->
+				<!--								<p class="name">战术箱5</p>-->
+				<!--								<p>内部设备:总计<span class="color-org">89</span>入库<span class="color-green">88</span>出库<span class="color-red">1</span></p>-->
+				<!--							</div>-->
+				<!--						</a>-->
+				<!--					</li>-->
+				<!--					<li class="category">-->
+				<!--						<a href="javascript:;" class="clearfix">-->
+				<!--							<div class="icon-bg-up bg-green f-l"></div>-->
+				<!--							<div class="icon-bg-down bg-red f-l"></div>-->
+				<!--							<div class="right-text-con">-->
+				<!--								<p class="name">战术箱6</p>-->
+				<!--								<p>内部设备:总计<span class="color-org">89</span>入库<span class="color-green">88</span>出库<span class="color-red">1</span></p>-->
+				<!--							</div>-->
+				<!--						</a>-->
+				<!--					</li>-->
+				<!--					<li class="category">-->
+				<!--						<a href="javascript:;" class="clearfix">-->
+				<!--							<div class="icon-bg-up bg-green f-l"></div>-->
+				<!--							<div class="icon-bg-down bg-red f-l"></div>-->
+				<!--							<div class="right-text-con">-->
+				<!--								<p class="name">战术箱7</p>-->
+				<!--								<p>内部设备:总计<span class="color-org">89</span>入库<span class="color-green">88</span>出库<span class="color-red">1</span></p>-->
+				<!--							</div>-->
+				<!--						</a>-->
+				<!--					</li>-->
+				<!--					<li class="category">-->
+				<!--						<a href="javascript:;" class="clearfix">-->
+				<!--							<div class="icon-bg-up bg-green f-l"></div>-->
+				<!--							<div class="icon-bg-down bg-red f-l"></div>-->
+				<!--							<div class="right-text-con">-->
+				<!--								<p class="name">战术箱8</p>-->
+				<!--								<p>内部设备:总计<span class="color-org">89</span>入库<span class="color-green">88</span>出库<span class="color-red">1</span></p>-->
+				<!--							</div>-->
+				<!--						</a>-->
+				<!--					</li>-->
+				<!--					<li class="category">-->
+				<!--						<a href="javascript:;" class="clearfix">-->
+				<!--							<div class="icon-bg-up bg-green f-l"></div>-->
+				<!--							<div class="icon-bg-down bg-red f-l"></div>-->
+				<!--							<div class="right-text-con">-->
+				<!--								<p class="name">战术箱9</p>-->
+				<!--								<p>内部设备:总计<span class="color-org">89</span>入库<span class="color-green">88</span>出库<span class="color-red">1</span></p>-->
+				<!--							</div>-->
+				<!--						</a>-->
+				<!--					</li>-->
+				<!--					<li class="category">-->
+				<!--						<a href="javascript:;" class="clearfix">-->
+				<!--							<div class="icon-bg-up bg-green f-l"></div>-->
+				<!--							<div class="icon-bg-down bg-red f-l"></div>-->
+				<!--							<div class="right-text-con">-->
+				<!--								<p class="name">战术箱10</p>-->
+				<!--								<p>内部设备:总计<span class="color-org">89</span>入库<span class="color-green">88</span>出库<span class="color-red">1</span></p>-->
+				<!--							</div>-->
+				<!--						</a>-->
+				<!--					</li>-->
+				<!--				</ul>-->
+				<!--				<ul>-->
+				<!--					<li class="category">-->
+				<!--						<a href="javascript:;" class="clearfix">-->
+				<!--							<div class="icon-bg bg-org f-l">-->
+				<!--								<span class="iconfont">&#xe606;</span>-->
+				<!--							</div>-->
+				<!--							<div class="right-text-con">-->
+				<!--								<p class="name">会员数</p>-->
+				<!--								<p><span class="color-org">89</span>数据<span class="iconfont">&#xe628;</span></p>-->
+				<!--							</div>-->
+				<!--						</a>-->
+				<!--					</li>-->
+				<!--					<li class="category">-->
+				<!--						<a href="javascript:;" class="clearfix">-->
+				<!--							<div class="icon-bg bg-blue f-l">-->
+				<!--								<span class="iconfont">&#xe602;</span>-->
+				<!--							</div>-->
+				<!--							<div class="right-text-con">-->
+				<!--								<p class="name">文章数</p>-->
+				<!--								<p><span class="color-blue">189</span>数据<span class="iconfont">&#xe628;</span></p>-->
+				<!--							</div>-->
+				<!--						</a>-->
+				<!--					</li>-->
+				<!--					<li class="category">-->
+				<!--						<a href="javascript:;" class="clearfix">-->
+				<!--							<div class="icon-bg bg-green f-l">-->
+				<!--								<span class="iconfont">&#xe605;</span>-->
+				<!--							</div>-->
+				<!--							<div class="right-text-con">-->
+				<!--								<p class="name">评论数</p>-->
+				<!--								<p><span class="color-green">221</span>数据<span class="iconfont">&#xe60f;</span></p>-->
+				<!--							</div>-->
+				<!--						</a>-->
+				<!--					</li>-->
+				<!--					<li class="category">-->
+				<!--						<a href="javascript:;" class="clearfix">-->
+				<!--							<div class="icon-bg bg-green f-l">-->
+				<!--								<span class="iconfont">&#xe605;</span>-->
+				<!--							</div>-->
+				<!--							<div class="right-text-con">-->
+				<!--								<p class="name">评论数</p>-->
+				<!--								<p><span class="color-green">221</span>数据<span class="iconfont">&#xe60f;</span></p>-->
+				<!--							</div>-->
+				<!--						</a>-->
+				<!--					</li>-->
+				<!--				</ul>-->
 			</div>
 		</div>
 	</div>
 </div>
 
 <div class="global_toolbar">
-	<div class="toolbar_btn center" style="top: 50%; margin-top: -150px;">
-		<a href="#" id="needtohelp_0_GetPricing" class="bar_forum bar_project_consulting">
-			<samp>
-				<i class="iconi icon-LiveChat1">
-					<img src="../static/images/slideinventory/icon/car-0.png" alt="">
-				</i>
-			</samp>
-			<em>
-				<i>项目咨询</i>
-			</em>
-		</a>
-		<a id="needtohelp_0_shoppingCart" class="bar_cart " data-id="global_toolbar">
-			<samp>
-				<i class="iconi icon-LiveChat1">
-					<img src="../static/images/slideinventory/icon/car-1.png" alt="">
-				</i>
-			</samp>
-			<em>
-				<i>购物车</i>
-			</em>
-			<span id="lmliCount" style="display: block;">5</span>
-		</a>
-		<a href="#" id="needtohelp_0_forum" class="bar_forum">
-			<samp>
-				<i class="iconi icon-LiveChat1">
-					<img src="../static/images/slideinventory/icon/car-2.png" alt="">
-				</i>
-			</samp>
-			<em>
-				<i>查找经销商</i>
-			</em>
-		</a>
-		<a href="#" id="needtohelp_0_GetQuote" class="bar_forum bar_inquire">
-			<samp>
-				<i class="iconi icon-LiveChat1">
-					<img src="../static/images/slideinventory/icon/car-3.png" alt="">
-				</i>
-			</samp>
-			<em>
-				<i>售前咨询</i>
-			</em>
-		</a>
-		<a href="#" id="needtohelp_0_contactus" class="bar_contact bar_forum" data-id="contact_column">
-			<samp>
-				<i class="iconi icon-LiveChat1">
-					<img src="../static/images/slideinventory/icon/car-4.png" alt="">
-				</i>
-			</samp>
-			<em>
-				<i>更多联系方式</i>
-			</em>
-		</a>
-	</div>
+	<!--	<div class="toolbar_btn center" style="top: 50%; margin-top: -150px;">-->
+	<!--		<a href="#" id="needtohelp_0_GetPricing" class="bar_forum bar_project_consulting">-->
+	<!--			<samp>-->
+	<!--				<i class="iconi icon-LiveChat1">-->
+	<!--					<img src="../static/images/slideinventory/icon/car-0.png" alt="">-->
+	<!--				</i>-->
+	<!--			</samp>-->
+	<!--			<em>-->
+	<!--				<i>项目咨询</i>-->
+	<!--			</em>-->
+	<!--		</a>-->
+	<!--		<a id="needtohelp_0_shoppingCart" class="bar_cart " data-id="global_toolbar">-->
+	<!--			<samp>-->
+	<!--				<i class="iconi icon-LiveChat1">-->
+	<!--					<img src="../static/images/slideinventory/icon/car-1.png" alt="">-->
+	<!--				</i>-->
+	<!--			</samp>-->
+	<!--			<em>-->
+	<!--				<i>购物车</i>-->
+	<!--			</em>-->
+	<!--			<span id="lmliCount" style="display: block;">5</span>-->
+	<!--		</a>-->
+	<!--		<a href="#" id="needtohelp_0_forum" class="bar_forum">-->
+	<!--			<samp>-->
+	<!--				<i class="iconi icon-LiveChat1">-->
+	<!--					<img src="../static/images/slideinventory/icon/car-2.png" alt="">-->
+	<!--				</i>-->
+	<!--			</samp>-->
+	<!--			<em>-->
+	<!--				<i>查找经销商</i>-->
+	<!--			</em>-->
+	<!--		</a>-->
+	<!--		<a href="#" id="needtohelp_0_GetQuote" class="bar_forum bar_inquire">-->
+	<!--			<samp>-->
+	<!--				<i class="iconi icon-LiveChat1">-->
+	<!--					<img src="../static/images/slideinventory/icon/car-3.png" alt="">-->
+	<!--				</i>-->
+	<!--			</samp>-->
+	<!--			<em>-->
+	<!--				<i>售前咨询</i>-->
+	<!--			</em>-->
+	<!--		</a>-->
+	<!--		<a href="#" id="needtohelp_0_contactus" class="bar_contact bar_forum" data-id="contact_column">-->
+	<!--			<samp>-->
+	<!--				<i class="iconi icon-LiveChat1">-->
+	<!--					<img src="../static/images/slideinventory/icon/car-4.png" alt="">-->
+	<!--				</i>-->
+	<!--			</samp>-->
+	<!--			<em>-->
+	<!--				<i>更多联系方式</i>-->
+	<!--			</em>-->
+	<!--		</a>-->
+	<!--	</div>-->
 	<div class="toolbar_content">
 		<div class="css_column cart_column js_column" id="shop_cart">
 			<h4>
-				入库详情<a href="javascript:void(0)" class="icon-close " >X</a>
+				库存详情<a href="javascript:void(0)" class="icon-close " >X</a>
 			</h4>
-			<div id="resultData">
-				<ul style="height: auto;">
-					<li class="clearfix" data-url="7002728">
-						<input type="checkbox" class="checkbox_c " name="checkbox_c_Name" data-url="" checked="checked">
-						<span class="check"></span>
-						<div class="img_con">
-							<img src="../static/images/slideinventory/pd/pd1.jpg" alt="">
-						</div>
-						<div class="product_name">
-							<span title="CE12808">CE12808</span>
-							<a href="javascript:void(0)" class="del_pro_btn" onClick="">删除</a>
-						</div>
-						<div class="amount_btn clearfix">
-							<input type="text" value="1" class="spinnerExample" onBlur="isDigit(this)">
-						</div>
-					</li>
-					<li class="clearfix" data-url="7002720">
-						<input type="checkbox" class="checkbox_c" name="checkbox_c_Name" data-url="7002720|" checked="checked">
-						<span class="check"></span>
-						<div class="img_con">
-							<img src="../static/images/slideinventory/pd/pd2.jpg" alt="">
-						</div>
-						<div class="product_name">
-							<span title="CE12804">CE12804</span>
-							<a href="javascript:void(0)" class="del_pro_btn" onClick="">删除</a>
-						</div>
-						<div class="amount_btn clearfix">
-							<input type="text" value="9" class="spinnerExample" onBlur="isDigit(this)">
-						</div>
-					</li>
-					<li class="clearfix" data-url="7097193">
-						<input type="checkbox" class="checkbox_c" name="checkbox_c_Name" data-url="7097193|" checked="checked"/>
-						<span class="check"></span>
-						<div class="img_con">
-							<img src="../static/images/slideinventory/pd/pd2.jpg" alt="">
-						</div>
-						<div class="product_name">
-							<span title="AR1220EV">AR1220EV</span>
-							<a href="javascript:void(0)" class="del_pro_btn" onClick="">删除</a>
-						</div>
-						<div class="amount_btn clearfix">
-							<input type="text" value="1" class="spinnerExample" onBlur="isDigit(this)">
-						</div>
-					</li>
-					<li class="clearfix" data-url="7115213">
-						<input type="checkbox" class="checkbox_c" name="checkbox_c_Name" data-url="7115213|" checked="checked">
-						<span class="check"></span>
-						<div class="img_con">
-							<img src="../static/images/slideinventory/pd/pd1.jpg" alt="">
-						</div>
-						<div class="product_name">
-							<span title="S5700-28P-PWR-LI-AC">S5700-28...</span>
-							<a href="javascript:void(0)" class="del_pro_btn" onClick="">删除</a>
-						</div>
-						<div class="amount_btn clearfix">
-							<input type="text" value="1" class="spinnerExample" onBlur="isDigit(this)">
-						</div>
-					</li>
-				</ul>
+			<h2>
+				入库详情
+			</h2>
+			<div id="resultData" style="height: 300px;overflow: auto">
+
+				<!--				<ul style="height: auto;">-->
+				<!--					<li class="clearfix" data-url="7002728">-->
+				<!--						<input type="checkbox" class="checkbox_c " name="checkbox_c_Name" data-url="" checked="checked">-->
+				<!--						<span class="check"></span>-->
+				<!--						<div class="img_con">-->
+				<!--							<img src="../static/images/slideinventory/pd/pd1.jpg" alt="">-->
+				<!--						</div>-->
+				<!--						<div class="product_name">-->
+				<!--							<span title="CE12808">CE12808</span>-->
+				<!--							<a href="javascript:void(0)" class="del_pro_btn" onClick="">删除</a>-->
+				<!--						</div>-->
+				<!--					</li>-->
+				<!--					<li class="clearfix" data-url="7002720">-->
+				<!--						<input type="checkbox" class="checkbox_c" name="checkbox_c_Name" data-url="7002720|" checked="checked">-->
+				<!--						<span class="check"></span>-->
+				<!--						<div class="img_con">-->
+				<!--							<img src="../static/images/slideinventory/pd/pd2.jpg" alt="">-->
+				<!--						</div>-->
+				<!--						<div class="product_name">-->
+				<!--							<span title="CE12804">CE12804</span>-->
+				<!--							<a href="javascript:void(0)" class="del_pro_btn" onClick="">删除</a>-->
+				<!--						</div>-->
+				<!--&lt;!&ndash;						<div class="amount_btn clearfix">&ndash;&gt;-->
+				<!--&lt;!&ndash;							<input type="text" value="9" class="spinnerExample" onBlur="isDigit(this)">&ndash;&gt;-->
+				<!--&lt;!&ndash;						</div>&ndash;&gt;-->
+				<!--					</li>-->
+				<!--					<li class="clearfix" data-url="7097193">-->
+				<!--						<input type="checkbox" class="checkbox_c" name="checkbox_c_Name" data-url="7097193|" checked="checked"/>-->
+				<!--						<span class="check"></span>-->
+				<!--						<div class="img_con">-->
+				<!--							<img src="../static/images/slideinventory/pd/pd2.jpg" alt="">-->
+				<!--						</div>-->
+				<!--						<div class="product_name">-->
+				<!--							<span title="AR1220EV">AR1220EV</span>-->
+				<!--							<a href="javascript:void(0)" class="del_pro_btn" onClick="">删除</a>-->
+				<!--						</div>-->
+				<!--&lt;!&ndash;						<div class="amount_btn clearfix">&ndash;&gt;-->
+				<!--&lt;!&ndash;							<input type="text" value="1" class="spinnerExample" onBlur="isDigit(this)">&ndash;&gt;-->
+				<!--&lt;!&ndash;						</div>&ndash;&gt;-->
+				<!--					</li>-->
+				<!--					<li class="clearfix" data-url="7115213">-->
+				<!--						<input type="checkbox" class="checkbox_c" name="checkbox_c_Name" data-url="7115213|" checked="checked">-->
+				<!--						<span class="check"></span>-->
+				<!--						<div class="img_con">-->
+				<!--							<img src="../static/images/slideinventory/pd/pd1.jpg" alt="">-->
+				<!--						</div>-->
+				<!--						<div class="product_name">-->
+				<!--							<span title="S5700-28P-PWR-LI-AC">S5700-28...</span>-->
+				<!--							<a href="javascript:void(0)" class="del_pro_btn" onClick="">删除</a>-->
+				<!--						</div>-->
+				<!--&lt;!&ndash;						<div class="amount_btn clearfix">&ndash;&gt;-->
+				<!--&lt;!&ndash;							<input type="text" value="1" class="spinnerExample" onBlur="isDigit(this)">&ndash;&gt;-->
+				<!--&lt;!&ndash;						</div>&ndash;&gt;-->
+				<!--					</li>-->
+				<!--				</ul>-->
 			</div>
-			<div class="count_info clearfix">
-				<label>
-					<input type="checkbox" class="select_all" checked="checkbox">
-					<span class="check"></span>
-					<span class="text">全选</span>
-				</label>
-				<p>
-					共计： <span>12</span>
-					个产品
-				</p>
+			<h2>
+				出库详情
+			</h2>
+			<div id="resultData1" style="height: 300px;overflow: auto">
+
+				<!--				<ul style="height: auto;">-->
+				<!--					<li class="clearfix" data-url="7002728">-->
+				<!--						<input type="checkbox" class="checkbox_c " name="checkbox_c_Name" data-url="" checked="checked">-->
+				<!--						<span class="check"></span>-->
+				<!--						<div class="img_con">-->
+				<!--							<img src="../static/images/slideinventory/pd/pd1.jpg" alt="">-->
+				<!--						</div>-->
+				<!--						<div class="product_name">-->
+				<!--							<span title="CE12808">CE12808</span>-->
+				<!--							<a href="javascript:void(0)" class="del_pro_btn" onClick="">删除</a>-->
+				<!--						</div>-->
+				<!--						&lt;!&ndash;						<div class="amount_btn clearfix">&ndash;&gt;-->
+				<!--						&lt;!&ndash;							<input type="text" value="1" class="spinnerExample" onBlur="isDigit(this)">&ndash;&gt;-->
+				<!--						&lt;!&ndash;						</div>&ndash;&gt;-->
+				<!--					</li>-->
+				<!--					<li class="clearfix" data-url="7002720">-->
+				<!--						<input type="checkbox" class="checkbox_c" name="checkbox_c_Name" data-url="7002720|" checked="checked">-->
+				<!--						<span class="check"></span>-->
+				<!--						<div class="img_con">-->
+				<!--							<img src="../static/images/slideinventory/pd/pd2.jpg" alt="">-->
+				<!--						</div>-->
+				<!--						<div class="product_name">-->
+				<!--							<span title="CE12804">CE12804</span>-->
+				<!--							<a href="javascript:void(0)" class="del_pro_btn" onClick="">删除</a>-->
+				<!--						</div>-->
+				<!--						&lt;!&ndash;						<div class="amount_btn clearfix">&ndash;&gt;-->
+				<!--						&lt;!&ndash;							<input type="text" value="9" class="spinnerExample" onBlur="isDigit(this)">&ndash;&gt;-->
+				<!--						&lt;!&ndash;						</div>&ndash;&gt;-->
+				<!--					</li>-->
+				<!--					<li class="clearfix" data-url="7097193">-->
+				<!--						<input type="checkbox" class="checkbox_c" name="checkbox_c_Name" data-url="7097193|" checked="checked"/>-->
+				<!--						<span class="check"></span>-->
+				<!--						<div class="img_con">-->
+				<!--							<img src="../static/images/slideinventory/pd/pd2.jpg" alt="">-->
+				<!--						</div>-->
+				<!--						<div class="product_name">-->
+				<!--							<span title="AR1220EV">AR1220EV</span>-->
+				<!--							<a href="javascript:void(0)" class="del_pro_btn" onClick="">删除</a>-->
+				<!--						</div>-->
+				<!--						&lt;!&ndash;						<div class="amount_btn clearfix">&ndash;&gt;-->
+				<!--						&lt;!&ndash;							<input type="text" value="1" class="spinnerExample" onBlur="isDigit(this)">&ndash;&gt;-->
+				<!--						&lt;!&ndash;						</div>&ndash;&gt;-->
+				<!--					</li>-->
+				<!--					<li class="clearfix" data-url="7115213">-->
+				<!--						<input type="checkbox" class="checkbox_c" name="checkbox_c_Name" data-url="7115213|" checked="checked">-->
+				<!--						<span class="check"></span>-->
+				<!--						<div class="img_con">-->
+				<!--							<img src="../static/images/slideinventory/pd/pd1.jpg" alt="">-->
+				<!--						</div>-->
+				<!--						<div class="product_name">-->
+				<!--							<span title="S5700-28P-PWR-LI-AC">S5700-28...</span>-->
+				<!--							<a href="javascript:void(0)" class="del_pro_btn" onClick="">删除</a>-->
+				<!--						</div>-->
+				<!--						&lt;!&ndash;						<div class="amount_btn clearfix">&ndash;&gt;-->
+				<!--						&lt;!&ndash;							<input type="text" value="1" class="spinnerExample" onBlur="isDigit(this)">&ndash;&gt;-->
+				<!--						&lt;!&ndash;						</div>&ndash;&gt;-->
+				<!--					</li>-->
+				<!--				</ul>-->
 			</div>
+			<!--			<div class="count_info clearfix">-->
+			<!--				<label>-->
+			<!--					<input type="checkbox" class="select_all" checked="checkbox">-->
+			<!--					<span class="check"></span>-->
+			<!--					<span class="text">全选</span>-->
+			<!--				</label>-->
+			<!--				<p>-->
+			<!--					共计： <span>12</span>-->
+			<!--					个产品-->
+			<!--				</p>-->
+			<!--			</div>-->
 		</div>
 	</div>
 </div>
@@ -317,6 +385,7 @@
 <script src="../../static/layui/layui.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript" src="../static/js/slideinventory/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="../static/js/slideinventory/common.js"></script>
+<script type="text/javascript" src="../static/js/inventory/inventory-operate.js"></script>
 <script type="text/javascript">
 	layui.use(['layer','jquery'], function(){
 		var layer 	= layui.layer;

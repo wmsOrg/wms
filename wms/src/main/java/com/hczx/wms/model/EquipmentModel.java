@@ -62,13 +62,13 @@ public class EquipmentModel extends Model<EquipmentModel> {
     @TableField(value = "editTime")
     private Date editTime;
 
-    /**设备所属方案id*/
-    @TableField(value = "schemeId")
-    private String schemeId;
-
-    /**设备所属方案名称*/
-    @TableField(value = "schemeName")
-    private String schemeName;
+//    /**设备所属方案id*/
+//    @TableField(value = "schemeId")
+//    private String schemeId;
+//
+//    /**设备所属方案名称*/
+//    @TableField(value = "schemeName")
+//    private String schemeName;
 
     /**生效状态  0：失效   1：生效*/
     @TableField(value = "validState")
@@ -77,6 +77,10 @@ public class EquipmentModel extends Model<EquipmentModel> {
     /**占用状态 0：不占用   1：占用*/
     @TableField(value = "occupyState")
     private String occupyState;
+
+    /**关联号*/
+    @TableField(value = "linkingNo")
+    private String linkingNo;
 
     /**入库状态 0：未定义 1：入库  -1：出库*/
     @TableField(value = "inboundState")
@@ -167,20 +171,12 @@ public class EquipmentModel extends Model<EquipmentModel> {
         this.editTime = editTime;
     }
 
-    public String getSchemeId() {
-        return schemeId;
+    public String getLinkingNo() {
+        return linkingNo;
     }
 
-    public void setSchemeId(String schemeId) {
-        this.schemeId = schemeId;
-    }
-
-    public String getSchemeName() {
-        return schemeName;
-    }
-
-    public void setSchemeName(String schemeName) {
-        this.schemeName = schemeName;
+    public void setLinkingNo(String linkingNo) {
+        this.linkingNo = linkingNo;
     }
 
     public String getValidState() {

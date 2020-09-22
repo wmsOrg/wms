@@ -15,114 +15,57 @@
 		<div class="wrap-container clearfix">
 				<div class="column-content-detail">
 					<div class="layui-form" id="table-list">
-<!--						<table class="layui-table" lay-even lay-skin="nob" id = 'test'>-->
 						<table lay-filter="equipmentDataGridFilter" class="layui-table" lay-even lay-skin="nob" id="equipmentDataGrid">
-<!--							<colgroup>-->
-<!--								<col width="50">-->
-<!--								<col class="hidden-xs" width="50">-->
-<!--								<col class="hidden-xs" width="100">-->
-<!--								<col>-->
-<!--								<col class="hidden-xs" width="150">-->
-<!--								<col class="hidden-xs" width="150">-->
-<!--								<col width="80">-->
-<!--								<col width="150">-->
-<!--							</colgroup>-->
-<!--							<thead>-->
-<!--								<tr>-->
-<!--									<th><input type="checkbox" name="" lay-skin="primary" lay-filter="allChoose"></th>-->
-<!--									<th lay-data="{field:'id'}" class="hidden-xs">ID</th>-->
-<!--									<th lay-data="{field:'equipmentId'}" class="hidden-xs">设备标识</th>-->
-<!--									<th lay-data="{field:'equipmentName'}">设备名称</th>-->
-<!--									<th lay-data="{field:'equipmentGrade'}" class="hidden-xs">设备等级</th>-->
-<!--									<th lay-data="{field:'equipmentClass'}" class="hidden-xs">设备分类</th>-->
-<!--									<th lay-data="{field:'equipmentPreId'}" class="hidden-xs">所属上级设备</th>-->
-<!--									<th lay-data="{field:'equipmentCompanyId'}" class="hidden-xs">所属公司标识</th>-->
-<!--									<th lay-data="{field:'equipmentCompanyName'}" class="hidden-xs">所属公司名称</th>-->
-<!--									<th lay-data="{field:'schemeId'}" class="hidden-xs">方案标识</th>-->
-<!--									<th lay-data="{field:'schemeName'}" class="hidden-xs">方案名称</th>-->
-<!--									<th lay-data="{field:'createTime'}" class="hidden-xs">创建时间</th>-->
-<!--									<th lay-data="{field:'editTime'}" class="hidden-xs">修改时间</th>-->
-<!--									<th lay-data="{field:'validState'}">生效状态</th>-->
-<!--									<th lay-data="{field:'occupyState'}">占用状态</th>-->
-<!--&lt;!&ndash;									<th>操作</th>&ndash;&gt;-->
-<!--									<th lay-data="{fixed: 'right', width:178, align:'center', toolbar: '#barDemo'}">操作</th>-->
-<!--								</tr>-->
-<!--							</thead>-->
-<!--							<tbody>-->
-<!--								<tr>-->
-<!--									<td><input type="checkbox" name="" lay-skin="primary" data-id="1"></td>-->
-<!--									<td class="hidden-xs">1</td>-->
-<!--									<td class="hidden-xs"><input type="text" name="title" autocomplete="off" class="layui-input" value="0" data-id="1"></td>-->
-<!--									<td>玩具</td>-->
-<!--									<td class="hidden-xs">1989-10-14</td>-->
-<!--									<td class="hidden-xs">1989-10-14</td>-->
-<!--									<td><button class="layui-btn layui-btn-mini layui-btn-normal">正常</button></td>-->
-<!--									<td>-->
-<!--										<div class="layui-inline">-->
-<!--											<button class="layui-btn layui-btn-small layui-btn-normal go-btn" data-id="1" data-url="/wms/toArticleDetail"><i class="layui-icon">&#xe642;</i></button>-->
-<!--											<button class="layui-btn layui-btn-small layui-btn-danger del-btn" data-id="1" data-url="/wms/toArticleDetail"><i class="layui-icon">&#xe640;</i></button>-->
-<!--										</div>-->
-<!--									</td>-->
-<!--								</tr>-->
-<!--								<tr>-->
-<!--									<td><input type="checkbox" name="" lay-skin="primary" data-id="1"></td>-->
-<!--									<td class="hidden-xs">1</td>-->
-<!--									<td class="hidden-xs"><input type="text" name="title" autocomplete="off" class="layui-input" value="0" data-id="1"></td>-->
-<!--									<td>玩具</td>-->
-<!--									<td class="hidden-xs">1989-10-14</td>-->
-<!--									<td class="hidden-xs">1989-10-14</td>-->
-<!--									<td><button class="layui-btn layui-btn-mini layui-btn-normal">正常</button></td>-->
-<!--									<td>-->
-<!--										<div class="layui-inline">-->
-<!--											<button class="layui-btn layui-btn-small layui-btn-normal go-btn" data-id="1" data-url="/wms/toArticleDetail"><i class="layui-icon">&#xe642;</i></button>-->
-<!--											<button class="layui-btn layui-btn-small layui-btn-danger del-btn" data-id="1" data-url="/wms/toArticleDetail"><i class="layui-icon">&#xe640;</i></button>-->
-<!--										</div>-->
-<!--									</td>-->
-<!--								</tr>-->
-<!--							</tbody>-->
+
 						</table>
 						<script type="text/html" id="equipmentLineBar">
 							<a class="layui-btn layui-btn-xs" lay-event="info">查看</a>
 							<a class="layui-btn layui-btn-xs" lay-event="edit">修改</a>
 							<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
-							<!--							<div class="layui-inline">-->
-<!--								<button class="layui-btn layui-btn-small layui-btn-normal go-btn" data-id="1" data-url="/wms/toArticleDetail"><i class="layui-icon">&#xe642;</i></button>-->
-<!--								<button class="layui-btn layui-btn-small layui-btn-danger del-btn" data-id="1" data-url="/wms/toArticleDetail"><i class="layui-icon">&#xe640;</i></button>-->
-<!--							</div>-->
+
 						</script>
 						<script type="text/html" id="equipmentHeadBar">
 							<div class="layui-form-item">
-								<div class="layui-inline tool-btn">
-									<button class="layui-btn layui-btn-small layui-btn-normal" lay-event="adds"><i class="layui-icon">&#xe654;</i></button>
-									<button class="layui-btn layui-btn-small layui-btn-danger" lay-event="dels"><i class="layui-icon">&#xe640;</i></button>
-									<button class="layui-btn layui-btn-small layui-btn-warm" lay-event="orders"><i class="iconfont">&#xe656;</i></button>
+								<div class="layui-inline">
+									设备名称：<input type="text" name="equimentName" id="equimentName" placeholder="请输入名称" autocomplete="off" class="layui-input" style="display: inline;width: 70%; ">
 								</div>
 								<div class="layui-inline">
-									<input type="text" name="title" placeholder="请输入标题" autocomplete="off" class="layui-input">
+									设备RFID：<input type="text" name="equimentRfid" id="equimentRfid" placeholder="请输入RFID" autocomplete="off" class="layui-input" style="display: inline;width: 70%; ">
 								</div>
 								<div class="layui-inline">
-									<select name="states" lay-filter="status">
-										<option value="">请选择一个状态</option>
-										<option value="010">正常</option>
-										<option value="021">停止</option>
-										<option value="0571">删除</option>
+									<span style="float: left;padding-top: 5px;">设备等级：</span><div style="float: left;"><select name="states" lay-filter="equipmentGrade" id="equipmentGrade">
+									<option value="">请选择设备等级</option>
+									<option value="1">一级</option>
+									<option value="2">二级</option>
 									</select>
 								</div>
-								<button class="layui-btn layui-btn-normal" lay-event="search">搜索</button>
+								</div>
+								<div class="layui-inline">
+									<span style="float: left;padding-top: 5px;">设备分类：</span><div style="float: left;"><select name="states" lay-filter="equipmentClass" id="equipmentClass">
+									<option value="">请选择设备类型</option>
+									<option value="0">战术装备箱</option>
+									<option value="1">监视设备</option>
+									<option value="2">手持终端设备</option>
+								</select>
+								</div>
+								</div>
+								<div class="layui-inline">
+									<span style="float: left;padding-top: 5px;">生效状态：</span><div style="float: left;"><select name="states" lay-filter="validState" id="validState">
+										<option value="">请选择生效状态</option>
+										<option value="1">生效</option>
+										<option value="0">失效</option>
+									</select>
+								</div>
+								</div>
+								<div class="layui-inline tool-btn">
+									<button class="layui-btn layui-btn-small layui-btn-normal" title="设备搜索" lay-event="searchEquipment"><i class="layui-icon">&#xe615;</i></button>
+									<button class="layui-btn layui-btn-small layui-btn-normal" title="设备添加" lay-event="adds"><i class="layui-icon">&#xe654;</i></button>
+									<button class="layui-btn layui-btn-small layui-btn-danger" title="设备删除" lay-event="dels"><i class="layui-icon">&#xe640;</i></button>
+									<button class="layui-btn layui-btn-small layui-btn-warm" title="设备装箱" lay-event="packagebox"><i class="layui-icon">&#xe758;</i></button>
+									<button class="layui-btn layui-btn-small layui-btn-checked" title="设备关联" lay-event="linking"><i class="layui-icon">&#xe64c;</i></button>
+								</div>
 							</div>
 						</script>
-<!--						<div class="page-wrap">-->
-<!--							<ul class="pagination">-->
-<!--								<li class="disabled"><span>«</span></li>-->
-<!--								<li class="active"><span>1</span></li>-->
-<!--								<li>-->
-<!--									<a href="#">2</a>-->
-<!--								</li>-->
-<!--								<li>-->
-<!--									<a href="#">»</a>-->
-<!--								</li>-->
-<!--							</ul>-->
-<!--						</div>-->
 					</div>
 				</div>
 		</div>

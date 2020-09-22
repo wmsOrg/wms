@@ -50,6 +50,10 @@ public class SchemeModel extends Model<SchemeModel> {
     @TableField(value = "disaster")
     private String disaster;
 
+    /**灾害类型  0：地震  1：火灾  2：洪灾*/
+    @TableField(value = "disasterName")
+    private String disasterName;
+
     /**图片路径*/
     @TableField(value = "imageUrl")
     private String imageUrl;
@@ -166,5 +170,13 @@ public class SchemeModel extends Model<SchemeModel> {
 
     public void setMaxColumns(Integer maxColumns) {
         this.maxColumns = maxColumns;
+    }
+
+    public String getDisasterName() {
+        return disasterName;
+    }
+
+    public void setDisasterName(String disasterName) {
+        this.disasterName = disasterName;
     }
 }

@@ -19,16 +19,17 @@
 
 						</table>
 						<script type="text/html" id="alarmingLineBar">
-							<a class="layui-btn layui-btn-xs" lay-event="info">查看</a>
-							<a class="layui-btn layui-btn-xs" lay-event="edit">修改</a>
-							<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+							<a class="layui-btn layui-btn-xs" lay-event="info">预案查看</a>
+							<a class="layui-btn layui-btn-xs" lay-event="edit">预案绑定</a>
+<!--							<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>-->
 						</script>
 						<script type="text/html" id="alarmingHeadBar">
 							<div class="layui-form-item">
 								<div class="layui-inline tool-btn">
 									<button class="layui-btn layui-btn-small layui-btn-normal" lay-event="adds"><i class="layui-icon">&#xe654;</i></button>
+									<button class="layui-btn layui-btn-small layui-btn-warm" lay-event="edits"><i class="layui-icon">&#xe642;</i></button>
 									<button class="layui-btn layui-btn-small layui-btn-danger" lay-event="dels"><i class="layui-icon">&#xe640;</i></button>
-									<button class="layui-btn layui-btn-small layui-btn-warm" lay-event="orders"><i class="iconfont">&#xe656;</i></button>
+									<button class="layui-btn layui-btn-small layui-btn-warm" lay-event="searchs"><i class="layui-icon">&#xe615;</i></button>
 								</div>
 								<div class="layui-inline">
 									<input type="text" name="title" placeholder="请输入标题" autocomplete="off" class="layui-input">
@@ -41,7 +42,7 @@
 										<option value="0571">删除</option>
 									</select>
 								</div>
-								<button class="layui-btn layui-btn-normal" lay-event="search">搜索</button>
+<!--								<button class="layui-btn layui-btn-normal" lay-event="search">搜索</button>-->
 							</div>
 						</script>
 					</div>

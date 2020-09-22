@@ -22,13 +22,13 @@ layui.use(['table','form', 'jquery', 'laydate', 'layer', 'laypage', 'dialog', 'e
         , {field: 'equipmentPreId', title: '所属上级设备', class: "hidden-xs", width: "18%"}
         , {field: 'equipmentCompanyId', title: '所属公司标识', class: "hidden-xs", hide:true}
         , {field: 'equipmentCompanyName', title: '所属公司名称', class: "hidden-xs", width: "13%"}
-        , {field: 'schemeId', title: '方案标识', class: "hidden-xs", hide:true}
-        , {field: 'schemeName', title: '方案名称', class: "hidden-xs", width: "13.7%"}
-        , {field: 'createTime', title: '创建时间', class: "hidden-xs", width: "6%"}
-        , {field: 'editTime', title: '修改时间', class: "hidden-xs", width: "6%"}
+        // , {field: 'schemeId', title: '方案标识', class: "hidden-xs", hide:true}
+        // , {field: 'schemeName', title: '方案名称', class: "hidden-xs", width: "13.7%"}
+        // , {field: 'createTime', title: '创建时间', class: "hidden-xs", width: "6%"}
+        , {field: 'linkingNo', title: '关联号', class: "hidden-xs", width: "18%"}
         , {field: 'validState', title: '生效状态', class: "hidden-xs", width: "6%"}
         , {field: 'occupyState', title: '占用状态', class: "hidden-xs", width: "6%"}
-        , {title: '操作', width: "9%", toolbar: "#equipmentLineBar"}
+        , {title: '操作', width: "10%", toolbar: "#equipmentLineBar"}
     ]];
 
     var postData = {};
@@ -39,13 +39,14 @@ layui.use(['table','form', 'jquery', 'laydate', 'layer', 'laypage', 'dialog', 'e
     postData.equipmentPreId = null;
     postData.equipmentCompanyId = null;
     postData.equipmentCompanyName = null;
-    postData.schemeId = null;
-    postData.schemeName = null;
+    // postData.schemeId = null;
+    // postData.schemeName = null;
     postData.validState = null;
-    postData.occupyState = null;
+    // postData.occupyState = null;
 
     table.render({
         elem: '#equipmentDataGrid'
+        ,id: 'equipmentDataGrid'
         ,url: '/wms/equipmentList'
         ,toolbar: '#equipmentHeadBar'
         ,defaultToolbar: ['filter']
@@ -55,6 +56,7 @@ layui.use(['table','form', 'jquery', 'laydate', 'layer', 'laypage', 'dialog', 'e
         ,cols: equipmentcols
         ,page: true
     });
+
 
     //新增装备提交
     form.on('submit(equipmentAddForm)', function (data) {
@@ -131,7 +133,12 @@ layui.use(['table','form', 'jquery', 'laydate', 'layer', 'laypage', 'dialog', 'e
                 //     $("#password").focus();
                 // }
 
-                layer.msg(result.msg);
+                if (result.flag) {
+                    layer.msg(result.msg);
+                    window.location.href ="/wms/toArticleList";
+                }else{
+                    layer.msg(result.msg);
+                }
             },
             error: function (error) {
                 layer.msg('系统错误' + error);
@@ -146,7 +153,23 @@ layui.use(['table','form', 'jquery', 'laydate', 'layer', 'laypage', 'dialog', 'e
     table.on('tool(equipmentDataGridFilter)', function(obj) { //注：tool 是工具条事件名，equipmentDataGridFilter 是 table 原始容器的属性 lay-filter="对应的值"
         let data = obj.data; //获得当前行数据
         let layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
-
+        var equimentName = $('#equimentName').val();
+        var equipmentRfid = $('#equimentRfid').val();
+        var equipmentGrade = $('#equipmentGrade').val();
+        var equipmentClass = $('#equipmentClass').val();
+        var validState = $('#validState').val();
+        // var equipmentRfid = $('#equimentRfid').val();
+        let postData1 = {};
+        postData1.equipmentRfid = equipmentRfid;
+        postData1.equipmentName = equimentName;
+        postData1.equipmentGrade = equipmentGrade;
+        postData1.equipmentClass = equipmentClass;
+        postData1.equipmentPreId = null;
+        postData1.equipmentCompanyId = null;
+        postData1.equipmentCompanyName = null;
+        // postData1.schemeId = null;
+        // postData1.schemeName = null;
+        postData1.validState = validState;
         switch(layEvent){
             case 'info':
                 // layer.msg('查看');
@@ -162,6 +185,19 @@ layui.use(['table','form', 'jquery', 'laydate', 'layer', 'laypage', 'dialog', 'e
                     equipments.push(data);
                     delEquipments(equipments);
                     layer.close(index);
+                    layer.msg('删除了');
+                    table.reload('equipmentDataGrid', {
+                        url: '/wms/equipmentList'
+                        // ,methods:"post"
+                        ,request: {
+                            pageName: 'page' //页码的参数名称，默认：page
+                            ,limitName: 'limit' //每页数据量的参数名，默认：limit
+                        }
+                        ,where: postData1
+                        ,page: {
+                            curr: 1
+                        }
+                    });
                 });
                 break;
             default:
@@ -174,23 +210,51 @@ layui.use(['table','form', 'jquery', 'laydate', 'layer', 'laypage', 'dialog', 'e
     table.on('toolbar(equipmentDataGridFilter)', function(obj) {
         let data = obj.data; //获得当前行数据
         let layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
-
+        var equimentName = $('#equimentName').val();
+        var equipmentRfid = $('#equimentRfid').val();
+        var equipmentGrade = $('#equipmentGrade').val();
+        var equipmentClass = $('#equipmentClass').val();
+        var validState = $('#validState').val();
+        // var equipmentRfid = $('#equimentRfid').val();
+        let postData1 = {};
+        postData1.equipmentRfid = equipmentRfid;
+        postData1.equipmentName = equimentName;
+        postData1.equipmentGrade = equipmentGrade;
+        postData1.equipmentClass = equipmentClass;
+        postData1.equipmentPreId = null;
+        postData1.equipmentCompanyId = null;
+        postData1.equipmentCompanyName = null;
+        // postData1.schemeId = null;
+        // postData1.schemeName = null;
+        postData1.validState = validState;
         switch(layEvent){
             case 'adds':
                 // layer.msg('查看');
                 let iframeObj = $(window.frameElement).attr('name');
                 parent.page("设备添加", "/wms/toArticleAdd", iframeObj, w = "700px", h = "620px");
                 break;
-            case 'edits':
+            case 'linking':
                 // layer.msg('修改');
                 dialog.confirm({
-                    message:'您确定要删除选中项',
+                    message:'您确定要关联选中项吗？',
                     success:function(){
                         let checkStatus = table.checkStatus('equipmentDataGrid').data;
                         // let equipments = [];
                         // equipments.push(data);
-                        // delEquipments(equipments);
-                        layer.msg('删除了');
+                        linkEquipments(checkStatus);
+                        table.reload('equipmentDataGrid', {
+                            url: '/wms/equipmentList'
+                            // ,methods:"post"
+                            ,request: {
+                                pageName: 'page' //页码的参数名称，默认：page
+                                ,limitName: 'limit' //每页数据量的参数名，默认：limit
+                            }
+                            ,where: postData1
+                            ,page: {
+                                curr: 1
+                            }
+                        });
+                        layer.msg('关联了');
                     },
                     cancel:function(){
                         layer.msg('取消了');
@@ -199,16 +263,87 @@ layui.use(['table','form', 'jquery', 'laydate', 'layer', 'laypage', 'dialog', 'e
                 break;
             case 'dels':
                 dialog.confirm({
-                    message:'您确定要删除选中项',
+                    message:'您确定要删除选中项吗？',
                     success:function(){
                         let checkStatus = table.checkStatus('equipmentDataGrid').data;
                         // let equipments = [];
                         // equipments.push(data);
                         delEquipments(checkStatus);
+                        table.reload('equipmentDataGrid', {
+                            url: '/wms/equipmentList'
+                            // ,methods:"post"
+                            ,request: {
+                                pageName: 'page' //页码的参数名称，默认：page
+                                ,limitName: 'limit' //每页数据量的参数名，默认：limit
+                            }
+                            ,where: postData1
+                            ,page: {
+                                curr: 1
+                            }
+                        });
                         layer.msg('删除了');
                     },
                     cancel:function(){
                         layer.msg('取消了');
+                    }
+                });
+                break;
+            case 'searchEquipment':
+                // var equimentName = $('#equimentName').val();
+                // var equipmentRfid = $('#equimentRfid').val();
+                // var equipmentGrade = $('#equipmentGrade').val();
+                // var equipmentClass = $('#equipmentClass').val();
+                // var validState = $('#validState').val();
+                // // var equipmentRfid = $('#equimentRfid').val();
+                // let postData1 = {};
+                // postData1.equipmentRfid = equipmentRfid;
+                // postData1.equipmentName = equimentName;
+                // postData1.equipmentGrade = equipmentGrade;
+                // postData1.equipmentClass = equipmentClass;
+                // postData1.equipmentPreId = null;
+                // postData1.equipmentCompanyId = null;
+                // postData1.equipmentCompanyName = null;
+                // // postData1.schemeId = null;
+                // // postData1.schemeName = null;
+                // postData1.validState = validState;
+                // postData1.occupyState = null;
+                table.reload('equipmentDataGrid', {
+                    url: '/wms/equipmentList'
+                    // ,methods:"post"
+                    ,request: {
+                        pageName: 'page' //页码的参数名称，默认：page
+                        ,limitName: 'limit' //每页数据量的参数名，默认：limit
+                    }
+                    ,where: postData1
+                    ,page: {
+                        curr: 1
+                    }
+                });
+                break;
+            case 'packagebox':
+                // dialog.confirm({
+                //     message:'您确定要删除选中项吗？',
+                //     success:function(){
+                //         let checkStatus = table.checkStatus('equipmentDataGrid').data;
+                //         // let equipments = [];
+                //         // equipments.push(data);
+                //         delEquipments(checkStatus);
+                //         layer.msg('删除了');
+                //     },
+                //     cancel:function(){
+                //         layer.msg('取消了');
+                //     }
+                // });
+                table.reload('equipmentDataGrid', {
+                    url: '/wms/equipmentList'
+                    // ,methods:"post"
+                    ,request: {
+                        pageName: 'page' //页码的参数名称，默认：page
+                        ,limitName: 'limit' //每页数据量的参数名，默认：limit
+                    }
+                    ,where: postData1
+                    ,page: {
+                        curr: 1
                     }
                 });
                 break;
@@ -223,18 +358,13 @@ layui.use(['table','form', 'jquery', 'laydate', 'layer', 'laypage', 'dialog', 'e
 
         let url = "/wms/delEquipments";
 
-        // let requestBody = {};
-        // requestBody.ids = objIds;
-
-
-
         $.ajax({
             url: url,
             type: 'POST',
             data: JSON.stringify(objs),
             dataType: "json",
             cache: false,
-            async: true,
+            async: false,
             processData: false,	//不处理发送的数据
             contentType: 'application/json',
             success: function (data) {
@@ -249,6 +379,28 @@ layui.use(['table','form', 'jquery', 'laydate', 'layer', 'laypage', 'dialog', 'e
                 //     }
                 // });
                 // $("#" + Obj).html(listHtml);
+            }
+        });
+
+    }
+
+    //关联设备
+    function linkEquipments(objs){
+
+        let url = "/wms/linkEquipments";
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: JSON.stringify(objs),
+            dataType: "json",
+            cache: false,
+            async: false,
+            processData: false,	//不处理发送的数据
+            contentType: 'application/json',
+            success: function (data) {
+                console.info(data);
+
             }
         });
 

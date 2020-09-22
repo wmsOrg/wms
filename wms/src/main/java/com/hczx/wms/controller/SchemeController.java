@@ -1,6 +1,7 @@
 package com.hczx.wms.controller;
 
 import com.hczx.wms.entity.common.WmsOperateResponseEntity;
+import com.hczx.wms.entity.planentities.PlanContentQueryEntity;
 import com.hczx.wms.entity.planentities.PlanQueryEntity;
 import com.hczx.wms.entity.schemeentities.SchemeEditEntity;
 import com.hczx.wms.entity.schemeentities.SchemeIncreaseEntity;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * @ClassName: SchemeController
@@ -150,6 +152,31 @@ public class SchemeController {
     }
 
     /**
+     * 方案作废
+     *
+     * @param schemeIds
+     * @return
+     */
+    @RequestMapping(value = "/delSchemes",method = RequestMethod.POST)
+    public WmsOperateResponseEntity delSchemes(@RequestBody List<String> schemeIds){
+
+        WmsOperateResponseEntity wmsOperateResponseEntity = new WmsOperateResponseEntity();
+
+        if (schemeIds == null || schemeIds.isEmpty()){
+
+            wmsOperateResponseEntity = authenticationService.packageOpeaterResponseBean("4", false, "方案作废失败：方案唯一标识不能为空！");
+            return wmsOperateResponseEntity;
+
+        }
+
+
+        //方案绑定设备
+        wmsOperateResponseEntity = schemeService.removeSchemes(schemeIds);
+        return wmsOperateResponseEntity;
+
+    }
+
+    /**
      * 方案查询
      *
      * @param schemeIncreaseEntity
@@ -216,6 +243,29 @@ public class SchemeController {
         schemeService.getImage(fileName,request,response);
 
     }
+
+    /**
+     * 方案详情查询
+     *
+     * @param schemeId
+     * @return
+     */
+    @RequestMapping(value = "/schemeContentList",method = RequestMethod.GET)
+    public WmsOperateResponseEntity schemeContentList(@RequestParam("schemeId") String schemeId){
+
+        WmsOperateResponseEntity wmsOperateResponseEntity = new WmsOperateResponseEntity();
+
+        if (StringUtils.isBlank(schemeId)){
+            wmsOperateResponseEntity = authenticationService.packageOpeaterResponseBean("4", false, "预案所绑定的设备查询失败：无法查询到具体方案唯一标识！");
+            return wmsOperateResponseEntity;
+        }
+
+        wmsOperateResponseEntity = schemeService.schemeContentList(schemeId);
+        return wmsOperateResponseEntity;
+
+    }
+
+
 
 
 }

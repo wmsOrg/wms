@@ -15,6 +15,8 @@ public class EquipmentZtreeNode {
 
     private String pId;
 
+    private String linkingNo;
+
     private boolean open;
 
     private boolean nocheck;
@@ -57,5 +59,13 @@ public class EquipmentZtreeNode {
 
     public void setOpen(boolean open) {
         this.open = open;
+    }
+
+    public String getLinkingNo() {
+        return linkingNo;
+    }
+
+    public void setLinkingNo(String linkingNo) {
+        this.linkingNo = linkingNo;
     }
 }

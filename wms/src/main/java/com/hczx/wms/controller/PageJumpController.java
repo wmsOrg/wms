@@ -1,11 +1,15 @@
 package com.hczx.wms.controller;
 
+import com.alibaba.fastjson.JSONObject;
+import com.hczx.wms.entity.alarmingentities.AlarmingInfoEntity;
 import com.hczx.wms.model.EquipmentModel;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping("/wms")
@@ -156,7 +160,7 @@ public class PageJumpController {
     }
 
     /**
-     * 跳转警情绑定设备界面
+     * 跳转预案详情界面
      *
      * @return
      */
@@ -233,8 +237,75 @@ public class PageJumpController {
      * @return
      */
     @RequestMapping("/toInventoryList")
-    public String toInventoryList() {
+    public String toInventoryList(@RequestParam("planId") String planId,
+                             @RequestParam("alarmingId") String alarmingId,
+                             @RequestParam("schemeId") String schemeId,
+                             Model model) {
+
+        model.addAttribute("planId",planId);
+        model.addAttribute("alarmingId",alarmingId);
+        model.addAttribute("schemeId",schemeId);
+
         return "inventorylist";
     }
+
+    /**
+     * 跳转方案详情界面
+     *
+     * @return
+     */
+    @RequestMapping("/toSchemeInfo")
+    public String toSchemeInfo(@RequestParam("schemeId") String schemeId,
+                               Model model) {
+
+        model.addAttribute("schemeId",schemeId);
+
+        return "schemeinfo";
+    }
+
+    /**
+     * 跳转方案详情界面
+     *
+     * @return
+     */
+    @RequestMapping("/toAlarmingAdd")
+    public String toAlarmingAdd() {
+
+        return "alarmingadd";
+    }
+
+    /**
+     * 跳转方案详情编辑界面
+     *
+     * @return
+     */
+    @RequestMapping("/toAlarmingEdit")
+    public String toAlarmingEdit(@RequestParam("id") String id,
+                                 @RequestParam("name") String name,
+                                 @RequestParam("level") String level,
+                                 @RequestParam("category") String category,
+                                 @RequestParam("createUserId") String createUserId,
+                                 @RequestParam("createTime") String createTime,
+                                 @RequestParam("createUserName") String createUserName,
+                                 @RequestParam("validState") String validState,
+                                 @RequestParam("describetion") String describetion,
+                                 Model model) {
+
+
+
+        model.addAttribute("id",id);
+        model.addAttribute("name",name);
+        model.addAttribute("level",level);
+        model.addAttribute("category",category);
+        model.addAttribute("createUserId",createUserId);
+        model.addAttribute("createTime",createTime);
+        model.addAttribute("createUserName",createUserName);
+        model.addAttribute("validState",validState);
+        model.addAttribute("describetion",describetion);
+
+        return "alarmingadd";
+    }
+
+
 
 }

@@ -9,6 +9,7 @@ import com.hczx.wms.entity.planentities.PlanContentQueryEntity;
 import com.hczx.wms.entity.planentities.PlanQueryEntity;
 import com.hczx.wms.entity.schemeequipmentrelaentities.EquipmentsInSchemeEntity;
 import com.hczx.wms.entity.schemeequipmentrelaentities.PlanIncreaseRequestEntity;
+import com.hczx.wms.model.UserModel;
 import com.hczx.wms.service.AlarmingOperateService;
 import com.hczx.wms.service.AuthenticationService;
 import org.apache.commons.lang3.StringUtils;
@@ -17,6 +18,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -75,6 +78,54 @@ public class AlarmingController {
         DataGirdResultEntity dataGirdResultEntity = alarmingOperateService.listAlarmInfo((page-1)*size, size, alarmingInfoEntity);
 
         return dataGirdResultEntity;
+
+    }
+
+    /**
+     * 登记警情
+     * @param alarmingInfoEntity
+     * @param response
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/alarmingIncrease",method = RequestMethod.POST)
+    public WmsOperateResponseEntity alarmingIncrease(@RequestBody AlarmingInfoEntity alarmingInfoEntity , HttpServletResponse response, HttpServletRequest request) {
+
+        WmsOperateResponseEntity wmsOperateResponseEntity = new WmsOperateResponseEntity();
+
+        if (alarmingInfoEntity == null){
+            wmsOperateResponseEntity = authenticationService.packageOpeaterResponseBean("4", false, "新增警情失败: 警情请求报文不能为空！");
+            return wmsOperateResponseEntity;
+        }
+
+        if (StringUtils.isBlank(alarmingInfoEntity.getName())){
+            wmsOperateResponseEntity = authenticationService.packageOpeaterResponseBean("4", false, "新增设备失败: 警情名称不能为空！");
+            return wmsOperateResponseEntity;
+        }
+
+        if (alarmingInfoEntity.getLevel() == null){
+            wmsOperateResponseEntity = authenticationService.packageOpeaterResponseBean("4", false, "新增设备失败: 警情级别不能为空！");
+            return wmsOperateResponseEntity;
+        }
+
+        if (StringUtils.isBlank(alarmingInfoEntity.getCategory())){
+            wmsOperateResponseEntity = authenticationService.packageOpeaterResponseBean("4", false, "新增设备失败: 警情类别不能为空！");
+            return wmsOperateResponseEntity;
+        }
+
+        if (StringUtils.isBlank(alarmingInfoEntity.getValidState()) || !alarmingInfoEntity.getValidState().equals("on")){
+            alarmingInfoEntity.setValidState("0");
+        }else{
+            alarmingInfoEntity.setValidState("1");
+        }
+
+        UserModel userModel = (UserModel)request.getSession().getAttribute("LOGIN_USER");
+        alarmingInfoEntity.setCreateUserId(userModel.getId());
+        alarmingInfoEntity.setCreateUserName(userModel.getName());
+
+        //登记设备操作
+        wmsOperateResponseEntity = alarmingOperateService.registAlarming(alarmingInfoEntity);
+        return wmsOperateResponseEntity;
 
     }
 
@@ -166,4 +217,34 @@ public class AlarmingController {
 
     }
 
+    /**
+     * 预案查询
+     *
+     * @param planQueryEntity
+     * @return
+     */
+    @RequestMapping(value = "/editAlarming",method = RequestMethod.POST)
+    public WmsOperateResponseEntity editAlarming(@RequestBody String a){
+
+        WmsOperateResponseEntity wmsOperateResponseEntity = new WmsOperateResponseEntity();
+
+//        if (StringUtils.isBlank(planQueryEntity.getSchemeId())){
+//            wmsOperateResponseEntity = authenticationService.packageOpeaterResponseBean("4", false, "预案所绑定的设备查询失败：无法查询到具体方案唯一标识！");
+//            return wmsOperateResponseEntity;
+//        }
+//
+//        if (StringUtils.isBlank(planQueryEntity.getAlarmingId())){
+//            wmsOperateResponseEntity = authenticationService.packageOpeaterResponseBean("4", false, "预案所绑定的设备查询失败：无法查询到具体警情唯一标识！");
+//            return wmsOperateResponseEntity;
+//        }
+//
+//        if (StringUtils.isBlank(planQueryEntity.getPlanId())){
+//            wmsOperateResponseEntity = authenticationService.packageOpeaterResponseBean("4", false, "预案所绑定的设备查询失败：无法查询到具体预案唯一标识！");
+//            return wmsOperateResponseEntity;
+//        }
+//
+//        wmsOperateResponseEntity = alarmingOperateService.planList(planQueryEntity);
+        return wmsOperateResponseEntity;
+
+    }
 }

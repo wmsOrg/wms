@@ -7,6 +7,7 @@ import com.hczx.wms.entity.planentities.PlanQueryEntity;
 import com.hczx.wms.entity.schemeentities.SchemeIncreaseEntity;
 import com.hczx.wms.model.SchemeModel;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -47,6 +48,24 @@ public interface SchemeDao extends BaseMapper<SchemeModel> {
     List<EquipmentLv1inPlanEntity> queryEquipmentLv1InPlan(PlanContentQueryEntity planQueryEntity) throws Exception;
 
     /**
+     * 查询方案中一级设备
+     *
+     * @param planQueryEntity
+     * @return
+     * @throws Exception
+     */
+    List<EquipmentLv1inPlanEntity> queryEquipmentLv1InScheme(@Param("schemeId") String planQueryEntity) throws Exception;
+
+    /**
+     * 查询方案中一级设备内部设备
+     *
+     * @param planQueryEntity
+     * @return
+     * @throws Exception
+     */
+    List<EquipmentLv1inPlanEntity> queryEquipmentLv1ContentsInScheme(@Param("schemeId") String planQueryEntity) throws Exception;
+
+    /**
      * 查询预案中一级设备详情
      *
      * @param planQueryEntity
@@ -54,4 +73,11 @@ public interface SchemeDao extends BaseMapper<SchemeModel> {
      * @throws Exception
      */
     List<EquipmentLv1inPlanEntity> queryEquipmentLv1ContentsInPlan(PlanContentQueryEntity planQueryEntity) throws Exception;
+
+    /**
+     * 作废方案
+     *
+     * @param schemeIds
+     */
+    boolean removeSchemeByIds(@Param("list") List<String> schemeIds) throws Exception;
 }

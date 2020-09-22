@@ -29,6 +29,9 @@ public class SchemeIncreaseEntity {
     /**灾情类别*/
     private String disaster;
 
+    /**灾情类别*/
+    private String disasterName;
+
     private String createUserId;
 
     private String createUserName;
@@ -146,5 +149,13 @@ public class SchemeIncreaseEntity {
 
     public void setMaxColumns(Integer maxColumns) {
         this.maxColumns = maxColumns;
+    }
+
+    public String getDisasterName() {
+        return disasterName;
+    }
+
+    public void setDisasterName(String disasterName) {
+        this.disasterName = disasterName;
     }
 }

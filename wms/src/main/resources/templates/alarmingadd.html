@@ -13,27 +13,27 @@
 	<form class="layui-form column-content-detail">
 					<div class="layui-tab">
 						<ul class="layui-tab-title">
-							<li class="layui-this">设备信息</li>
+							<li class="layui-this">警情信息</li>
 							<!--<li>SEO优化</li>-->
 						</ul>
 						<div class="layui-tab-content">
 							<div class="layui-tab-item layui-show">
+<!--								<div class="layui-form-item">-->
+<!--									<label class="layui-form-label">设备RFID：</label>-->
+<!--									<div class="layui-input-block">-->
+<!--										<input type="text" name="equipmentRfid" required lay-verify="required" placeholder="请输入设备RFID" autocomplete="off" class="layui-input">-->
+<!--									</div>-->
+<!--								</div>-->
 								<div class="layui-form-item">
-									<label class="layui-form-label">设备RFID：</label>
+									<label class="layui-form-label">警情名称：</label>
 									<div class="layui-input-block">
-										<input type="text" name="equipmentRfid" required lay-verify="required" placeholder="请输入设备RFID" autocomplete="off" class="layui-input">
+										<input type="text" name="name" required lay-verify="required" placeholder="请输入设备名称" autocomplete="off" class="layui-input">
 									</div>
 								</div>
 								<div class="layui-form-item">
-									<label class="layui-form-label">设备名称：</label>
+									<label class="layui-form-label">警情等级：</label>
 									<div class="layui-input-block">
-										<input type="text" name="equipmentName" required lay-verify="required" placeholder="请输入设备名称" autocomplete="off" class="layui-input">
-									</div>
-								</div>
-								<div class="layui-form-item">
-									<label class="layui-form-label">设备等级：</label>
-									<div class="layui-input-block">
-										<select name="equipmentGrade" lay-verify="required">
+										<select name="level" lay-verify="required" id = "level">
 											<option value="">请选择级别</option>
 											<option value="1">一级</option>
 											<option value="2">二级</option>
@@ -41,14 +41,19 @@
 									</div>
 								</div>
 								<div class="layui-form-item">
-									<label class="layui-form-label">分类栏目：</label>
+									<label class="layui-form-label">警情类别：</label>
 									<div class="layui-input-block">
-										<select name="equipmentClass" lay-verify="required" id = "classEquipmentSelect">
-												<option value="">请选择分类</option>
-												<option value="0">战术装备箱</option>
-												<option value="1">布控球</option>
-												<option value="2">手持终端设备</option>
+										<select name="category" lay-verify="required" id = "category">
+												<option value="0">地震</option>
+												<option value="1">火灾</option>
+												<option value="2">水灾</option>
 										</select>
+									</div>
+								</div>
+								<div class="layui-form-item">
+									<label class="layui-form-label">警情描述：</label>
+									<div class="layui-input-block">
+										<textarea id="discribetion" name="discribetion" type="text/plain" style="width:99.5%;height:250px"></textarea>
 									</div>
 								</div>
 <!--								<div class="layui-form-item">-->
@@ -72,27 +77,27 @@
 										<input type="checkbox" name="validState" lay-skin="switch" checked="checked">
 									</div>
 								</div>
-								<div class="layui-form-item">
-									<label class="layui-form-label">上级设备：</label>
-									<div class="layui-input-block">
-										<!--										<textarea class="layui-textarea layui-hide" name="content" lay-verify="content" id="LAY_demo_editor"></textarea>-->
-										<input type="text" name="equipmentPreId" placeholder="请输入上级设备Id" autocomplete="off" class="layui-input">
-									</div>
-								</div>
-								<div class="layui-form-item">
-									<label class="layui-form-label">公司ID：</label>
-									<div class="layui-input-block">
-<!--										<textarea class="layui-textarea layui-hide" name="content" lay-verify="content" id="LAY_demo_editor"></textarea>-->
-										<input type="text" name="equipmentCompanyId" required lay-verify="required" placeholder="请输入公司Id" autocomplete="off" class="layui-input">
-									</div>
-								</div>
+<!--								<div class="layui-form-item">-->
+<!--									<label class="layui-form-label">上级设备：</label>-->
+<!--									<div class="layui-input-block">-->
+<!--										&lt;!&ndash;										<textarea class="layui-textarea layui-hide" name="content" lay-verify="content" id="LAY_demo_editor"></textarea>&ndash;&gt;-->
+<!--										<input type="text" name="equipmentPreId" placeholder="请输入上级设备Id" autocomplete="off" class="layui-input">-->
+<!--									</div>-->
+<!--								</div>-->
+<!--								<div class="layui-form-item">-->
+<!--									<label class="layui-form-label">公司ID：</label>-->
+<!--									<div class="layui-input-block">-->
+<!--&lt;!&ndash;										<textarea class="layui-textarea layui-hide" name="content" lay-verify="content" id="LAY_demo_editor"></textarea>&ndash;&gt;-->
+<!--										<input type="text" name="equipmentCompanyId" required lay-verify="required" placeholder="请输入公司Id" autocomplete="off" class="layui-input">-->
+<!--									</div>-->
+<!--								</div>-->
 
-								<div class="layui-form-item">
-									<label class="layui-form-label">公司名称：</label>
-									<div class="layui-input-block">
-										<input type="text" name="equipmentCompanyName" required lay-verify="required" placeholder="请输入公司名称来源" autocomplete="off" class="layui-input">
-									</div>
-								</div>
+<!--								<div class="layui-form-item">-->
+<!--									<label class="layui-form-label">公司名称：</label>-->
+<!--									<div class="layui-input-block">-->
+<!--										<input type="text" name="equipmentCompanyName" required lay-verify="required" placeholder="请输入公司名称来源" autocomplete="off" class="layui-input">-->
+<!--									</div>-->
+<!--								</div>-->
 <!--								<div class="layui-form-item">-->
 <!--									<label class="layui-form-label">文章排序：</label>-->
 <!--									<div class="layui-input-block">-->
@@ -124,14 +129,14 @@
 					</div>
 					<div class="layui-form-item" style="padding-left: 10px;">
 						<div class="layui-input-block">
-							<button class="layui-btn layui-btn-normal" lay-submit lay-filter="equipmentAddForm">立即提交</button>
+							<button class="layui-btn layui-btn-normal" lay-submit lay-filter="alarmingAddForm">立即提交</button>
 							<button type="reset" class="layui-btn layui-btn-primary">重置</button>
 						</div>
 					</div>
 				</form>
 	<script src="../static/layui/layui.js" type="text/javascript" charset="utf-8"></script>
 	<script src="../static/js/module/common.js" type="text/javascript" charset="utf-8"></script>
-	<script src="../static/js/equipment/equipment-operate.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../static/js/alarming/alarming-operate.js" type="text/javascript" charset="utf-8"></script>
 	<script>
 		// layui.use(['form', 'jquery', 'laydate', 'layer', 'laypage', 'dialog', 'common', 'tool', 'element', 'upload', 'layedit'], function() {
 		// 		var form = layui.form(),

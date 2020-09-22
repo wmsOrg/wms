@@ -16,11 +16,24 @@
         imageUrl imageUrl,
         createTime createTime
         from scheme
-        <!--        <where>-->
-        <!--            <if test="uname!=null and uname!='' ">-->
-        <!--                and uname like #{uname}-->
-        <!--            </if>-->
-        <!--        </where>-->
+        <where>
+        1=1
+            <if test="schemeName!=null and schemeName!='' ">
+                and uname like concat('%',#{schemeName},'%')
+            </if>
+            <if test="validState!=null and validState!='' ">
+                and validState = #{validState}
+            </if>
+            <if test="validState==null ">
+                and validState = '1'
+            </if>
+            <if test="level!=null and level!='' ">
+                and level = #{level}
+            </if>
+            <if test="disaster!=null and disaster!='' ">
+                and disaster = #{disaster}
+            </if>
+        </where>
         <if test="page!=null and size!=null">
             limit #{page},#{size}
         </if>
@@ -31,7 +44,24 @@
         select
         count(*)
         from scheme
-        where 1=1
+        <where>
+            1=1
+            <if test="schemeName!=null and schemeName!='' ">
+                and uname like concat('%',#{schemeName},'%')
+            </if>
+            <if test="validState!=null and validState!='' ">
+                and validState = #{validState}
+            </if>
+            <if test="validState==null ">
+                and validState = '1'
+            </if>
+            <if test="level!=null and level!='' ">
+                and level = #{level}
+            </if>
+            <if test="disaster!=null and disaster!='' ">
+                and disaster = #{disaster}
+            </if>
+        </where>
         <!--        <where>-->
         <!--            <if test="uname!=null and uname!='' ">-->
         <!--                and uname like #{uname}-->
@@ -113,5 +143,81 @@
             WHERE
                 scheme.id = #{schemeId}
     </select>
+
+    <!--查询方案中一级设备-->
+    <select id="queryEquipmentLv1InScheme" parameterType="com.hczx.wms.entity.planentities.PlanQueryEntity" resultType="com.hczx.wms.entity.enquipmententities.EquipmentLv1inPlanEntity">
+
+            SELECT
+                scheme.maxRows totalRowNums,
+                scheme.maxColumns totalColumnNums,
+                ser.rowNum rowNum,
+		        ser.columnNum columnNum,
+                equipment.id equipmentIdLv1,
+                equipment.equipmentRfid equipmentRfidLv1,
+                equipment.equipmentName equipmentNameLv1,
+                equipment.inboundState equipmentInLv1
+                <!--CASE
+                    WHEN aser.planId IS NULL OR aser.planId = '' THEN FALSE
+                    ELSE TRUE
+                    END equipmentSelectedLv1-->
+            FROM
+                scheme
+                LEFT JOIN scheme_equipment_rela ser ON ( scheme.id = ser.schemeId )
+                LEFT JOIN equipment ON ( ser.equipmentId = equipment.id )
+                <!--LEFT JOIN alarm_scheme_equipment_rela aser ON (ser.id = aser.seRelaId AND scheme.id = aser.schemeId AND aser.alarmingId = #{alarmingId} AND aser.planId = #{planId})-->
+            WHERE
+                scheme.id = #{schemeId}
+    </select>
+
+    <!--查询方案中一级设备中的内部设备-->
+    <select id="queryEquipmentLv1ContentsInScheme" parameterType="com.hczx.wms.entity.planentities.PlanQueryEntity" resultType="com.hczx.wms.entity.enquipmententities.EquipmentLv1inPlanEntity">
+        SELECT
+            level1.totalRowNums totalRowNums,
+            level1.totalColumnNums totalColumnNums,
+            level1.rowNum rowNum,
+		    level1.columnNum columnNum,
+            level1.equipmentIdLv1 equipmentIdLv1,
+            level1.equipmentRfidLv1 equipmentRfidLv1,
+            level1.equipmentNameLv1 equipmentNameLv1,
+            level1.equipmentInLv1 equipmentInLv1,
+            <!--level1.equipmentSelectedLv1 equipmentSelectedLv1,-->
+            level2.id equipmentIdLv2,
+            level2.equipmentRfid equipmentRfidLv2,
+            level2.equipmentName equipmentNameLv2,
+            level2.inboundState equipmentInLv2
+        FROM
+            (
+            SELECT
+                scheme.maxRows totalRowNums,
+                scheme.maxColumns totalColumnNums,
+                ser.rowNum rowNum,
+		        ser.columnNum columnNum,
+                equipment.id equipmentIdLv1,
+                equipment.equipmentRfid equipmentRfidLv1,
+                equipment.equipmentName equipmentNameLv1,
+                equipment.inboundState equipmentInLv1
+                <!--CASE
+                    WHEN aser.planId IS NULL OR aser.planId = '' THEN FALSE
+                    ELSE TRUE
+                    END equipmentSelectedLv1-->
+            FROM
+                scheme
+                LEFT JOIN scheme_equipment_rela ser ON ( scheme.id = ser.schemeId )
+                LEFT JOIN equipment ON ( ser.equipmentId = equipment.id )
+                <!--LEFT JOIN alarm_scheme_equipment_rela aser ON (ser.id = aser.seRelaId AND scheme.id = aser.schemeId AND aser.alarmingId = #{alarmingId} AND aser.planId =#{planId})-->
+            WHERE
+                scheme.id = #{schemeId}) level1
+            LEFT JOIN equipment level2 ON (level2.equipmentPreId = level1.equipmentIdLv1 AND level2.validState = '1')
+    </select>
+
+    <update id="removeSchemeByIds" parameterType="java.util.ArrayList">
+        UPDATE
+        scheme
+        SET validState = '0'
+        WHERE id IN
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
 
 </mapper>

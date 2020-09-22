@@ -10,6 +10,7 @@ import com.hczx.wms.entity.enquipmententities.EquipmentZtreeNode;
 import com.hczx.wms.service.AuthenticationService;
 import com.hczx.wms.service.EquipmentOperateService;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,7 +45,7 @@ public class EquipmentController {
      * @return
      */
     @RequestMapping("/equipmentIncrease")
-    public WmsOperateResponseEntity EquipmentIncrease(@RequestBody EquipmentInfoEntity equipmentInfoEntity){
+    public WmsOperateResponseEntity equipmentIncrease(@RequestBody EquipmentInfoEntity equipmentInfoEntity){
 
         WmsOperateResponseEntity wmsOperateResponseEntity = new WmsOperateResponseEntity();
 
@@ -172,10 +173,7 @@ public class EquipmentController {
                                               @RequestParam("equipmentPreId") String equipmentPreId,
                                               @RequestParam("equipmentCompanyId") String equipmentCompanyId,
                                               @RequestParam("equipmentCompanyName") String equipmentCompanyName,
-                                              @RequestParam("schemeId") String schemeId,
-                                              @RequestParam("schemeName") String schemeName,
-                                              @RequestParam("validState") String validState,
-                                              @RequestParam("occupyState") String occupyState) {
+                                              @RequestParam("validState") String validState) {
 
         EquipmentInfoEntity equipmentInfoEntity = new EquipmentInfoEntity();
         equipmentInfoEntity.setEquipmentRfid(equipmentRfid);
@@ -185,10 +183,10 @@ public class EquipmentController {
         equipmentInfoEntity.setEquipmentPreId(equipmentPreId);
         equipmentInfoEntity.setEquipmentCompanyId(equipmentCompanyId);
         equipmentInfoEntity.setEquipmentCompanyName(equipmentCompanyName);
-        equipmentInfoEntity.setSchemeId(schemeId);
-        equipmentInfoEntity.setSchemeName(schemeName);
+//        equipmentInfoEntity.setSchemeId(schemeId);
+//        equipmentInfoEntity.setSchemeName(schemeName);
         equipmentInfoEntity.setValidState(validState);
-        equipmentInfoEntity.setOccupyState(occupyState);
+//        equipmentInfoEntity.setOccupyState(occupyState);
 
         DataGirdResultEntity dataGirdResultEntity = equipmentOperateService.listEquipment((page-1)*size, size, equipmentInfoEntity);
 
@@ -240,6 +238,60 @@ public class EquipmentController {
             return wmsOperateResponseEntity;
 
         }
+
+
+    }
+
+    /**
+     * 关联设备信息
+     *
+     * @param
+     * @return
+     */
+    @RequestMapping("/linkEquipments")
+    public WmsOperateResponseEntity linkEquipments(@RequestBody List<EquipmentInfoEntity> equipmentInfoEntities) {
+        WmsOperateResponseEntity wmsOperateResponseEntity = new WmsOperateResponseEntity();
+
+        if (equipmentInfoEntities != null && !equipmentInfoEntities.isEmpty()){
+
+            //调用关联接口
+            wmsOperateResponseEntity = equipmentOperateService.linkEquipment(equipmentInfoEntities);
+            return wmsOperateResponseEntity;
+
+        }else {
+
+            wmsOperateResponseEntity = authenticationService.packageOpeaterResponseBean("4", false, "关联设备失败: 设备关联请求不能为空！");
+            return wmsOperateResponseEntity;
+
+        }
+
+
+    }
+
+    /**
+     * 根据关联号查询设备信息
+     *
+     * @param
+     * @return
+     */
+    @RequestMapping("/searchByLinkingNo")
+    public WmsOperateResponseEntity searchByLinkingNo(@RequestParam("linkingNo") String linkingNo, @Param("equipmentId") String equipmentId) {
+        WmsOperateResponseEntity wmsOperateResponseEntity = new WmsOperateResponseEntity();
+
+        if (StringUtils.isBlank(linkingNo)){
+            wmsOperateResponseEntity = authenticationService.packageOpeaterResponseBean("4", false, "查询设备失败: 设备关联号不能为空！");
+            return wmsOperateResponseEntity;
+        }
+
+        if (StringUtils.isBlank(equipmentId)){
+            wmsOperateResponseEntity = authenticationService.packageOpeaterResponseBean("4", false, "查询设备失败: 当前设备唯一标识不能为空！");
+            return wmsOperateResponseEntity;
+        }
+
+
+        //调用关联接口
+        wmsOperateResponseEntity = equipmentOperateService.searchByLinkingNo(linkingNo,equipmentId);
+        return wmsOperateResponseEntity;
 
 
     }

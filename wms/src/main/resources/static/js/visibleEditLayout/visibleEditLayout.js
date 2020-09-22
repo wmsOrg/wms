@@ -171,13 +171,60 @@ var VisibleEditLayout = new function () {
                     yes: function (index, layero) {
                         var tem = $(layero).find("iframe")[0].contentWindow.bindCallback();
                         // PicCallBack(tem);
-                        layer.close(index);
+                        if (tem.linkingNo != null && tem.linkingNo != ''){
+                            layer.confirm('该设备有关联设备，添加该设备需要将其关联设备一起添加，确定添加吗?', {icon: 3, title:'提示'}, function(index) {
 
-                        $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='rowCounts']").val(tem.rowCounts);
-                        $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='columeCounts']").val(tem.columnCounts);
-                        $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='companyId']").val(tem.pId);
-                        $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='equipmentId']").val(tem.id);
-                        $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='equipmentName']").val(tem.name);
+                                layer.close(index);
+                                $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='rowCounts']").val(tem.rowCounts);
+                                $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='columeCounts']").val(tem.columnCounts);
+                                $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='companyId']").val(tem.pId);
+                                $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='equipmentId']").val(tem.id);
+                                $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='equipmentName']").val(tem.name);
+
+                                $.ajax({
+                                    url: '/wms/searchByLinkingNo?linkingNo='+tem.linkingNo,
+                                    type: 'get',
+                                    // data: JSON.stringify(articleFrom),
+                                    dataType: "JSON",
+                                    async: true,
+                                    processData: false,	//不处理发送的数据
+                                    contentType: 'application/json',
+                                    success: function (result) {
+
+                                        if (result.flag) {
+                                            if (result.data != null && result.data.length != 0) {
+                                                var resultLength = result.data.length;
+                                                var htmlContent = "";
+                                                for (var i = 0; i< resultLength; i++) {
+                                                    htmlContent += "<div class=\"span1 column ui-sortable\" style=\"background: gray;\"><input type=\"text\" style=\"display: none;\" name=\"rowCounts\" value=\"" + tem.rowCounts + "\"><input type=\"text\" style=\"display: none;\" name=\"columnCounts\" value=\""+(parseInt(tem.columnCounts)+parseInt(i)+1)+"\"><input type=\"text\" style=\"display: none;\" name=\"companyId\" value=\""+result.data[i].companyId+"\"><input type=\"text\" style=\"display: none;\" name=\"equipmentId\" value=\""+result.data[i].id+"\"><input type=\"text\" style=\"display: none;\" name=\"equipmentName\" value=\""+result.data[i].equipmentName+"\"><a href=\"javascript:void(0);\" onclick=\"VisibleEditLayout.editAIEvent(this);\" style=\"position: absolute;top: 2px; right:2px;\" class=\"label label-important\"><i class=\"icon-edit icon-white\"></i>编辑</a></div>";
+                                                }
+                                                $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).after(htmlContent);
+                                            }else{
+                                                layer.msg('查询数据为空：' + result.msg);
+                                            }
+
+
+                                        }else{
+                                            layer.msg('查询失败' + result.msg);
+                                        }
+
+                                    },
+                                    error: function (error) {
+                                        layer.msg('系统错误' + error);
+                                    }
+                                });
+                            });
+                        }else{
+                            layer.close(index);
+                            // var a = $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='rowCounts']").val();
+                            $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='rowCounts']").val(tem.rowCounts);
+                            $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='columeCounts']").val(tem.columnCounts);
+                            $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='companyId']").val(tem.pId);
+                            $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='equipmentId']").val(tem.id);
+                            $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='equipmentName']").val(tem.name);
+                            $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).css("background", "gray");
+                        }
+                        layer.close(index);
                     }, cancel: function () {
                         return true;
                     }
@@ -195,16 +242,65 @@ var VisibleEditLayout = new function () {
                     btnclass: ['btn btn-primary', 'btn btn-danger'],
                     yes: function (index, layero) {
                         var tem = $(layero).find("iframe")[0].contentWindow.bindCallback();
+
                         // PicCallBack(tem);
+                        if (tem.linkingNo != null && tem.linkingNo != ''){
+                            layer.confirm('该设备有关联设备，添加该设备需要将其关联设备一起添加，确定添加吗?', {icon: 3, title:'提示'}, function(index){
+                                layer.close(index);
+                                // var a = $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='rowCounts']").val();
+                                $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='rowCounts']").val(tem.rowCounts);
+                                $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='columeCounts']").val(tem.columnCounts);
+                                $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='companyId']").val(tem.pId);
+                                $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='equipmentId']").val(tem.id);
+                                $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='equipmentName']").val(tem.name);
+                                $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).css("background", "gray");
+
+                                $.ajax({
+                                    url: '/wms/searchByLinkingNo?linkingNo='+tem.linkingNo+"&equipmentId="+tem.id,
+                                    type: 'get',
+                                    // data: JSON.stringify(articleFrom),
+                                    dataType: "JSON",
+                                    async: true,
+                                    processData: false,	//不处理发送的数据
+                                    contentType: 'application/json',
+                                    success: function (result) {
+
+                                        if (result.flag) {
+                                            if (result.data != null && result.data.length != 0) {
+                                                var resultLength = result.data.length;
+                                                var htmlContent = "";
+                                                for (var i = 0; i< resultLength; i++) {
+                                                    htmlContent += "<div class=\"span1 column ui-sortable\" style=\"background: gray;\"><input type=\"text\" style=\"display: none;\" name=\"rowCounts\" value=\"" + tem.rowCounts + "\"><input type=\"text\" style=\"display: none;\" name=\"columnCounts\" value=\""+(parseInt(tem.columnCounts)+parseInt(i)+1)+"\"><input type=\"text\" style=\"display: none;\" name=\"companyId\" value=\""+result.data[i].equipmentCompanyId+"\"><input type=\"text\" style=\"display: none;\" name=\"equipmentId\" value=\""+result.data[i].id+"\"><input type=\"text\" style=\"display: none;\" name=\"equipmentName\" value=\""+result.data[i].equipmentName+"\"><a href=\"javascript:void(0);\" onclick=\"VisibleEditLayout.editAIEvent(this);\" style=\"position: absolute;top: 2px; right:2px;\" class=\"label label-important\"><i class=\"icon-edit icon-white\"></i>编辑</a></div>";
+                                                }
+                                                $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).after(htmlContent);
+                                            }else{
+                                                layer.msg('查询数据为空：' + result.msg);
+                                            }
+
+
+                                        }else{
+                                            layer.msg('查询失败' + result.msg);
+                                        }
+
+                                    },
+                                    error: function (error) {
+                                        layer.msg('系统错误' + error);
+                                    }
+                                });
+                            });
+                        }else {
+
+                            // var a = $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='rowCounts']").val();
+                            $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='rowCounts']").val(tem.rowCounts);
+                            $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='columeCounts']").val(tem.columnCounts);
+                            $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='companyId']").val(tem.pId);
+                            $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='equipmentId']").val(tem.id);
+                            $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='equipmentName']").val(tem.name);
+                            $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).css("background", "gray");
+                        }
                         layer.close(index);
-                        // var a = $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='rowCounts']").val();
-                        $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='rowCounts']").val(tem.rowCounts);
-                        $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='columeCounts']").val(tem.columnCounts);
-                        $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='companyId']").val(tem.pId);
-                        $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='equipmentId']").val(tem.id);
-                        $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='equipmentName']").val(tem.name);
-                        $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).css("background", "gray");
                     }, cancel: function () {
+                        layer.close(index);
                         return true;
                     }
                 });

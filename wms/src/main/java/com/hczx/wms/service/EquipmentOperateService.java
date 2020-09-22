@@ -64,4 +64,29 @@ public interface EquipmentOperateService {
      * @return
      */
     WmsOperateResponseEntity listEquipmentsLv2(String equipmentParentId);
+
+    /**
+     * 根据RFID更新设备进出库状态
+     *
+     * @param inboundState
+     * @param equipmenmtRfids
+     * @return
+     */
+    void updateEquipmentInboundState(String inboundState, List<String> equipmenmtRfids);
+
+    /**
+     * 关联设备
+     *
+     * @param equipmentInfoEntities
+     * @return
+     */
+    WmsOperateResponseEntity linkEquipment(List<EquipmentInfoEntity> equipmentInfoEntities);
+
+    /**
+     * 根据设备关联号查询设备
+     * @param linkingNo
+     * @param equipmentId
+     * @return
+     */
+    WmsOperateResponseEntity searchByLinkingNo(String linkingNo,String equipmentId);
 }

@@ -1,5 +1,7 @@
 package com.hczx.wms.entity.enquipmententities;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+
 /**
  * @ClassName: EquipmentIncreaseQueryEntity
  * @Description: 设备新增请求实体
@@ -40,11 +42,14 @@ public class EquipmentInfoEntity {
     /**设备所属公司名称*/
     private String equipmentCompanyName;
 
-    /**方案id*/
-    private String schemeId;
+//    /**方案id*/
+//    private String schemeId;
+//
+//    /**方案名*/
+//    private String schemeName;
 
-    /**方案名*/
-    private String schemeName;
+    /**关联号*/
+    private String linkingNo;
 
     /**生效状态  0：失效   1：生效*/
     private String validState;
@@ -111,20 +116,12 @@ public class EquipmentInfoEntity {
         this.equipmentCompanyName = equipmentCompanyName;
     }
 
-    public String getSchemeId() {
-        return schemeId;
+    public String getLinkingNo() {
+        return linkingNo;
     }
 
-    public void setSchemeId(String schemeId) {
-        this.schemeId = schemeId;
-    }
-
-    public String getSchemeName() {
-        return schemeName;
-    }
-
-    public void setSchemeName(String schemeName) {
-        this.schemeName = schemeName;
+    public void setLinkingNo(String linkingNo) {
+        this.linkingNo = linkingNo;
     }
 
     public String getValidState() {

@@ -119,6 +119,31 @@ public class EquipmentServiceImpl extends ServiceImpl<EquipmentDao, EquipmentMod
     }
 
     /**
+     * 根据Rfid集合批量更新入库状态
+     *
+     * @param inboundState
+     * @param equipmenmtRfids
+     */
+    @Transactional
+    @Override
+    public boolean updateInboundStateBatchByRfids(String inboundState, List<String> equipmenmtRfids) {
+
+
+        boolean flag = true;
+        //批量更新入库状态
+        try{
+            flag = equipmentDao.updateInboundStateBatchByRfids(inboundState, equipmenmtRfids);
+        }catch (Exception e){
+            logger.error("根据Rfid集合批量更新入库状态：",e);
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return false;
+        }
+
+
+        return flag;
+    }
+
+    /**
      * 根据id集合批量删除设备
      *
      * @param ids
@@ -128,9 +153,33 @@ public class EquipmentServiceImpl extends ServiceImpl<EquipmentDao, EquipmentMod
     @Transactional
     public boolean removeEquipmentByIds(List<String> ids) {
         boolean flag = true;
-        //新增用户
+        //更改设备状态
         try{
             flag = equipmentDao.nullifyByIds(ids);
+        }catch (Exception e){
+            logger.error("删除设备异常：",e);
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return false;
+        }
+
+
+        return flag;
+    }
+
+    /**
+     * 根据id集合关联设备
+     *
+     * @param ids
+     * @param linkNo
+     * @return
+     */
+    @Override
+    @Transactional
+    public boolean linkEquipmentByIds(List<String> ids, String linkNo) {
+        boolean flag = true;
+        //更新设备关联号
+        try{
+            flag = equipmentDao.linkEquipmentByIds(ids, linkNo);
         }catch (Exception e){
             logger.error("删除设备异常：",e);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();

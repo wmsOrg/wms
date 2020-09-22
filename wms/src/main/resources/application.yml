@@ -13,3 +13,5 @@ spring:
     #后缀名
     suffix: .html
     content-type: text/html
+server:
+  port: 8081

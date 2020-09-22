@@ -38,4 +38,20 @@ public interface EquipmentService extends IService<EquipmentModel> {
      * @return
      */
     boolean updateEditEquipment(EquipmentInfoEntity equipmentInfoEntity);
+
+    /**
+     * 根据Rfid集合批量更新入库状态
+     *
+     * @param inboundState
+     * @param equipmenmtRfids
+     */
+    boolean updateInboundStateBatchByRfids(String inboundState, List<String> equipmenmtRfids);
+
+    /**
+     * 根据id集合关联设备
+     * @param ids
+     * @param linkNo
+     * @return
+     */
+    boolean linkEquipmentByIds(List<String> ids, String linkNo);
 }

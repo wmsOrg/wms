@@ -344,6 +344,100 @@ function searchEquipment(t) {
             openBar();
     }
 }
+function searchEquipmentLV2InScheme(t) {
+
+
+
+    // t.stopPropagation();
+    stopFunc($(this));
+
+    $.ajax({
+        url: '/wms/equipmentLv2List?equipmentParentId='+t,
+        type: 'post',
+        // data: JSON.stringify(articleFrom),
+        dataType: "JSON",
+        async: true,
+        processData: false,	//不处理发送的数据
+        contentType: 'application/json',
+        success: function (result) {
+            if (result.flag) {
+                var datas= result.data;
+                if (datas != null) {
+                    var inHtmlContent = "";
+                    if (datas.inEquipmentModelLv2List != null && datas.inEquipmentModelLv2List.length!=0) {
+
+                        var inEquipmentModelLv2ListSize = datas.inEquipmentModelLv2List.length;
+                        for (var i = 0; i < inEquipmentModelLv2ListSize; i++){
+                            var equipmentId = datas.inEquipmentModelLv2List[i].id
+                            if (i == 0){
+                                inHtmlContent += "<ul style=\"height: auto;\">\n";
+                            }
+                            inHtmlContent += "<li class=\"clearfix\" data-url=\""+equipmentId+"\">\n" +
+                                // "            <input type=\"checkbox\" class=\"checkbox_c \" name=\"checkbox_c_Name\" data-url=\"\" checked=\"checked\">\n" +
+                                // "            <span class=\"check\"></span>\n" +
+                                "            <div style='width: 18px;height: 18px;background-color: gray;'></div>\n" +
+                                "            <div class=\"img_con\">\n" +
+                                "              <img src=\"../static/images/slideinventory/pd/pd1.jpg\" alt=\"\">\n" +
+                                "            </div>\n" +
+                                "            <div class=\"product_name\">\n" +
+                                "              <span title=\""+equipmentId+"\">"+datas.inEquipmentModelLv2List[i].equipmentName+"</span>\n" +
+                                // "              <a href=\"javascript:void(0)\" class=\"del_pro_btn\" onClick=\"\">删除</a>\n" +
+                                "            </div>\n" +
+                                "          </li>";
+                            if (i == inEquipmentModelLv2ListSize-1){
+                                inHtmlContent += "</ul>";
+                            }
+                        }
+                    }
+                    // $("#resultData").html(inHtmlContent);
+                    var outHtmlContent = "";
+                    if (datas.outEquipmentModelLv2List != null && datas.outEquipmentModelLv2List.length!= null) {
+
+                        var outEquipmentModelLv2ListSize = datas.outEquipmentModelLv2List.length;
+                        for (var i = 0; i < outEquipmentModelLv2ListSize; i++){
+                            if (i == 0){
+                                outHtmlContent += "<ul style=\"height: auto;\">\n";
+                            }
+                            outHtmlContent += "<li class=\"clearfix\" data-url=\""+equipmentId+"\">\n" +
+                                // "            <input type=\"checkbox\" class=\"checkbox_c \" name=\"checkbox_c_Name\" data-url=\"\" checked=\"checked\">\n" +
+                                // "            <span class=\"check\"></span>\n" +
+                                "            <div style='width: 18px;height: 18px;background-color: gray;'></div>\n" +
+                                "            <div class=\"img_con\">\n" +
+                                "              <img src=\"../static/images/slideinventory/pd/pd1.jpg\" alt=\"\">\n" +
+                                "            </div>\n" +
+                                "            <div class=\"product_name\">\n" +
+                                "              <span title=\""+equipmentId+"\">"+datas.inEquipmentModelLv2List[i].equipmentName+"</span>\n" +
+                                // "              <a href=\"javascript:void(0)\" class=\"del_pro_btn\" onClick=\"\">删除</a>\n" +
+                                "            </div>\n" +
+                                "          </li>";
+                            if (i == outEquipmentModelLv2ListSize-1){
+                                outHtmlContent += "</ul>";
+                            }
+                        }
+                    }
+                    var totalHtml = inHtmlContent + outHtmlContent;
+                    $("#resultData").html(totalHtml);
+                }
+            }
+
+            layer.msg(result.msg);
+        },
+        error: function (error) {
+            layer.msg('系统错误' + error);
+        }
+    });
+    // var e = $(this).attr("data-id")
+    //     , i = $("." + e);
+    if (tempRfid == t) {
+        $(this).hasClass("current") ? $(this).removeClass("current") : $(this).addClass("current").siblings("a").removeClass("current"),
+            $(".global_toolbar").hasClass("open") ? closeBar() : openBar();
+    }else{
+        tempRfid = t;
+        // $(this).hasClass("current") ? $(this).removeClass("current") : $(this).addClass("current").siblings("a").removeClass("current"),
+        closeBar() ;
+        openBar();
+    }
+}
 var gpXlItemId = ""
     , winH = $(window).height()
     , compared_h = 0;

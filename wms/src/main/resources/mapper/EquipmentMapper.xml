@@ -16,8 +16,9 @@
         equipmentCompanyName equipmentCompanyName,
         createTime createTime,
         editTime editTime,
-        schemeId schemeId,
-        schemeName schemeName,
+        linkingNo linkingNo,
+        <!--schemeId schemeId,
+        schemeName schemeName,-->
         validState validState,
         occupyState occupyState
         from equipment
@@ -28,6 +29,33 @@
             </if>
             <if test="equipmentInfoEntity.equipmentName !=null and equipmentInfoEntity.equipmentName!='' ">
                 and equipmentName = #{equipmentInfoEntity.equipmentName}
+            </if>
+            <if test="equipmentInfoEntity.equipmentGrade !=null and equipmentInfoEntity.equipmentGrade!='' ">
+                and equipmentGrade = #{equipmentInfoEntity.equipmentGrade}
+            </if>
+            <if test="equipmentInfoEntity.equipmentClass !=null and equipmentInfoEntity.equipmentClass!='' ">
+                and equipmentClass = #{equipmentInfoEntity.equipmentClass}
+            </if>
+            <if test="equipmentInfoEntity.equipmentPreId !=null and equipmentInfoEntity.equipmentPreId!='' ">
+                and equipmentPreId = #{equipmentInfoEntity.equipmentPreId}
+            </if>
+            <if test="equipmentInfoEntity.equipmentCompanyId !=null and equipmentInfoEntity.equipmentCompanyId!='' ">
+                and equipmentCompanyId = #{equipmentInfoEntity.equipmentCompanyId}
+            </if>
+            <if test="equipmentInfoEntity.equipmentCompanyName !=null and equipmentInfoEntity.equipmentCompanyName!='' ">
+                and equipmentCompanyName like concat('%',#{equipmentInfoEntity.equipmentCompanyName},'%')
+            </if>
+            <if test="equipmentInfoEntity.validState !=null and equipmentInfoEntity.validState!='' ">
+                and validState = #{equipmentInfoEntity.validState}
+            </if>
+            <if test="equipmentInfoEntity.validState !=null and equipmentInfoEntity.validState!='' ">
+                and validState = #{equipmentInfoEntity.validState}
+            </if>
+            <if test="equipmentInfoEntity.validState ==null">
+                and validState = '1'
+            </if>
+            <if test="equipmentInfoEntity.validState !=null and equipmentInfoEntity.validState!='' ">
+                and validState = #{equipmentInfoEntity.validState}
             </if>
         </where>
         <if test="page!=null and size!=null">
@@ -48,6 +76,33 @@
             <if test="equipmentInfoEntity.equipmentName !=null and equipmentInfoEntity.equipmentName!='' ">
                 and equipmentName = #{equipmentInfoEntity.equipmentName}
             </if>
+            <if test="equipmentInfoEntity.equipmentGrade !=null and equipmentInfoEntity.equipmentGrade!='' ">
+                and equipmentGrade = #{equipmentInfoEntity.equipmentGrade}
+            </if>
+            <if test="equipmentInfoEntity.equipmentClass !=null and equipmentInfoEntity.equipmentClass!='' ">
+                and equipmentClass = #{equipmentInfoEntity.equipmentClass}
+            </if>
+            <if test="equipmentInfoEntity.equipmentPreId !=null and equipmentInfoEntity.equipmentPreId!='' ">
+                and equipmentPreId = #{equipmentInfoEntity.equipmentPreId}
+            </if>
+            <if test="equipmentInfoEntity.equipmentCompanyId !=null and equipmentInfoEntity.equipmentCompanyId!='' ">
+                and equipmentCompanyId = #{equipmentInfoEntity.equipmentCompanyId}
+            </if>
+            <if test="equipmentInfoEntity.equipmentCompanyName !=null and equipmentInfoEntity.equipmentCompanyName!='' ">
+                and equipmentCompanyName like concat('%',#{equipmentInfoEntity.equipmentCompanyName},'%')
+            </if>
+            <if test="equipmentInfoEntity.validState !=null and equipmentInfoEntity.validState!='' ">
+                and validState = #{equipmentInfoEntity.validState}
+            </if>
+            <if test="equipmentInfoEntity.validState !=null and equipmentInfoEntity.validState!='' ">
+                and validState = #{equipmentInfoEntity.validState}
+            </if>
+            <if test="equipmentInfoEntity.validState ==null">
+                and validState = '1'
+            </if>
+            <if test="equipmentInfoEntity.validState !=null and equipmentInfoEntity.validState!='' ">
+                and validState = #{equipmentInfoEntity.validState}
+            </if>
         </where>
     </select>
 
@@ -59,6 +114,7 @@
             emt.id emtId,
             emt.id id,
             emt.equipmentName name,
+            emt.linkingNo linkingNo,
             <!--false AS open,-->
             true AS nocheck
         FROM
@@ -81,6 +137,18 @@
         </foreach>
     </update>
 
+    <!--作废设备-->
+    <update id="linkEquipmentByIds">
+        UPDATE
+        equipment
+        SET linkingNo = #{linkNo}
+        WHERE id IN
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <!--更新出入库-->
     <update id="updateInboundStateBatchByRfids" parameterType="java.util.ArrayList">
         UPDATE
         equipment

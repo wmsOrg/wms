@@ -1,6 +1,7 @@
 package com.hczx.wms.service;
 
 import com.hczx.wms.entity.common.WmsOperateResponseEntity;
+import com.hczx.wms.entity.planentities.PlanContentQueryEntity;
 import com.hczx.wms.entity.planentities.PlanQueryEntity;
 import com.hczx.wms.entity.schemeentities.SchemeEditEntity;
 import com.hczx.wms.entity.schemeentities.SchemeIncreaseEntity;
@@ -9,6 +10,7 @@ import com.hczx.wms.entity.schemeequipmentrelaentities.EquipmentsInSchemeEntity;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * @ClassName: SchemeService
@@ -66,4 +68,20 @@ public interface SchemeOperateService {
      * @return
      */
     WmsOperateResponseEntity planList(PlanQueryEntity planQueryEntity);
+
+    /**
+     * 方案详情查询
+     *
+     * @param schemeId
+     * @return
+     */
+    WmsOperateResponseEntity schemeContentList(String schemeId);
+
+    /**
+     * 作废方案
+     *
+     * @param schemeIds
+     * @return
+     */
+    WmsOperateResponseEntity removeSchemes(List<String> schemeIds);
 }

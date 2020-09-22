@@ -47,47 +47,47 @@ layui.use(['table','form', 'jquery', 'laydate', 'layer', 'laypage', 'dialog', 'e
     });
 
     //新增装备提交
-    form.on('submit(equipmentAddForm)', function (data) {
-
-        let articleFrom = data.field;
-        if (articleFrom.equipmentClass == null || articleFrom.equipmentClass == ""){
-            articleFrom.equipmentClassName = "";
-        }else {
-            articleFrom.equipmentClassName = $("#classEquipmentSelect option:selected").text();
-        }
-        console.info(JSON.stringify(articleFrom));
-        $.ajax({
-            url: '/wms/equipmentIncrease',
-            type: 'post',
-            data: JSON.stringify(articleFrom),
-            dataType: "JSON",
-            async: true,
-            processData: false,	//不处理发送的数据
-            contentType: 'application/json',
-            success: function (result) {
-                // if (result.code == 100) {
-                //     layer.msg('登录成功', {
-                //         icon : 6,
-                //         time : 1000,
-                //         shade : 0.3,
-                //         end : function() {
-                //             location.href = "./index.html";
-                //         }
-                //     });
-                // } else if (result.code == 101) {
-                //     $("#password").focus();
-                // }
-
-                layer.msg(result.msg);
-            },
-            error: function (error) {
-                layer.msg('系统错误' + error);
-            }
-        });
-
-        return false;
-
-    });
+    // form.on('submit(equipmentAddForm)', function (data) {
+    //
+    //     let articleFrom = data.field;
+    //     if (articleFrom.equipmentClass == null || articleFrom.equipmentClass == ""){
+    //         articleFrom.equipmentClassName = "";
+    //     }else {
+    //         articleFrom.equipmentClassName = $("#classEquipmentSelect option:selected").text();
+    //     }
+    //     console.info(JSON.stringify(articleFrom));
+    //     $.ajax({
+    //         url: '/wms/equipmentIncrease',
+    //         type: 'post',
+    //         data: JSON.stringify(articleFrom),
+    //         dataType: "JSON",
+    //         async: true,
+    //         processData: false,	//不处理发送的数据
+    //         contentType: 'application/json',
+    //         success: function (result) {
+    //             // if (result.code == 100) {
+    //             //     layer.msg('登录成功', {
+    //             //         icon : 6,
+    //             //         time : 1000,
+    //             //         shade : 0.3,
+    //             //         end : function() {
+    //             //             location.href = "./index.html";
+    //             //         }
+    //             //     });
+    //             // } else if (result.code == 101) {
+    //             //     $("#password").focus();
+    //             // }
+    //
+    //             layer.msg(result.msg);
+    //         },
+    //         error: function (error) {
+    //             layer.msg('系统错误' + error);
+    //         }
+    //     });
+    //
+    //     return false;
+    //
+    // });
 
     //修改装备提交
     form.on('submit(equipmentEidtForm)', function (data) {
@@ -168,22 +168,42 @@ layui.use(['table','form', 'jquery', 'laydate', 'layer', 'laypage', 'dialog', 'e
     table.on('toolbar(alarmingDataGridFilter)', function(obj) {
         let data = obj.data; //获得当前行数据
         let layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
-
+        let iframeObj = $(window.frameElement).attr('name');
         switch(layEvent){
             case 'adds':
                 // layer.msg('查看');
-                let iframeObj = $(window.frameElement).attr('name');
-                parent.page("设备添加", "/wms/toArticleAdd", iframeObj, w = "700px", h = "620px");
+
+                parent.page("警情添加", "/wms/toAlarmingAdd", iframeObj, w = "700px", h = "750px");
                 break;
             case 'edits':
                 // layer.msg('修改');
+                let checkStatus = table.checkStatus('alarmingDataGrid').data;
+                if(checkStatus == null || checkStatus.length ==0){
+                    alert("请选择待编辑的数据!");
+                    return false;
+                }else if (checkStatus.length >1){
+                    alert("不能选择多条数据！");
+                    return false;
+                }
+
+                var urlparam = "?id="+checkStatus[0].id+"&name="+checkStatus[0].name+"&level="+checkStatus[0].level+"&category="+checkStatus[0].category+"&createUserId="+checkStatus[0].createUserId+"&createTime="+checkStatus[0].createTime+"&createUserName="+checkStatus[0].createUserName+"&validState="+checkStatus[0].validState+"&describetion="+checkStatus[0].describetion;
+                parent.page("警情编辑", "/wms/toAlarmingEdit"+urlparam, iframeObj, w = "700px", h = "750px");
+                // editAlarming(checkStatus);
+                // let equipments = [];
+                // equipments.push(data);
+                // delEquipments(equipments);
+                layer.msg('编辑成功');
+
+
+                break;
+            case 'dels':
                 dialog.confirm({
                     message:'您确定要删除选中项',
                     success:function(){
-                        let checkStatus = table.checkStatus('equipmentDataGrid').data;
+                        let checkStatus = table.checkStatus('alarmingDataGrid').data;
                         // let equipments = [];
                         // equipments.push(data);
-                        // delEquipments(equipments);
+                        delEquipments(checkStatus);
                         layer.msg('删除了');
                     },
                     cancel:function(){
@@ -191,11 +211,11 @@ layui.use(['table','form', 'jquery', 'laydate', 'layer', 'laypage', 'dialog', 'e
                     }
                 });
                 break;
-            case 'dels':
+            case 'searchs':
                 dialog.confirm({
                     message:'您确定要删除选中项',
                     success:function(){
-                        let checkStatus = table.checkStatus('equipmentDataGrid').data;
+                        let checkStatus = table.checkStatus('alarmingDataGrid').data;
                         // let equipments = [];
                         // equipments.push(data);
                         delEquipments(checkStatus);
@@ -212,10 +232,54 @@ layui.use(['table','form', 'jquery', 'laydate', 'layer', 'laypage', 'dialog', 'e
 
     });
 
-    //删除设备
-    function delEquipments(objs){
+    //新增装备提交
+    form.on('submit(alarmingAddForm)', function (data) {
 
-        let url = "/wms/delEquipments";
+        let articleFrom = data.field;
+        if (articleFrom.name == null || articleFrom.name == ""){
+            alert("请输入名称");
+            return false;
+        }
+        if (articleFrom.category == null || articleFrom.category == ""){
+            alert("请选择类别");
+            return false;
+        }
+        if (articleFrom.level == null || articleFrom.level == ""){
+            alert("请选择级别");
+            return false;
+        }
+        console.info(JSON.stringify(articleFrom));
+        $.ajax({
+            url: '/wms/alarmingIncrease',
+            type: 'post',
+            data: JSON.stringify(articleFrom),
+            dataType: "JSON",
+            async: true,
+            processData: false,	//不处理发送的数据
+            contentType: 'application/json',
+            success: function (result) {
+                if (result.flag){
+                    layer.msg(result.msg);
+                }else{
+                    layer.msg(result.msg);
+                }
+
+
+            },
+            error: function (error) {
+                layer.msg('系统错误' + error);
+            }
+        });
+
+        return false;
+
+    });
+
+
+    //删除设备
+    function editAlarming(objs){
+
+        let url = "/wms/editAlarming";
 
         // let requestBody = {};
         // requestBody.ids = objIds;
@@ -233,16 +297,6 @@ layui.use(['table','form', 'jquery', 'laydate', 'layer', 'laypage', 'dialog', 'e
             contentType: 'application/json',
             success: function (data) {
                 console.info(data);
-                // var response = data; //转换为json对象   
-                // var listHtml = '';
-                // $.each(response, function (i) {
-                //     if (response[i].value != "") {
-                //         var divid= 'divWareHouse'+ response[i].wareHouseSn;
-                //         var str = "<div style='float:left; margin-left: 1px; margin-top: 1px; border: 1px solid gray;' id='"+divid+"'><input onclick='ListFn.CheckboxOnclick(this)' type='checkbox' " + " name='wareHouseCheck'" + " id='" + Obj + response[i].wareHouseSn + "' value='" + response[i].wareHouseSn +"'/>" + response[i].wareHouseName+"</div>";
-                //         listHtml += str;
-                //     }
-                // });
-                // $("#" + Obj).html(listHtml);
             }
         });
 

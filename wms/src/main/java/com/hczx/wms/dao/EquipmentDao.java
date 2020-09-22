@@ -51,4 +51,20 @@ public interface EquipmentDao extends BaseMapper<EquipmentModel> {
      * @return
      */
     List<EquipmentZtreeNode> zTreeEquipmentInfo();
+
+    /**
+     * 根据RFID批量更新设备入库状态
+     *
+     * @param inboundState
+     * @param equipmenmtRfids
+     * @return
+     */
+    boolean updateInboundStateBatchByRfids(@Param("inboundState") String inboundState, @Param("list") List<String> equipmenmtRfids);
+
+    /**
+     * 更新设备关联号
+     * @param ids
+     * @return
+     */
+    boolean linkEquipmentByIds(@Param("list")List<String> ids, @Param("linkNo") String linkNo);
 }

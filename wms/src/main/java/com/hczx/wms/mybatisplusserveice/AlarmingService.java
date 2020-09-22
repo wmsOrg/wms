@@ -1,6 +1,7 @@
 package com.hczx.wms.mybatisplusserveice;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.hczx.wms.entity.alarmingentities.AlarmingInfoEntity;
 import com.hczx.wms.model.AlarmingModel;
 
 /**
@@ -11,4 +12,12 @@ import com.hczx.wms.model.AlarmingModel;
  * @Version: 1.0
  */
 public interface AlarmingService extends IService<AlarmingModel> {
+
+    /**
+     * 登记警情
+     *
+     * @param alarmingInfoEntity
+     * @return
+     */
+    boolean saveRegisterEquipment(AlarmingInfoEntity alarmingInfoEntity);
 }

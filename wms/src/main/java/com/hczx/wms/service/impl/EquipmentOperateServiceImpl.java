@@ -9,6 +9,7 @@ import com.hczx.wms.entity.enquipmententities.EquipmentInfoEntity;
 import com.hczx.wms.entity.enquipmententities.EquipmentLv2InboundStateEntity;
 import com.hczx.wms.entity.enquipmententities.EquipmentZtreeEntity;
 import com.hczx.wms.entity.enquipmententities.EquipmentZtreeNode;
+import com.hczx.wms.framework.servlet.WebSocketServlet;
 import com.hczx.wms.model.EquipmentModel;
 import com.hczx.wms.mybatisplusserveice.EquipmentService;
 import com.hczx.wms.service.AuthenticationService;
@@ -18,8 +19,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -45,6 +48,9 @@ public class EquipmentOperateServiceImpl implements EquipmentOperateService {
 
     @Autowired
     private CompanyDao companyDao;
+
+    @Autowired
+    private WebSocketServlet scoket;
 
     /**
      * 简易登记设备
@@ -291,5 +297,91 @@ public class EquipmentOperateServiceImpl implements EquipmentOperateService {
                 return wmsOperateResponseEntity;
             }
         }
+    }
+
+    /**
+     * 根据RFID更新设备进出库状态
+     *
+     * @param inboundState
+     * @param equipmenmtRfids
+     * @return
+     */
+    @Override
+    public void updateEquipmentInboundState(String inboundState, List<String> equipmenmtRfids) {
+
+        boolean flag = false;
+
+        flag = equipmentService.updateInboundStateBatchByRfids(inboundState, equipmenmtRfids);
+        if (flag){
+            try {
+                scoket.onMessage("123");
+            } catch (IOException e) {
+                e.printStackTrace();
+                return;
+            }
+        }else{
+            return;
+        }
+    }
+
+    /**
+     * 关联设备
+     *
+     * @param equipmentInfoEntities
+     * @return
+     */
+    @Override
+    public WmsOperateResponseEntity linkEquipment(List<EquipmentInfoEntity> equipmentInfoEntities) {
+        WmsOperateResponseEntity wmsOperateResponseEntity = new WmsOperateResponseEntity();
+
+
+
+        //关联设备
+        List<String> ids = equipmentInfoEntities.stream().map(EquipmentInfoEntity::getId).distinct().collect(Collectors.toList());
+        String linkNo = UUID.randomUUID().toString();
+        boolean flag = equipmentService.linkEquipmentByIds(ids,linkNo);
+        if (!flag){
+
+            wmsOperateResponseEntity = authenticationService.packageOpeaterResponseBean("4", false, "设备关联失败：从数据库关联该设备失败！");
+            return wmsOperateResponseEntity;
+
+        }else{
+
+            wmsOperateResponseEntity = authenticationService.packageOpeaterResponseBean("9", true, "设备关联成功！");
+            return wmsOperateResponseEntity;
+
+        }
+    }
+
+    /**
+     * 根据设备关联号查询设备
+     *
+     * @param linkingNo
+     * @param equipmentId
+     * @return
+     */
+    @Override
+    public WmsOperateResponseEntity searchByLinkingNo(String linkingNo,String equipmentId) {
+        WmsOperateResponseEntity wmsOperateResponseEntity = new WmsOperateResponseEntity();
+
+        QueryWrapper<EquipmentModel> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("linkingNo",linkingNo).ne("id",equipmentId).eq("validState","1");
+        List<EquipmentModel> equipmentModels = null;
+
+        try {
+            equipmentModels = equipmentService.list(queryWrapper);
+        }catch (Exception e){
+            wmsOperateResponseEntity = authenticationService.packageOpeaterResponseBean("4", false, "根据设备关联号查询设备失败：从数据库关联查询该设备失败！");
+            return wmsOperateResponseEntity;
+        }
+        if (equipmentModels == null || equipmentModels.isEmpty()){
+            wmsOperateResponseEntity = authenticationService.packageOpeaterResponseBean("9", true, "根据设备关联号查询设备成功！");
+            return wmsOperateResponseEntity;
+        }else {
+            wmsOperateResponseEntity = authenticationService.packageOpeaterResponseBean("9", true, "根据设备关联号查询设备成功！");
+            wmsOperateResponseEntity.setData(equipmentModels);
+            return wmsOperateResponseEntity;
+        }
+
     }
 }

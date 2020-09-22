@@ -13,6 +13,7 @@ import com.hczx.wms.entity.schemeequipmentrelaentities.EquipmentsInSchemeEntity;
 import com.hczx.wms.model.AlarmSchemeEquipmentRelaModel;
 import com.hczx.wms.model.PlanModel;
 import com.hczx.wms.mybatisplusserveice.AlarmSchemeEquipmentRelaService;
+import com.hczx.wms.mybatisplusserveice.AlarmingService;
 import com.hczx.wms.service.AlarmingOperateService;
 import com.hczx.wms.service.AuthenticationService;
 import org.apache.commons.lang3.StringUtils;
@@ -38,6 +39,9 @@ public class AlarmingOperateServiceImpl implements AlarmingOperateService {
 
     @Autowired
     private AlarmingDao alarmingDao;
+
+    @Autowired
+    private AlarmingService alarmingService;
 
     @Autowired
     private AuthenticationService authenticationService;
@@ -239,7 +243,8 @@ public class AlarmingOperateServiceImpl implements AlarmingOperateService {
      * @param outNum
      * @return
      */
-    private CategoryEntity packageCategoryEntity(EquipmentLv1inPlanEntity equipmentLv1inPlanEntity,Integer totalNum, Integer InNum, Integer outNum) {
+    @Override
+    public CategoryEntity packageCategoryEntity(EquipmentLv1inPlanEntity equipmentLv1inPlanEntity,Integer totalNum, Integer InNum, Integer outNum) {
         CategoryEntity categoryEntity = new CategoryEntity();
         categoryEntity.setRowNum(equipmentLv1inPlanEntity.getRowNum());
         categoryEntity.setColumnNum(equipmentLv1inPlanEntity.getColumnNum());
@@ -254,4 +259,30 @@ public class AlarmingOperateServiceImpl implements AlarmingOperateService {
         return categoryEntity;
     }
 
+    /**
+     * 登记警情
+     *
+     * @param alarmingInfoEntity
+     * @return
+     */
+    @Override
+    public WmsOperateResponseEntity registAlarming(AlarmingInfoEntity alarmingInfoEntity) {
+        WmsOperateResponseEntity wmsOperateResponseEntity = new WmsOperateResponseEntity();
+
+        //新增设备信息
+
+        boolean flag = alarmingService.saveRegisterEquipment(alarmingInfoEntity);
+        if (!flag){
+
+            wmsOperateResponseEntity = authenticationService.packageOpeaterResponseBean("4", false, "警情登记失败：新增警情信息至数据库失败！");
+            return wmsOperateResponseEntity;
+
+        }else{
+
+            wmsOperateResponseEntity = authenticationService.packageOpeaterResponseBean("9", true, "警情登记成功！");
+            return wmsOperateResponseEntity;
+
+        }
+
+    }
 }

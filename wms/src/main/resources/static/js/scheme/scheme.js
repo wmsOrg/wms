@@ -14,7 +14,11 @@ layui.use(['table','form', 'jquery', 'laydate', 'layer', 'laypage', 'dialog', 'e
     function querySchemes(data){
         // let articleFrom = data.field;
         let articleFrom = {};
-        articleFrom.schemeName = "";
+        if (data == null) {
+            articleFrom.schemeName = "";
+        }else{
+            articleFrom = data;
+        }
         // if (articleFrom.schemeName == null || articleFrom.schemeName == ""){
         //     alert("方案名不能为空;");
         //     return false;
@@ -35,40 +39,42 @@ layui.use(['table','form', 'jquery', 'laydate', 'layer', 'laypage', 'dialog', 'e
                 var divHtmls = "";
                 if (result.code == "9") {
                     var divDatas = result.data;
-                    var length = divDatas.length;
-                    for (var i = 0; i < length; i++){
-                        var divData = divDatas[i];
-                        var imageUrl = "";
-                        if (divData.imageUrl == null || divData.imageUrl ==""){
-                            imageUrl = "../static/images/visibleEditLayout/fileadd.svg";
-                        }else{
-                            imageUrl = "/wms/showImageByPath?fileName="+divData.imageUrl;
+                    if (divDatas != null && divDatas.lengh != 0) {
+                        var length = divDatas.length;
+                        for (var i = 0; i < length; i++) {
+                            var divData = divDatas[i];
+                            var imageUrl = "";
+                            if (divData.imageUrl == null || divData.imageUrl == "") {
+                                imageUrl = "../static/images/visibleEditLayout/fileadd.svg";
+                            } else {
+                                imageUrl = "/wms/showImageByPath?fileName=" + divData.imageUrl;
+                            }
+
+                            var divhtml = "<form class=\"layui-form\" id=qwe" + i + ">\n" +
+                                "                <div class=\"layui-col-xs6 layui-col-md3\" style=\"padding: 15px;text-align: center\">\n" +
+                                "                    <div class=\"layui-inline tool-btn\" style=\"float: left;width: 3px;height: 3px\">\n" +
+                                // "                        <input type=\"checkbox\" name=\"schemeLineCbx\" lay-skin=\"primary\"  lay-filter=\"schemeLineCbx\" style='display: block'>\n" +
+                                "                        <input type=\"text\" name=\"schemeId\" style=\"display: none\" value='" + divData.id + "'>\n" +
+                                "                    </div>\n" +
+                                "\n" +
+                                // "                        <div class=\"layui-inline\">\n" +
+                                // "                            <input type=\"checkbox\" name=\"validState\" lay-skin=\"switch\" checked=\"\" style=\"min-width: 0px;height: 0px;\">\n" +
+                                // "                        </div>\n" +
+                                "\n" +
+                                "                    <div class=\"layui-inline tool-btn\" style=\"float: right;\">\n" +
+                                "                        <button class=\"layui-btn layui-btn-xs layui-btn-normal schemeLineBtn\" onclick='infoScheme(\"" + divData.id + "\");return false;' lay-event=\"info\"><i class=\"layui-icon\" style=\"color: #323232;\">&#xe705;</i></button>\n" +
+                                "                        <button class=\"layui-btn layui-btn-xs layui-btn-warm schemeLineBtn\" onclick='editScheme(\"" + divData.id + "\");return false;' lay-filter='editSchemeLineBtn' lay-event=\"edit\"><i class=\"layui-icon\" style=\"color: #323232;\">&#xe642;</i></button>\n" +
+                                "                        <button class=\"layui-btn layui-btn-xs layui-btn-danger schemeLineBtn\" onclick='delScheme(\"" + divData.id + "\");return false;' lay-event=\"dels\"><i class=\"layui-icon\" style=\"color: #323232;\">&#xe640;</i></button>\n" +
+                                "                    </div>\n" +
+                                "                    <a class=\"template store-list-box\" href=\"/css/i/463043/1.html\"> <img class=\"store-list-cover\" src=\"" + imageUrl + "\"> <h2 class=\"layui-elip\">" + divData.schemeName + "</h2>\n" +
+                                "                    </a>\n" +
+                                "                </div>\n" +
+                                "            </form>";
+                            divHtmls += divhtml;
+
                         }
-
-                        var divhtml = "<form class=\"layui-form\" id=qwe"+i+">\n" +
-                            "                <div class=\"layui-col-xs6 layui-col-md3\" style=\"padding: 15px;text-align: center\">\n" +
-                            "                    <div class=\"layui-inline tool-btn\" style=\"float: left;width: 3px;height: 3px\">\n" +
-                            // "                        <input type=\"checkbox\" name=\"schemeLineCbx\" lay-skin=\"primary\"  lay-filter=\"schemeLineCbx\" style='display: block'>\n" +
-                            "                        <input type=\"text\" name=\"schemeId\" style=\"display: none\" value='"+divData.id+"'>\n" +
-                            "                    </div>\n" +
-                            "\n" +
-                            "                        <div class=\"layui-inline\">\n" +
-                            "                            <input type=\"checkbox\" name=\"validState\" lay-skin=\"switch\" checked=\"\" style=\"min-width: 0px;height: 0px;\">\n" +
-                            "                        </div>\n" +
-                            "\n" +
-                            "                    <div class=\"layui-inline tool-btn\" style=\"float: right;\">\n" +
-                            "                        <button class=\"layui-btn layui-btn-xs layui-btn-normal schemeLineBtn\" lay-event=\"info\"><i class=\"layui-icon\" style=\"color: #323232;\">&#xe705;</i></button>\n" +
-                            "                        <button class=\"layui-btn layui-btn-xs layui-btn-warm schemeLineBtn\" onclick='editScheme(\""+divData.id+"\");return false;' lay-filter='editSchemeLineBtn' lay-event=\"edit\"><i class=\"layui-icon\" style=\"color: #323232;\">&#xe642;</i></button>\n" +
-                            "                        <button class=\"layui-btn layui-btn-xs layui-btn-danger schemeLineBtn\" lay-event=\"dels\"><i class=\"layui-icon\" style=\"color: #323232;\">&#xe640;</i></button>\n" +
-                            "                    </div>\n" +
-                            "                    <a class=\"template store-list-box\" href=\"/css/i/463043/1.html\"> <img class=\"store-list-cover\" src=\""+imageUrl+"\"> <h2 class=\"layui-elip\">"+divData.schemeName+"</h2>\n" +
-                            "                    </a>\n" +
-                            "                </div>\n" +
-                            "            </form>";
-                        divHtmls += divhtml;
-
+                        $("#table-list").html(divHtmls);
                     }
-                    $("#table-list").html(divHtmls);
                 } else if (result.code == 4) {
                     layer.msg(result.msg);
                     $("#table-list").html("");
@@ -97,6 +103,76 @@ layui.use(['table','form', 'jquery', 'laydate', 'layer', 'laypage', 'dialog', 'e
             return false;
         }
     }
+
+    //方案案详情
+    window.infoScheme = function (schemeId) {
+
+        if (schemeId == null || schemeId == ""){
+            alert("无法查阅方案详情，未找到该方案主键标识;");
+            return false;
+        }else {
+            var url="/wms/toSchemeInfo?schemeId="+schemeId;
+            parent.page("预案详情", url, iframeObj, w = "95%", h = "90%");
+            return false;
+        }
+    }
+
+    //作废方案
+    window.delScheme = function (schemeId) {
+
+        if (schemeId == null || schemeId == ""){
+            alert("无法作废该方案，未找到该方案主键标识;");
+            return false;
+        }else {
+            // var url="/wms/toSchemeInfo?schemeId="+schemeId;
+            // parent.page("预案详情", url, iframeObj, w = "95%", h = "90%");
+            layer.confirm('确定删除该方案吗?', {icon: 3, title:'提示'}, function(index){
+                let schemeIds = [];
+                schemeIds.push(schemeId);
+                delSchemes(schemeIds);
+                layer.close(index);
+            });
+            return false;
+        }
+    }
+
+    //删除设备
+    function delSchemes(objs){
+
+        let url = "/wms/delSchemes";
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: JSON.stringify(objs),
+            dataType: "json",
+            cache: false,
+            async: false,
+            processData: false,	//不处理发送的数据
+            contentType: 'application/json',
+            success: function (data) {
+                console.info(data);
+            }
+        });
+
+    }
+
+    //搜寻方案
+    window.searchScheme = function () {
+
+        let data = {};
+        data.schemeName = $("#schemeName").val();
+        // data.level = $("#level").find("option:selected").text();
+        // data.disaster = $("#disaster").find("option:selected").text();
+        // data.validState = $("#validState").find("option:selected").text();
+        data.level = $("#level").val();
+        data.disaster = $("#disaster").val();
+        data.validState = $("#validState").val();
+
+            querySchemes(data);
+
+    }
+
 
     //父级弹出页面
     function page(title, url, obj, w, h) {
@@ -193,7 +269,8 @@ layui.use(['table','form', 'jquery', 'laydate', 'layer', 'laypage', 'dialog', 'e
             return false;
         }else {
             articleFrom.lecel = $("#levelSelect option:selected").text();
-            articleFrom.disaster = $("#classDisasterSelect option:selected").text();
+            articleFrom.disaster = $("#classDisasterSelect").val();
+            articleFrom.disasterName = $("#classDisasterSelect option:selected").text();
         }
         console.info(JSON.stringify(articleFrom));
         $.ajax({

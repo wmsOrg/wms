@@ -4,6 +4,8 @@ import com.hczx.wms.entity.alarmingentities.AlarmingInfoEntity;
 import com.hczx.wms.entity.common.DataGirdResultEntity;
 import com.hczx.wms.entity.common.WmsOperateResponseEntity;
 import com.hczx.wms.entity.enquipmententities.EquipmentInfoEntity;
+import com.hczx.wms.entity.enquipmententities.EquipmentLv1inPlanEntity;
+import com.hczx.wms.entity.planentities.CategoryEntity;
 import com.hczx.wms.entity.planentities.PlanContentQueryEntity;
 import com.hczx.wms.entity.schemeequipmentrelaentities.EquipmentsInSchemeEntity;
 
@@ -46,4 +48,23 @@ public interface AlarmingOperateService {
      * @return
      */
     WmsOperateResponseEntity planList(PlanContentQueryEntity planQueryEntity);
+
+    /**
+     * 封装柜内设备实体
+     * @param equipmentLv1inPlanEntity
+     * @param totalNum
+     * @param InNum
+     * @param outNum
+     * @return
+     */
+    CategoryEntity packageCategoryEntity(EquipmentLv1inPlanEntity equipmentLv1inPlanEntity, Integer totalNum, Integer InNum, Integer outNum);
+
+    /**
+     *
+     * 登记警情
+     *
+     * @param alarmingInfoEntity
+     * @return
+     */
+    WmsOperateResponseEntity registAlarming(AlarmingInfoEntity alarmingInfoEntity);
 }
