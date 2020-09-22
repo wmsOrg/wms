@@ -182,7 +182,7 @@ function gridSystemGenerator() {
         size = parseInt(size);
         if (!isNaN(size) && size != null && size !="" && size !=0) {
             for (var i = 0; i < size; i++) {
-                t += '<div class="span5 column"><input type="text" style="display: none" name="rowCounts" value=""/><input type="text" style="display: none" name="columnCounts" value=""/><input type="text" style="display: none" name="companyId" value=""/><input type="text" style="display: none" name="equipmentId" value=""/><input type="text" style="display: none" name="equipmentName" value=""/><a href="javascript:void(0);" onclick="VisibleEditLayout.editAIEvent(this);" style="position: absolute;top: 2px; right:2px;" class="label label-important"><i class="icon-edit icon-white"></i>编辑</a></div>'
+                t += '<div class="span5 column" style="display: inline-block;float:none;"><input type="text" style="display: none" name="rowCounts" value=""/><input type="text" style="display: none" name="columnCounts" value=""/><input type="text" style="display: none" name="companyId" value=""/><input type="text" style="display: none" name="equipmentId" value=""/><input type="text" style="display: none" name="equipmentName" value=""/><a href="javascript:void(0);" onclick="VisibleEditLayout.editAIEvent(this);" style="position: absolute;top: 2px; right:2px;" class="label label-important"><i class="icon-edit icon-white"></i>编辑</a></div>'
             }
             $(this).parent().next().children().html(t);
             $(this).parent().prev().show();

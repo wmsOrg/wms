@@ -182,7 +182,7 @@ var BindEquipements = new function () {
                                     "                                <div class=\"row-fluid clearfix\">" ;
                             }
 
-                            divHtmlContent += "                     <div class=\"span5 column ui-sortable\">" +
+                            divHtmlContent += "                     <div class=\"span5 column ui-sortable\" style=\"display:inline-block;float:none;\">" +
                                 "                                       <input name=\"cupboard\" type=\"checkbox\" value='"+JSON.stringify(entity)+"' ></input>" +
                                 "                                       <input type=\"text\" style=\"display: none;\" name=\"rowCounts\" value=\""+entity.rowCounts+"\">" +
                                 "                                       <input type=\"text\" style=\"display: none;\" name=\"columnCounts\" value=\""+entity.columnCounts+"\">" +
