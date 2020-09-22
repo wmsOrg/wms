@@ -182,11 +182,11 @@ var VisibleEditLayout = new function () {
                             layer.confirm('该设备有关联设备，添加该设备需要将其关联设备一起添加，确定添加吗?', {icon: 3, title:'提示'}, function(index) {
 
                                 layer.close(index);
-                                $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='rowCounts']").val(tem.rowCounts);
-                                $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='columeCounts']").val(tem.columnCounts);
-                                $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='companyId']").val(tem.pId);
-                                $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='equipmentId']").val(tem.id);
-                                $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='equipmentName']").val(tem.name);
+                                $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span5 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='rowCounts']").val(tem.rowCounts);
+                                $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span5 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='columeCounts']").val(tem.columnCounts);
+                                $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span5 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='companyId']").val(tem.pId);
+                                $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span5 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='equipmentId']").val(tem.id);
+                                $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span5 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='equipmentName']").val(tem.name);
 
                                 $.ajax({
                                     url: '/wms/searchByLinkingNo?linkingNo='+tem.linkingNo,
@@ -224,12 +224,12 @@ var VisibleEditLayout = new function () {
                         }else{
                             layer.close(index);
                             // var a = $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='rowCounts']").val();
-                            $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='rowCounts']").val(tem.rowCounts);
-                            $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='columeCounts']").val(tem.columnCounts);
-                            $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='companyId']").val(tem.pId);
-                            $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='equipmentId']").val(tem.id);
-                            $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='equipmentName']").val(tem.name);
-                            $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).css("background", "gray");
+                            $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span5 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='rowCounts']").val(tem.rowCounts);
+                            $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span5 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='columeCounts']").val(tem.columnCounts);
+                            $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span5 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='companyId']").val(tem.pId);
+                            $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span5 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='equipmentId']").val(tem.id);
+                            $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span5 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='equipmentName']").val(tem.name);
+                            $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span5 column ui-sortable']").eq(parseInt(tem.columnCounts)).css("background", "gray");
                         }
                         layer.close(index);
                     }, cancel: function () {
@@ -262,12 +262,12 @@ var VisibleEditLayout = new function () {
                             layer.confirm('该设备有关联设备，添加该设备需要将其关联设备一起添加，确定添加吗?', {icon: 3, title:'提示'}, function(index){
                                 layer.close(index);
                                 // var a = $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='rowCounts']").val();
-                                $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='rowCounts']").val(tem.rowCounts);
-                                $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='columeCounts']").val(tem.columnCounts);
-                                $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='companyId']").val(tem.pId);
-                                $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='equipmentId']").val(tem.id);
-                                $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='equipmentName']").val(tem.name);
-                                $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).css("background", "gray");
+                                $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span5 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='rowCounts']").val(tem.rowCounts);
+                                $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span5 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='columeCounts']").val(tem.columnCounts);
+                                $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span5 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='companyId']").val(tem.pId);
+                                $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span5 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='equipmentId']").val(tem.id);
+                                $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span5 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='equipmentName']").val(tem.name);
+                                $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span5 column ui-sortable']").eq(parseInt(tem.columnCounts)).css("background", "gray");
 
                                 $.ajax({
                                     url: '/wms/searchByLinkingNo?linkingNo='+tem.linkingNo+"&equipmentId="+tem.id,
@@ -305,12 +305,12 @@ var VisibleEditLayout = new function () {
                         }else {
 
                             // var a = $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='rowCounts']").val();
-                            $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='rowCounts']").val(tem.rowCounts);
-                            $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='columeCounts']").val(tem.columnCounts);
-                            $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='companyId']").val(tem.pId);
-                            $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='equipmentId']").val(tem.id);
-                            $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='equipmentName']").val(tem.name);
-                            $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span1 column ui-sortable']").eq(parseInt(tem.columnCounts)).css("background", "gray");
+                            $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span5 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='rowCounts']").val(tem.rowCounts);
+                            $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span5 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='columeCounts']").val(tem.columnCounts);
+                            $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span5 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='companyId']").val(tem.pId);
+                            $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span5 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='equipmentId']").val(tem.id);
+                            $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span5 column ui-sortable']").eq(parseInt(tem.columnCounts)).find("input[name='equipmentName']").val(tem.name);
+                            $("#visibleLayoutId").children("div").eq(parseInt(tem.rowCounts)).find("div[class='span5 column ui-sortable']").eq(parseInt(tem.columnCounts)).css("background", "gray");
                         }
                         layer.close(index);
                     }, cancel: function () {
