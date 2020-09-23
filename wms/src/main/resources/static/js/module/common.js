@@ -141,6 +141,7 @@ function page(title, url, obj, w, h) {
 			content: url
 		});
 		layer.full(index);
+		return index;
 	} else {
 		var index = layer.open({
 			type: 2,
@@ -149,6 +150,7 @@ function page(title, url, obj, w, h) {
 			fixed: false, //不固定
 			content: url
 		});
+		return index;
 	}
 }
 

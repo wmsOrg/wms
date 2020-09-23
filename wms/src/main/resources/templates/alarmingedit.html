@@ -30,6 +30,7 @@
 										<input style="display: none;" th:value="${id != null ? id : ''}" type="text" name="id" required lay-verify="required" placeholder="请输入设备名称" autocomplete="off" class="layui-input">
 										<input style="display: none;" th:value="${level != null ? level : ''}" type="text" id="levelSelect" name="levelSelect" required lay-verify="required" placeholder="请输入设备名称" autocomplete="off" class="layui-input">
 										<input style="display: none;" th:value="${category != null ? category : ''}" type="text" id="categorySelect" name="levelSelect" required lay-verify="required" placeholder="请输入设备名称" autocomplete="off" class="layui-input">
+										<input style="display: none;" th:value="${discribetion != null ? discribetion : ''}" type="text" id="discribetion1" name="discribetion1" required lay-verify="required" placeholder="请输入设备名称" autocomplete="off" class="layui-input">
 										<input style="display: none;" th:value="${validState != null ? validState : ''}" type="text" id="validStateSelect" name="validStateSelect" required lay-verify="required" placeholder="请输入设备名称" autocomplete="off" class="layui-input">
 										<input th:value="${name != null ? name : ''}" type="text" name="name" required lay-verify="required" placeholder="请输入设备名称" autocomplete="off" class="layui-input">
 									</div>
@@ -78,7 +79,7 @@
 								<div class="layui-form-item">
 									<label class="layui-form-label">是否生效：</label>
 									<div class="layui-input-block">
-										<input type="checkbox" name="validState" lay-skin="switch" checked="checked">
+										<input type="checkbox" id="validState" name="validState" lay-skin="switch" checked="${validState != null && validState == '1' ? checked : ''}">
 									</div>
 								</div>
 <!--								<div class="layui-form-item">-->
@@ -141,7 +142,13 @@
 	<script src="../static/layui/layui.js" type="text/javascript" charset="utf-8"></script>
 	<script src="../static/js/module/common.js" type="text/javascript" charset="utf-8"></script>
 	<script src="../static/js/alarming/alarming-operate.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../static/js/jquery-2.1.4.min.js" type="text/javascript" charset="utf-8"></script>
 	<script>
+
+		$("#level").val($("#levelSelect").val());
+		$("#category").val($("#categorySelect").val());
+		$("#discribetion").val($("#discribetion1").val())
+
 		// layui.use(['form', 'jquery', 'laydate', 'layer', 'laypage', 'dialog', 'common', 'tool', 'element', 'upload', 'layedit'], function() {
 		// 		var form = layui.form(),
 		// 			layer = layui.layer,

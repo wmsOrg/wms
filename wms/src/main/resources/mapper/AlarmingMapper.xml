@@ -16,11 +16,27 @@
         createUserName createUserName,
         validState validState
         from alarming
-        <!--        <where>-->
-        <!--            <if test="uname!=null and uname!='' ">-->
-        <!--                and uname like #{uname}-->
-        <!--            </if>-->
-        <!--        </where>-->
+        <where>
+        1=1
+            <if test="alarmingInfoEntity.id!=null and alarmingInfoEntity.id!='' ">
+                and id = #{alarmingInfoEntity.id}
+            </if>
+            <if test="alarmingInfoEntity.name!=null and alarmingInfoEntity.name!='' ">
+                and name like concat('%',#{alarmingInfoEntity.name},'%')
+            </if>
+            <if test="alarmingInfoEntity.level!=null">
+                and level = #{alarmingInfoEntity.level}
+            </if>
+            <if test="alarmingInfoEntity.category!=null and alarmingInfoEntity.category!='' ">
+                and category = #{alarmingInfoEntity.category}
+            </if>
+            <if test="alarmingInfoEntity.validState!=null and alarmingInfoEntity.validState!='' ">
+                and validState = #{alarmingInfoEntity.validState}
+            </if>
+            <if test="alarmingInfoEntity.validState==null">
+                and validState = '1'
+            </if>
+        </where>
         <if test="page!=null and size!=null">
             limit #{page},#{size}
         </if>
@@ -31,13 +47,38 @@
         select
         count(*)
         from alarming
-        where 1=1
-        <!--        <where>-->
-        <!--            <if test="uname!=null and uname!='' ">-->
-        <!--                and uname like #{uname}-->
-        <!--            </if>-->
-        <!--        </where>-->
-
+        <where>
+            1=1
+            <if test="alarmingInfoEntity.id!=null and alarmingInfoEntity.id!='' ">
+                and id = #{alarmingInfoEntity.id}
+            </if>
+            <if test="alarmingInfoEntity.name!=null and alarmingInfoEntity.name!='' ">
+                and name like concat('%',#{alarmingInfoEntity.name},'%')
+            </if>
+            <if test="alarmingInfoEntity.level!=null">
+                and level = #{alarmingInfoEntity.level}
+            </if>
+            <if test="alarmingInfoEntity.category!=null and alarmingInfoEntity.category!='' ">
+                and category = #{alarmingInfoEntity.category}
+            </if>
+            <if test="alarmingInfoEntity.validState!=null and alarmingInfoEntity.validState!='' ">
+                and validState = #{alarmingInfoEntity.validState}
+            </if>
+            <if test="alarmingInfoEntity.validState==null">
+                and validState = '1'
+            </if>
+        </where>
     </select>
+
+    <!--作废警情-->
+    <update id="updateValidStateByIds" parameterType="java.util.ArrayList">
+        UPDATE
+        alarming
+        SET validState = '0'
+        WHERE id IN
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
 
 </mapper>

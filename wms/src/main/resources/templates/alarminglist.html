@@ -32,14 +32,28 @@
 									<button class="layui-btn layui-btn-small layui-btn-warm" lay-event="searchs"><i class="layui-icon">&#xe615;</i></button>
 								</div>
 								<div class="layui-inline">
-									<input type="text" name="title" placeholder="请输入标题" autocomplete="off" class="layui-input">
+									<input type="text" id="name" name="name" placeholder="请输入标题" autocomplete="off" class="layui-input">
 								</div>
 								<div class="layui-inline">
-									<select name="states" lay-filter="status">
+									<select id="validStateSelect" name="validState" lay-filter="validState">
 										<option value="">请选择一个状态</option>
-										<option value="010">正常</option>
-										<option value="021">停止</option>
-										<option value="0571">删除</option>
+										<option value="1">生效</option>
+										<option value="0">失效</option>
+									</select>
+								</div>
+								<div class="layui-inline">
+									<select id="levelSelect" name="level" lay-filter="level">
+										<option value="">请选择一个级别</option>
+										<option value="1">一级</option>
+										<option value="2">二级</option>
+									</select>
+								</div>
+								<div class="layui-inline">
+									<select id="categorySelect" name="category" lay-filter="category">
+										<option value="">请选择一个类别</option>
+										<option value="0">地震</option>
+										<option value="1">火灾</option>
+										<option value="2">水灾</option>
 									</select>
 								</div>
 <!--								<button class="layui-btn layui-btn-normal" lay-event="search">搜索</button>-->

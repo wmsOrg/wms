@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @ClassName: AlarmingController
@@ -218,32 +219,70 @@ public class AlarmingController {
     }
 
     /**
-     * 预案查询
+     * 警情编辑
      *
-     * @param planQueryEntity
+     * @param alarmingInfoEntity
      * @return
      */
-    @RequestMapping(value = "/editAlarming",method = RequestMethod.POST)
-    public WmsOperateResponseEntity editAlarming(@RequestBody String a){
+    @RequestMapping(value = "/alarmingEdit",method = RequestMethod.POST)
+    public WmsOperateResponseEntity alarmingEdit(@RequestBody AlarmingInfoEntity alarmingInfoEntity){
 
         WmsOperateResponseEntity wmsOperateResponseEntity = new WmsOperateResponseEntity();
 
-//        if (StringUtils.isBlank(planQueryEntity.getSchemeId())){
-//            wmsOperateResponseEntity = authenticationService.packageOpeaterResponseBean("4", false, "预案所绑定的设备查询失败：无法查询到具体方案唯一标识！");
-//            return wmsOperateResponseEntity;
-//        }
-//
-//        if (StringUtils.isBlank(planQueryEntity.getAlarmingId())){
-//            wmsOperateResponseEntity = authenticationService.packageOpeaterResponseBean("4", false, "预案所绑定的设备查询失败：无法查询到具体警情唯一标识！");
-//            return wmsOperateResponseEntity;
-//        }
-//
-//        if (StringUtils.isBlank(planQueryEntity.getPlanId())){
-//            wmsOperateResponseEntity = authenticationService.packageOpeaterResponseBean("4", false, "预案所绑定的设备查询失败：无法查询到具体预案唯一标识！");
-//            return wmsOperateResponseEntity;
-//        }
-//
-//        wmsOperateResponseEntity = alarmingOperateService.planList(planQueryEntity);
+        if (StringUtils.isBlank(alarmingInfoEntity.getId())){
+            wmsOperateResponseEntity = authenticationService.packageOpeaterResponseBean("4", false, "警情编辑失败：具体警情唯一标识不能为空！");
+            return wmsOperateResponseEntity;
+        }
+
+        if (alarmingInfoEntity.getLevel()== null){
+            wmsOperateResponseEntity = authenticationService.packageOpeaterResponseBean("4", false, "警情编辑失败：级别不能为空！");
+            return wmsOperateResponseEntity;
+        }
+
+        if (StringUtils.isBlank(alarmingInfoEntity.getCategory())){
+            wmsOperateResponseEntity = authenticationService.packageOpeaterResponseBean("4", false, "警情编辑失败：类别不能为空！");
+            return wmsOperateResponseEntity;
+        }
+
+        if (StringUtils.isBlank(alarmingInfoEntity.getValidState()) || !alarmingInfoEntity.getValidState().equals("on")){
+            alarmingInfoEntity.setValidState("0");
+        }else{
+            alarmingInfoEntity.setValidState("1");
+        }
+
+        wmsOperateResponseEntity = alarmingOperateService.editAlarming(alarmingInfoEntity);
+        return wmsOperateResponseEntity;
+
+    }
+
+    /**
+     * 警情作废
+     *
+     * @param alarmingInfoEntities
+     * @return
+     */
+    @RequestMapping(value = "/delAlarmings",method = RequestMethod.POST)
+    public WmsOperateResponseEntity delAlarmings(@RequestBody List<AlarmingInfoEntity> alarmingInfoEntities){
+
+        WmsOperateResponseEntity wmsOperateResponseEntity = new WmsOperateResponseEntity();
+
+        if (alarmingInfoEntities == null || alarmingInfoEntities.isEmpty()){
+            wmsOperateResponseEntity = authenticationService.packageOpeaterResponseBean("4", false, "警情作废失败：请求不能为空！");
+            return wmsOperateResponseEntity;
+        }
+
+        List<String> ids = null;
+        try{
+            ids = alarmingInfoEntities.stream().map(AlarmingInfoEntity::getId).distinct().collect(Collectors.toList());
+        }catch (Exception e){
+            logger.error("警情作废失败:",e);
+            wmsOperateResponseEntity = authenticationService.packageOpeaterResponseBean("4", false, "警情作废失败："+e.getMessage());
+            return wmsOperateResponseEntity;
+        }
+
+
+
+        wmsOperateResponseEntity = alarmingOperateService.delAlarming(ids);
         return wmsOperateResponseEntity;
 
     }

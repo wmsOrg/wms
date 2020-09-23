@@ -67,4 +67,20 @@ public interface AlarmingOperateService {
      * @return
      */
     WmsOperateResponseEntity registAlarming(AlarmingInfoEntity alarmingInfoEntity);
+
+    /**
+     * 编辑警情
+     *
+     * @param alarmingInfoEntity
+     * @return
+     */
+    WmsOperateResponseEntity editAlarming(AlarmingInfoEntity alarmingInfoEntity);
+
+    /**
+     * 作废警情
+     *
+     * @param ids
+     * @return
+     */
+    WmsOperateResponseEntity delAlarming(List<String> ids);
 }

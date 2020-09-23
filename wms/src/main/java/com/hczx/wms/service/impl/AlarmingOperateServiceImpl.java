@@ -285,4 +285,59 @@ public class AlarmingOperateServiceImpl implements AlarmingOperateService {
         }
 
     }
+
+    /**
+     * 编辑警情
+     *
+     * @param alarmingInfoEntity
+     * @return
+     */
+    @Override
+    public WmsOperateResponseEntity editAlarming(AlarmingInfoEntity alarmingInfoEntity) {
+        WmsOperateResponseEntity wmsOperateResponseEntity = new WmsOperateResponseEntity();
+
+        //编辑警情
+
+        boolean flag = alarmingService.editAlarming(alarmingInfoEntity);
+        if (!flag){
+
+            wmsOperateResponseEntity = authenticationService.packageOpeaterResponseBean("4", false, "编辑警情失败：更新警情信息至数据库失败！");
+            return wmsOperateResponseEntity;
+
+        }else{
+
+            wmsOperateResponseEntity = authenticationService.packageOpeaterResponseBean("9", true, "编辑警情成功！");
+            return wmsOperateResponseEntity;
+
+        }
+    }
+
+    /**
+     * 作废警情
+     *
+     * @param ids
+     * @return
+     */
+    @Override
+    public WmsOperateResponseEntity delAlarming(List<String> ids) {
+
+        WmsOperateResponseEntity wmsOperateResponseEntity = new WmsOperateResponseEntity();
+
+        //编辑警情
+
+        boolean flag = alarmingService.delAlarming(ids);
+        if (!flag){
+
+            wmsOperateResponseEntity = authenticationService.packageOpeaterResponseBean("4", false, "编辑警情失败：更新警情信息至数据库失败！");
+            return wmsOperateResponseEntity;
+
+        }else{
+
+            wmsOperateResponseEntity = authenticationService.packageOpeaterResponseBean("9", true, "编辑警情成功！");
+            return wmsOperateResponseEntity;
+
+        }
+
+
+    }
 }

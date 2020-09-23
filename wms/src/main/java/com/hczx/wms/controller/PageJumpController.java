@@ -288,7 +288,7 @@ public class PageJumpController {
                                  @RequestParam("createTime") String createTime,
                                  @RequestParam("createUserName") String createUserName,
                                  @RequestParam("validState") String validState,
-                                 @RequestParam("describetion") String describetion,
+                                 @RequestParam("discribetion") String discribetion,
                                  Model model) {
 
 
@@ -301,9 +301,9 @@ public class PageJumpController {
         model.addAttribute("createTime",createTime);
         model.addAttribute("createUserName",createUserName);
         model.addAttribute("validState",validState);
-        model.addAttribute("describetion",describetion);
+        model.addAttribute("discribetion",discribetion);
 
-        return "alarmingadd";
+        return "alarmingedit";
     }
 
 

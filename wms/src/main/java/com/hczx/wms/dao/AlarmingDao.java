@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.hczx.wms.entity.alarmingentities.AlarmingInfoEntity;
 import com.hczx.wms.model.AlarmingModel;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -23,7 +24,7 @@ public interface AlarmingDao extends BaseMapper<AlarmingModel> {
      * @param alarmingInfoEntity
      * @return
      */
-    Long countAlarmingInfo(AlarmingInfoEntity alarmingInfoEntity) throws Exception;
+    Long countAlarmingInfo(@Param("alarmingInfoEntity") AlarmingInfoEntity alarmingInfoEntity) throws Exception;
 
     /**
      * 根据条件查询警情列表
@@ -33,5 +34,13 @@ public interface AlarmingDao extends BaseMapper<AlarmingModel> {
      * @param alarmingInfoEntity
      * @return
      */
-    List<AlarmingInfoEntity> listAlarmingInfo(Integer page, Integer size, AlarmingInfoEntity alarmingInfoEntity) throws Exception;
+    List<AlarmingInfoEntity> listAlarmingInfo(@Param("page") Integer page, @Param("size") Integer size, @Param("alarmingInfoEntity") AlarmingInfoEntity alarmingInfoEntity) throws Exception;
+
+    /**
+     * 作废警情
+     *
+     * @param ids
+     * @return
+     */
+    boolean updateValidStateByIds(List<String> ids) throws Exception;
 }

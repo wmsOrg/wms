@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.hczx.wms.entity.alarmingentities.AlarmingInfoEntity;
 import com.hczx.wms.model.AlarmingModel;
 
+import java.util.List;
+
 /**
  * @ClassName: AlarmingService
  * @Description: 警情服务层接口
@@ -20,4 +22,20 @@ public interface AlarmingService extends IService<AlarmingModel> {
      * @return
      */
     boolean saveRegisterEquipment(AlarmingInfoEntity alarmingInfoEntity);
+
+    /**
+     * 编辑警情
+     *
+     * @param alarmingInfoEntity
+     * @return
+     */
+    boolean editAlarming(AlarmingInfoEntity alarmingInfoEntity);
+
+    /**
+     * 作废警情
+     *
+     * @param ids
+     * @return
+     */
+    boolean delAlarming(List<String> ids);
 }

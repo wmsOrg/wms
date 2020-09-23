@@ -49,7 +49,8 @@ layui.use(['table','form', 'jquery', 'laydate', 'layer', 'laypage', 'dialog', 'e
                             "\n" +
                             "                    <div class=\"layui-inline tool-btn\" style=\"float: right;\">\n" +
                             "                        <button class=\"layui-btn layui-btn-xs layui-btn-normal schemeLineBtn\" onclick='infoScheme(\""+divData.id+"\",\""+divData.alarmingId+"\",\""+divData.schemeId+"\");return false;'  lay-event=\"info\"><i class=\"layui-icon\" style=\"color: #323232;\">&#xe705;</i></button>\n" +
-                            "                        <button class=\"layui-btn layui-btn-xs layui-btn-warm schemeLineBtn\" onclick='useScheme(\""+divData.id+"\",\""+divData.alarmingId+"\",\""+divData.schemeId+"\");return false;' lay-filter='editScheme' lay-event=\"edit\"><i class=\"layui-icon\" style=\"color: #323232;\">&#xe642;</i></button>\n" +
+                            "                        <button class=\"layui-btn layui-btn-xs layui-btn-warm schemeLineBtn\" onclick='startPlan(\""+divData.id+"\",\""+divData.alarmingId+"\",\""+divData.schemeId+"\");return false;' lay-filter='outEquipment' lay-event=\"edit\"><i class=\"layui-icon\" style=\"color: #323232;\">&#xe652;</i></button>\n" +
+                            "                        <button class=\"layui-btn layui-btn-xs layui-btn-warm schemeLineBtn\" onclick='stopPlan(\""+divData.id+"\",\""+divData.alarmingId+"\",\""+divData.schemeId+"\");return false;' lay-filter='inEquipment' lay-event=\"edit\"><i class=\"layui-icon\" style=\"color: #323232;\">&#xe651;</i></button>\n" +
                             "                        <button class=\"layui-btn layui-btn-xs layui-btn-danger schemeLineBtn\" lay-event=\"dels\"><i class=\"layui-icon\" style=\"color: #323232;\">&#xe640;</i></button>\n" +
                             "                    </div>\n" +
                             "                    <a class=\"template store-list-box\" href=\"/css/i/463043/1.html\"> <img class=\"store-list-cover\" src=\""+imageUrl+"\"> <h2 class=\"layui-elip\">"+divData.planName+"</h2>\n" +
@@ -79,6 +80,42 @@ layui.use(['table','form', 'jquery', 'laydate', 'layer', 'laypage', 'dialog', 'e
 
     //预案详情
     window.infoScheme = function (planId,alarmingId,schemeId) {
+        if (alarmingId == null || alarmingId == ""){
+            alert("无法查阅预案详情，未找到该警情主键标识;");
+            return false;
+        }else if (planId == null || planId == ""){
+            alert("无法查阅预案详情，未找到该预案主键标识;");
+            return false;
+        }else if (schemeId == null || schemeId == ""){
+            alert("无法查阅预案详情，未找到该方案主键标识;");
+            return false;
+        }else {
+            var url="/wms/toInfoPlan?planId="+planId+"&alarmingId="+alarmingId+"&schemeId="+schemeId;
+            parent.page("预案详情", url, iframeObj, w = "95%", h = "90%");
+            return false;
+        }
+    }
+
+    //预案详情
+    window.startPlan = function (planId,alarmingId,schemeId) {
+        if (alarmingId == null || alarmingId == ""){
+            alert("无法查阅预案详情，未找到该警情主键标识;");
+            return false;
+        }else if (planId == null || planId == ""){
+            alert("无法查阅预案详情，未找到该预案主键标识;");
+            return false;
+        }else if (schemeId == null || schemeId == ""){
+            alert("无法查阅预案详情，未找到该方案主键标识;");
+            return false;
+        }else {
+            var url="/wms/toInfoPlan?planId="+planId+"&alarmingId="+alarmingId+"&schemeId="+schemeId;
+            parent.page("预案详情", url, iframeObj, w = "95%", h = "90%");
+            return false;
+        }
+    }
+
+    //预案详情
+    window.stopPlan = function (planId,alarmingId,schemeId) {
         if (alarmingId == null || alarmingId == ""){
             alert("无法查阅预案详情，未找到该警情主键标识;");
             return false;
