@@ -196,22 +196,25 @@ public class AlarmingOperateServiceImpl implements AlarmingOperateService {
                 CategoryEntity categoryEntity = new CategoryEntity();
                 EquipmentLv1inPlanEntity equipmentLv1inPlanEntity = equipmentLv1inPlanEntities.get(i);
                 String equipmentLv1Id = equipmentLv1inPlanEntity.getEquipmentIdLv1();
+                if (StringUtils.isBlank(equipmentLv1Id)){
+                    continue;
+                }
                 //计算总数
-                List<EquipmentLv1inPlanEntity> tempTotalEquipmentLv1inPlanEntities = equipmentLv1ContentsinPlanEntities.stream().filter(o->o.getEquipmentIdLv1().equals(equipmentLv1Id) && !StringUtils.isBlank(o.getEquipmentIdLv2()) ).collect(Collectors.toList());
+                List<EquipmentLv1inPlanEntity> tempTotalEquipmentLv1inPlanEntities = equipmentLv1ContentsinPlanEntities.stream().filter(o->!StringUtils.isBlank(o.getEquipmentIdLv1())&&o.getEquipmentIdLv1().equals(equipmentLv1Id) && !StringUtils.isBlank(o.getEquipmentIdLv2()) ).collect(Collectors.toList());
                 int totalNum = 0;
                 if (tempTotalEquipmentLv1inPlanEntities != null && !tempTotalEquipmentLv1inPlanEntities.isEmpty()){
 
                     totalNum = tempTotalEquipmentLv1inPlanEntities.size();
                 }
                 //计算出库总数
-                List<EquipmentLv1inPlanEntity> tempOutEquipmentLv1inPlanEntities = equipmentLv1ContentsinPlanEntities.stream().filter(o->o.getEquipmentIdLv1().equals(equipmentLv1Id) && !StringUtils.isBlank(o.getEquipmentIdLv2()) && (StringUtils.isBlank(o.getEquipmentInLv2()) || o.getEquipmentInLv2().equals("0"))).collect(Collectors.toList());
+                List<EquipmentLv1inPlanEntity> tempOutEquipmentLv1inPlanEntities = equipmentLv1ContentsinPlanEntities.stream().filter(o->!StringUtils.isBlank(o.getEquipmentIdLv1())&&o.getEquipmentIdLv1().equals(equipmentLv1Id) && !StringUtils.isBlank(o.getEquipmentIdLv2()) && (StringUtils.isBlank(o.getEquipmentInLv2()) || o.getEquipmentInLv2().equals("0"))).collect(Collectors.toList());
                 int outNum = 0;
                 if (tempOutEquipmentLv1inPlanEntities != null && !tempOutEquipmentLv1inPlanEntities.isEmpty()){
 
                     outNum = tempOutEquipmentLv1inPlanEntities.size();
                 }
                 //计算入库总数
-                List<EquipmentLv1inPlanEntity> tempInEquipmentLv1inPlanEntities = equipmentLv1ContentsinPlanEntities.stream().filter(o->o.getEquipmentIdLv1().equals(equipmentLv1Id) && !StringUtils.isBlank(o.getEquipmentIdLv2()) && (!StringUtils.isBlank(o.getEquipmentInLv2()) && o.getEquipmentInLv2().equals("1"))).collect(Collectors.toList());
+                List<EquipmentLv1inPlanEntity> tempInEquipmentLv1inPlanEntities = equipmentLv1ContentsinPlanEntities.stream().filter(o->!StringUtils.isBlank(o.getEquipmentIdLv1())&&o.getEquipmentIdLv1().equals(equipmentLv1Id) && !StringUtils.isBlank(o.getEquipmentIdLv2()) && (!StringUtils.isBlank(o.getEquipmentInLv2()) && o.getEquipmentInLv2().equals("1"))).collect(Collectors.toList());
                 int inNum = 0;
                 if (tempInEquipmentLv1inPlanEntities != null && !tempInEquipmentLv1inPlanEntities.isEmpty()){
 

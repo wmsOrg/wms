@@ -1,9 +1,11 @@
 package com.hczx.wms.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.hczx.wms.entity.planentities.PlanEquipmentsEntity;
 import com.hczx.wms.entity.planentities.PlanQueryEntity;
 import com.hczx.wms.model.PlanModel;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -24,4 +26,13 @@ public interface PlanDao extends BaseMapper<PlanModel> {
      * @return
      */
     List<PlanQueryEntity> listPlan(PlanQueryEntity planQueryEntity);
+
+    /**
+     * 查询出警设备
+     *
+     * @param planId
+     * @param useState
+     * @return
+     */
+    List<PlanEquipmentsEntity> queryTreatTheCasesEquipments(@Param("planId") String planId, @Param("useState") String useState);
 }

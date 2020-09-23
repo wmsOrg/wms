@@ -108,7 +108,7 @@ layui.use(['table','form', 'jquery', 'laydate', 'layer', 'laypage', 'dialog', 'e
             alert("无法查阅预案详情，未找到该方案主键标识;");
             return false;
         }else {
-            var url="/wms/toInfoPlan?planId="+planId+"&alarmingId="+alarmingId+"&schemeId="+schemeId;
+            var url="/wms/toStartPlan?planId="+planId+"&alarmingId="+alarmingId+"&schemeId="+schemeId;
             parent.page("预案详情", url, iframeObj, w = "95%", h = "90%");
             return false;
         }

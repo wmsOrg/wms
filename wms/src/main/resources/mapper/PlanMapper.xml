@@ -29,5 +29,23 @@
         </if>
     </select>
 
+    <!--查询出警设备-->
+    <select id="queryTreatTheCasesEquipments" parameterType="java.lang.String" resultType="com.hczx.wms.entity.planentities.PlanEquipmentsEntity">
+        SELECT
+            plan.id planId,
+            plan.alarmingId alarmingId,
+            plan.schemeId schemeId,
+            ser.equipmentId equipmentId,
+	        equipment.equipmentRfid equipmentRfid,
+	        equipment.inboundState equipmentInBoundState
+        FROM
+            plan
+            LEFT JOIN alarm_scheme_equipment_rela aser ON(aser.planId = plan.id AND aser.alarmingId = plan.alarmingId AND aser.schemeId = plan.schemeId)
+            LEFT JOIN scheme_equipment_rela ser ON(aser.seRelaId = ser.id)
+            LEFT JOIN equipment ON(ser.equipmentId = equipment.id)
+        WHERE
+            plan.id = #{planId}
+            AND useState = #{useState}
+    </select>
 
 </mapper>
