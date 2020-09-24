@@ -7,18 +7,26 @@ import com.hczx.wms.entity.alarmingentities.AlarmingInfoEntity;
 import com.hczx.wms.entity.cacheentities.EquipmentCacheEntity;
 import com.hczx.wms.entity.planentities.PlanEquipmentsEntity;
 import com.hczx.wms.framework.cache.EquipmentCache;
+import com.hczx.wms.model.AlarmRecordModel;
 import com.hczx.wms.model.EquipmentModel;
 import com.hczx.wms.model.PlanModel;
+import com.hczx.wms.model.UserModel;
+import com.hczx.wms.service.AlarmingOperateService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Controller
@@ -26,7 +34,7 @@ import java.util.stream.Collectors;
 public class PageJumpController {
 
     @Autowired
-    private PlanDao planDao;
+    private AlarmingOperateService alarmingOperateService;
 
     /**
      * 跳转首页
@@ -181,72 +189,36 @@ public class PageJumpController {
     public String toInfoPlan(@RequestParam("planId") String planId,
                              @RequestParam("alarmingId") String alarmingId,
                              @RequestParam("schemeId") String schemeId,
+                             @RequestParam("operation") String operation,
                              Model model) {
 
         model.addAttribute("planId",planId);
         model.addAttribute("alarmingId",alarmingId);
         model.addAttribute("schemeId",schemeId);
+        model.addAttribute("operation",operation);
 
         return "infoplan";
     }
 
     /**
-     * 跳转预案详情界面
+     * 跳转预案详情启用界面
      *
      * @return
      */
+    @Transactional
     @RequestMapping("/toStartPlan")
     public String toStartPlan(@RequestParam("planId") String planId,
-                             @RequestParam("alarmingId") String alarmingId,
-                             @RequestParam("schemeId") String schemeId,
-                             Model model) {
+                              @RequestParam("alarmingId") String alarmingId,
+                              @RequestParam("schemeId") String schemeId,
+                              @RequestParam("operation") String operation,
+                              Model model) {
 
         model.addAttribute("planId",planId);
         model.addAttribute("alarmingId",alarmingId);
         model.addAttribute("schemeId",schemeId);
+        model.addAttribute("operation",operation);
 
-        PlanModel planModel = new PlanModel();
-        planModel.setId(planId);
-        planModel.setUseState("1");
-
-
-         boolean flag = planModel.updateById();
-         if (flag){
-
-             List<PlanEquipmentsEntity> planEquipmentsEntityList = planDao.queryTreatTheCasesEquipments(planId,"1");
-             EquipmentCacheEntity equipmentCacheEntity = new EquipmentCacheEntity();
-             if (planEquipmentsEntityList!= null && !planEquipmentsEntityList.isEmpty()){
-
-                 List<String> parentEquipmentIds = planEquipmentsEntityList.stream().filter(o->!StringUtils.isBlank(o.getEquipmentId())).map(PlanEquipmentsEntity::getEquipmentId).distinct().collect(Collectors.toList());
-
-                 if (parentEquipmentIds != null && !parentEquipmentIds.isEmpty()) {
-                     QueryWrapper<EquipmentModel> queryWrapper = new QueryWrapper<>();
-                     queryWrapper.in("equipmentPreId",parentEquipmentIds);
-                     List<EquipmentModel> equipmentModels = new EquipmentModel().selectList(queryWrapper);
-                     if (equipmentModels != null && !equipmentModels.isEmpty()){
-                         int size = equipmentModels.size();
-                         for (int i = 0; i < size; i++){
-                             PlanEquipmentsEntity planEquipmentsEntity = new PlanEquipmentsEntity();
-                             planEquipmentsEntity.setPlanId(planId);
-                             planEquipmentsEntity.setAlarmingId(alarmingId);
-                             planEquipmentsEntity.setSchemeId(schemeId);
-                             planEquipmentsEntity.setEquipmentId(equipmentModels.get(i).getId());
-                             planEquipmentsEntity.setEquipmentRfid(equipmentModels.get(i).getEquipmentRfid());
-                             planEquipmentsEntity.setEquipmentInBoundState(equipmentModels.get(i).getInboundState());
-                             planEquipmentsEntityList.add(planEquipmentsEntity);
-                         }
-                     }
-                 }
-
-
-                 equipmentCacheEntity.setKey("TreatTheCases");
-                 equipmentCacheEntity.setValue(planEquipmentsEntityList);
-                 EquipmentCache.putCache(planId,equipmentCacheEntity);
-             }
-
-
-
-         }
+//        alarmingOperateService.startPlan(planId,schemeId,alarmingId,request);
 
         return "startplan";
     }

@@ -194,7 +194,7 @@ public class AlarmingController {
      * @return
      */
     @RequestMapping(value = "/planContentList",method = RequestMethod.POST)
-    public WmsOperateResponseEntity planContentList(@RequestBody PlanContentQueryEntity planQueryEntity){
+    public WmsOperateResponseEntity planContentList(@RequestBody PlanContentQueryEntity planQueryEntity,HttpServletRequest request){
 
         WmsOperateResponseEntity wmsOperateResponseEntity = new WmsOperateResponseEntity();
 
@@ -213,7 +213,12 @@ public class AlarmingController {
             return wmsOperateResponseEntity;
         }
 
-        wmsOperateResponseEntity = alarmingOperateService.planList(planQueryEntity);
+        if (StringUtils.isBlank(planQueryEntity.getOperation())){
+            wmsOperateResponseEntity = authenticationService.packageOpeaterResponseBean("4", false, "预案所绑定的设备查询失败：无法查询到具体操作类型！");
+            return wmsOperateResponseEntity;
+        }
+
+        wmsOperateResponseEntity = alarmingOperateService.planList(planQueryEntity,request);
         return wmsOperateResponseEntity;
 
     }

@@ -1,7 +1,7 @@
 $(function () {
     initPage();
 
-    setInterval(function(){ initPage(); }, 3000);
+    // setInterval(function(){ initPage(); }, 3000);
 
 
 });
@@ -10,10 +10,12 @@ function initPage() {
     var alarmingId = $("#alarmingId").val();
     var planId = $("#planId").val();
     var schemeId = $("#schemeId").val();
+    var operation = $("#operation").val();
     var articleFrom = {};
     articleFrom.alarmingId = alarmingId;
     articleFrom.planId = planId;
     articleFrom.schemeId = schemeId;
+    articleFrom.operation = operation;
 
     $.ajax({
         url: '/wms/planContentList',
@@ -40,7 +42,8 @@ function initPage() {
 
                             if(data.equipmentSelectedLv1 != "1") {
                                 htmlContent += "          <li class=\"category\">\n" +
-                                    "            <a href=\"javascript:;\" onclick=\"searchEquipment('" + equipmentParentId + "');return false;\" class=\"clearfix\">\n" +
+                                    "            <div>\n" +
+                                    "            <a href=\"javascript:;\" onclick=\"searchEquipment('" + equipmentParentId + "');return false;\" class=\"clearfix\" style='width: 85%'>\n" +
                                     "              <div class=\"icon-bg-up bg-gray f-l\"></div>\n" +
                                     "              <div class=\"icon-bg-down bg-gray f-l\"></div>\n" +
                                     "              <div class=\"right-text-con\">\n" +
@@ -48,11 +51,15 @@ function initPage() {
                                     "                <p>内部设备:总计<span class=\"color-gray\">" + data.equipmentLv2Number + "</span>入库<span class=\"color-gray\">" + data.equipmentLv2InNumber + "</span>出库<span class=\"color-gray\">" + data.equipmentLv2OutNumber + "</span></p>\n" +
                                     "              </div>\n" +
                                     "            </a>\n" +
+                                    "            <button>全部出去</button>\n" +
+                                    "            <button>箱子出库</button>\n" +
+                                    "            </div>\n" +
                                     "          </li>";
                             }else{
                                 if (data.equipmentInLv1 == '1') {
                                     if (data.equipmentLv2Number == data.equipmentLv2InNumber) {
                                         htmlContent += "          <li class=\"category\">\n" +
+                                            "            <div>\n" +
                                             "            <a href=\"javascript:;\" onclick=\"searchEquipment('" + equipmentParentId + "');return false;\" class=\"clearfix\">\n" +
                                             "              <div class=\"icon-bg-up bg-green f-l\"></div>\n" +
                                             "              <div class=\"icon-bg-down bg-green f-l\"></div>\n" +
@@ -61,9 +68,13 @@ function initPage() {
                                             "                <p>内部设备:总计<span class=\"color-org\">" + data.equipmentLv2Number + "</span>入库<span class=\"color-green\">" + data.equipmentLv2InNumber + "</span>出库<span class=\"color-red\">" + data.equipmentLv2OutNumber + "</span></p>\n" +
                                             "              </div>\n" +
                                             "            </a>\n" +
+                                            "            <button>全部出去</button>\n" +
+                                            "            <button>箱子出库</button>\n" +
+                                            "            </div>\n" +
                                             "          </li>";
                                     }else {
                                         htmlContent += "          <li class=\"category\">\n" +
+                                            "            <div>\n" +
                                             "            <a href=\"javascript:;\" onclick=\"searchEquipment('" + equipmentParentId + "');return false;\" class=\"clearfix\">\n" +
                                             "              <div class=\"icon-bg-up bg-green f-l\"></div>\n" +
                                             "              <div class=\"icon-bg-down bg-red f-l\"></div>\n" +
@@ -72,10 +83,14 @@ function initPage() {
                                             "                <p>内部设备:总计<span class=\"color-org\">" + data.equipmentLv2Number + "</span>入库<span class=\"color-green\">" + data.equipmentLv2InNumber + "</span>出库<span class=\"color-red\">" + data.equipmentLv2OutNumber + "</span></p>\n" +
                                             "              </div>\n" +
                                             "            </a>\n" +
+                                            "            <button>全部出去</button>\n" +
+                                            "            <button>箱子出库</button>\n" +
+                                            "            </div>\n" +
                                             "          </li>";
                                     }
                                 }else{
                                     htmlContent += "          <li class=\"category\">\n" +
+                                        "            <div>\n" +
                                         "            <a href=\"javascript:;\" onclick=\"searchEquipment('" + equipmentParentId + "');return false;\" class=\"clearfix\">\n" +
                                         "              <div class=\"icon-bg-up bg-red f-l\"></div>\n" +
                                         "              <div class=\"icon-bg-down bg-red f-l\"></div>\n" +
@@ -84,6 +99,9 @@ function initPage() {
                                         "                <p>内部设备:总计<span class=\"color-org\">" + data.equipmentLv2Number + "</span>入库<span class=\"color-green\">" + data.equipmentLv2InNumber + "</span>出库<span class=\"color-red\">" + data.equipmentLv2OutNumber + "</span></p>\n" +
                                         "              </div>\n" +
                                         "            </a>\n" +
+                                        "            <button>全部出去</button>\n" +
+                                        "            <button>箱子出库</button>\n" +
+                                        "            </div>\n" +
                                         "          </li>";
                                 }
                             }
@@ -106,4 +124,11 @@ function initPage() {
             layer.msg('系统错误' + error);
         }
     });
+}
+function outover() {
+
+    var planId = $("#planId").val();
+    var schemeId = $("#schemeId").val();
+    var alarmingId = $("#alarmingId").val();
+
 }

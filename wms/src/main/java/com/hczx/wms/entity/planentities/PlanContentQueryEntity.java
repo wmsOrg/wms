@@ -15,6 +15,8 @@ public class PlanContentQueryEntity {
 
     private String schemeId;
 
+    private String operation;
+
     public String getAlarmingId() {
         return alarmingId;
     }
@@ -37,5 +39,13 @@ public class PlanContentQueryEntity {
 
     public void setSchemeId(String schemeId) {
         this.schemeId = schemeId;
+    }
+
+    public String getOperation() {
+        return operation;
+    }
+
+    public void setOperation(String operation) {
+        this.operation = operation;
     }
 }

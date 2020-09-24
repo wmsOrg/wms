@@ -9,6 +9,7 @@ import com.hczx.wms.entity.planentities.CategoryEntity;
 import com.hczx.wms.entity.planentities.PlanContentQueryEntity;
 import com.hczx.wms.entity.schemeequipmentrelaentities.EquipmentsInSchemeEntity;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -47,7 +48,7 @@ public interface AlarmingOperateService {
      * @param planQueryEntity
      * @return
      */
-    WmsOperateResponseEntity planList(PlanContentQueryEntity planQueryEntity);
+    WmsOperateResponseEntity planList(PlanContentQueryEntity planQueryEntity,HttpServletRequest request);
 
     /**
      * 封装柜内设备实体
@@ -83,4 +84,13 @@ public interface AlarmingOperateService {
      * @return
      */
     WmsOperateResponseEntity delAlarming(List<String> ids);
+
+    /**
+     * 启动警情
+     *
+     * @param planId
+     * @param schemeId
+     * @param alarmingId
+     */
+    void startPlan(String planId, String schemeId, String alarmingId, HttpServletRequest request);
 }
