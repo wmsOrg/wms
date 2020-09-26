@@ -8,6 +8,7 @@ import com.hczx.wms.entity.enquipmententities.EquipmentLv1inPlanEntity;
 import com.hczx.wms.entity.planentities.CategoryEntity;
 import com.hczx.wms.entity.planentities.PlanContentQueryEntity;
 import com.hczx.wms.entity.schemeequipmentrelaentities.EquipmentsInSchemeEntity;
+import org.springframework.ui.Model;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -48,7 +49,7 @@ public interface AlarmingOperateService {
      * @param planQueryEntity
      * @return
      */
-    WmsOperateResponseEntity planList(PlanContentQueryEntity planQueryEntity,HttpServletRequest request);
+    WmsOperateResponseEntity planList(PlanContentQueryEntity planQueryEntity);
 
     /**
      * 封装柜内设备实体
@@ -92,5 +93,31 @@ public interface AlarmingOperateService {
      * @param schemeId
      * @param alarmingId
      */
-    void startPlan(String planId, String schemeId, String alarmingId, HttpServletRequest request);
+    void startPlan(String planId, String schemeId, String alarmingId, HttpServletRequest request, Model model);
+
+    /**
+     * 关闭预案
+     * @param planId
+     * @param schemeId
+     * @param alarmingId
+     * @param request
+     * @param model
+     */
+    void closePlan(String planId, String schemeId, String alarmingId, HttpServletRequest request, Model model);
+
+    /**
+     * 出库完毕
+     *
+     * @param planQueryEntity
+     * @return
+     */
+    WmsOperateResponseEntity outover(PlanContentQueryEntity planQueryEntity);
+
+    /**
+     * 入库完毕
+     *
+     * @param planQueryEntity
+     * @return
+     */
+    WmsOperateResponseEntity inover(PlanContentQueryEntity planQueryEntity);
 }

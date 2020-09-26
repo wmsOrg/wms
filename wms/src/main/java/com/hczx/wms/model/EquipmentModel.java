@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.activerecord.Model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * @ClassName: EquipmentModel
@@ -209,5 +210,33 @@ public class EquipmentModel extends Model<EquipmentModel> {
 
     public void setInboundState(String inboundState) {
         this.inboundState = inboundState;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        EquipmentModel that = (EquipmentModel) o;
+        return Objects.equals(id, that.id) &&
+                Objects.equals(equipmentRfid, that.equipmentRfid) &&
+                Objects.equals(equipmentName, that.equipmentName) &&
+                Objects.equals(equipmentGrade, that.equipmentGrade) &&
+                Objects.equals(equipmentClass, that.equipmentClass) &&
+                Objects.equals(equipmentClassName, that.equipmentClassName) &&
+                Objects.equals(equipmentPreId, that.equipmentPreId) &&
+                Objects.equals(equipmentCompanyId, that.equipmentCompanyId) &&
+                Objects.equals(equipmentCompanyName, that.equipmentCompanyName) &&
+                Objects.equals(createTime, that.createTime) &&
+                Objects.equals(editTime, that.editTime) &&
+                Objects.equals(validState, that.validState) &&
+                Objects.equals(occupyState, that.occupyState) &&
+                Objects.equals(linkingNo, that.linkingNo) &&
+                Objects.equals(inboundState, that.inboundState);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, equipmentRfid, equipmentName, equipmentGrade, equipmentClass, equipmentClassName, equipmentPreId, equipmentCompanyId, equipmentCompanyName, createTime, editTime, validState, occupyState, linkingNo, inboundState);
     }
 }

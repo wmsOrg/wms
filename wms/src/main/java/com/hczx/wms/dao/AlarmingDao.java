@@ -2,6 +2,7 @@ package com.hczx.wms.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.hczx.wms.entity.alarmingentities.AlarmingInfoEntity;
+import com.hczx.wms.entity.planentities.PlanEquipmentsEntity;
 import com.hczx.wms.model.AlarmingModel;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -43,4 +44,12 @@ public interface AlarmingDao extends BaseMapper<AlarmingModel> {
      * @return
      */
     boolean updateValidStateByIds(List<String> ids) throws Exception;
+
+    /**
+     * 查询某个方案下一级设备出入库情况
+     *
+     * @param planId
+     * @param inoutState
+     */
+    List<PlanEquipmentsEntity> queryInOutEquipmentLv1(@Param("planId") String planId, @Param("inoutState") String inoutState) throws Exception;
 }

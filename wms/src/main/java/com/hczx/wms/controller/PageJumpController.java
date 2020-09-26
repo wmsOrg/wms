@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.hczx.wms.dao.PlanDao;
 import com.hczx.wms.entity.alarmingentities.AlarmingInfoEntity;
+import com.hczx.wms.entity.authenticationentities.UserAllPermissionEntity;
 import com.hczx.wms.entity.cacheentities.EquipmentCacheEntity;
 import com.hczx.wms.entity.planentities.PlanEquipmentsEntity;
 import com.hczx.wms.framework.cache.EquipmentCache;
@@ -12,6 +13,7 @@ import com.hczx.wms.model.EquipmentModel;
 import com.hczx.wms.model.PlanModel;
 import com.hczx.wms.model.UserModel;
 import com.hczx.wms.service.AlarmingOperateService;
+import com.hczx.wms.service.AuthenticationService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -36,6 +38,10 @@ public class PageJumpController {
     @Autowired
     private AlarmingOperateService alarmingOperateService;
 
+    @Autowired
+    private AuthenticationService authenticationService;
+
+
     /**
      * 跳转首页
      *
@@ -43,6 +49,8 @@ public class PageJumpController {
      */
     @RequestMapping("/toIndex")
     public String toIndex() {
+
+        UserAllPermissionEntity userAllPermissionEntity =  authenticationService.getInfo();
         return "html/index";
     }
 
@@ -211,6 +219,7 @@ public class PageJumpController {
                               @RequestParam("alarmingId") String alarmingId,
                               @RequestParam("schemeId") String schemeId,
                               @RequestParam("operation") String operation,
+                              HttpServletRequest request,
                               Model model) {
 
         model.addAttribute("planId",planId);
@@ -218,12 +227,34 @@ public class PageJumpController {
         model.addAttribute("schemeId",schemeId);
         model.addAttribute("operation",operation);
 
-//        alarmingOperateService.startPlan(planId,schemeId,alarmingId,request);
+        alarmingOperateService.startPlan(planId,schemeId,alarmingId,request,model);
 
         return "startplan";
     }
 
+    /**
+     * 跳转预案详情启用界面
+     *
+     * @return
+     */
+    @Transactional
+    @RequestMapping("/toClosePlan")
+    public String toClosePlan(@RequestParam("planId") String planId,
+                              @RequestParam("alarmingId") String alarmingId,
+                              @RequestParam("schemeId") String schemeId,
+                              @RequestParam("operation") String operation,
+                              HttpServletRequest request,
+                              Model model) {
 
+        model.addAttribute("planId",planId);
+        model.addAttribute("alarmingId",alarmingId);
+        model.addAttribute("schemeId",schemeId);
+        model.addAttribute("operation",operation);
+
+        alarmingOperateService.closePlan(planId,schemeId,alarmingId,request,model);
+
+        return "closeplan";
+    }
 
     /**
      * 跳转方案列表界面

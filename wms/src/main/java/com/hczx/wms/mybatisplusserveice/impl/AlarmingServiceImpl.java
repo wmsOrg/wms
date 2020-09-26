@@ -3,6 +3,7 @@ package com.hczx.wms.mybatisplusserveice.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hczx.wms.dao.AlarmingDao;
 import com.hczx.wms.entity.alarmingentities.AlarmingInfoEntity;
+import com.hczx.wms.entity.planentities.PlanEquipmentsEntity;
 import com.hczx.wms.model.AlarmingModel;
 import com.hczx.wms.model.EquipmentModel;
 import com.hczx.wms.mybatisplusserveice.AlarmingService;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;

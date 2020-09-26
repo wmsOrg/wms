@@ -81,4 +81,28 @@
         </foreach>
     </update>
 
+    <select id="queryInOutEquipmentLv1" parameterType="java.lang.String" resultType="com.hczx.wms.entity.planentities.PlanEquipmentsEntity">
+
+        SELECT
+            plan.id planId,
+            plan.schemeId schemeId,
+            plan.alarmingId alarmingId,
+            equipment.id equipmentId,
+            equipment.equipmentRfid equipmentRfid,
+            equipment.inboundState inoutState
+        FROM
+            plan
+            LEFT JOIN alarm_scheme_equipment_rela aser ON (plan.id = aser.planId)
+            LEFT JOIN scheme_equipment_rela ser ON (ser.id = aser.seRelaId)
+            LEFT JOIN equipment ON (equipment.id = ser.equipmentId)
+        WHERE
+        equipment.validState = '1'
+        AND plan.id = #{planId}
+        <if test="inoutState!=null and inoutState!='' ">
+            AND equipment.inoutState = #{inoutState}
+        </if>
+
+
+    </select>
+
 </mapper>

@@ -7,6 +7,12 @@ import com.hczx.wms.entity.common.WmsOperateResponseEntity;
 import com.hczx.wms.model.UserModel;
 import com.hczx.wms.service.AuthenticationService;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +33,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/wms")
 public class AuthenticationController {
+
+    private Logger logger = LoggerFactory.getLogger(AuthenticationController.class);
 
     @Autowired
     private UserDao userDao;
@@ -81,8 +89,18 @@ public class AuthenticationController {
             int size = userModels.size();
             if (size == 1){
 
-                wmsOperateResponseEntity = authenticationService.packageOpeaterResponseBean("9", true, "登陆成功！");
-                request.getSession().setAttribute("LOGIN_USER",userModels.get(0));
+                Subject currentUser = SecurityUtils.getSubject();
+                UsernamePasswordToken token = new UsernamePasswordToken(authenticationEntity.getUserName(), authenticationEntity.getPassword());
+                try {
+                    currentUser.login(token);
+//                    info.put("result", "success");
+                    wmsOperateResponseEntity = authenticationService.packageOpeaterResponseBean("9", true, "登陆成功！");
+                } catch (AuthenticationException e) {
+//                    info.put("result", "fail");
+                    logger.error("登陆失败:",e);
+                    wmsOperateResponseEntity = authenticationService.packageOpeaterResponseBean("9", true, "登陆失败:"+e.getMessage());
+                }
+
                 return wmsOperateResponseEntity;
 
             }else if (size >1){

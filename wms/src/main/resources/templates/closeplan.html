@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="UTF-8">
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<title>网站后台管理模版</title>
+	<link rel="stylesheet" type="text/css" href="../static/layui/css/layui.css"/>
+	<link rel="stylesheet" type="text/css" href="../static/css/admin.css"/>
+
+<!--	<link rel="stylesheet" href="../static/css/slideinventory/base.css">-->
+	<link rel="stylesheet" href="../static/css/slideinventory/home.css">
+	<style>
+
+		.category{
+			width:25%;
+			height:80px;
+			margin:3px;
+			/*background:red;*/
+			display:inline-block;
+		}
+	</style>
+</head>
+<body style="height:100%;min-height: 650px;">
+<input id="alarmingId" type="text" style="display: none" th:value="${alarmingId != null ? alarmingId : ''}">
+<input id="planId" type="text" style="display: none" th:value="${planId != null ? planId : ''}">
+<input id="schemeId" type="text" style="display: none" th:value="${schemeId != null ? schemeId : ''}">
+<input id="operation" type="text" style="display: none" th:value="${operation != null ? operation : ''}">
+<input id="alarmRecordId" type="text" style="display: none" th:value="${alarmRecordId != null ? alarmRecordId : ''}">
+
+<div class="wrap-container welcome-container" style="height:100%;min-height: 650px;">
+	<div class="row" style="height:100%;min-height: 650px;">
+		<div class="welcome-left-container col-lg-12" style="height:100%;min-height: 650px;">
+			<div id="currentcategory" class="data-show" style="white-space:nowrap;width:100%;height:100%;min-height: 600px;overflow:auto;">
+
+			</div>
+			<div style="position: absolute;bottom: 0;left: 45%;"><button id = "outover" onclick="inover();return false;" class="layui-btn layui-btn-normal" lay-filter="equipmentEidtForm">入库完毕</button></div>
+		</div>
+	</div>
+</div>
+
+<div class="global_toolbar">
+
+	<div class="toolbar_content">
+		<div class="css_column cart_column js_column" id="shop_cart">
+			<h4>
+				库存详情<a href="javascript:void(0)" class="icon-close " >X</a>
+			</h4>
+			<h2>
+				入库详情
+			</h2>
+			<div id="resultData" style="height: 300px;overflow: auto">
+
+			</div>
+			<h2>
+				出库详情
+			</h2>
+			<div id="resultData1" style="height: 300px;overflow: auto">
+
+
+			</div>
+
+		</div>
+	</div>
+</div>
+
+<script src="../../static/layui/layui.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" src="../static/js/slideinventory/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="../static/js/slideinventory/common.js"></script>
+<script type="text/javascript" src="../static/js/alarming/useschemes/infoplan/infoplan.js"></script>
+<script type="text/javascript">
+	layui.use(['layer','jquery'], function(){
+		var layer 	= layui.layer;
+		var $=layui.jquery;
+
+	});
+</script>
+</body>
+</html>

@@ -1,7 +1,10 @@
 package com.hczx.wms.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.hczx.wms.entity.authenticationentities.AuthenticationEntity;
+import com.hczx.wms.entity.authenticationentities.UserAllPermissionEntity;
 import com.hczx.wms.entity.common.WmsOperateResponseEntity;
+import com.hczx.wms.model.UserModel;
 
 /**
  * @ClassName: AuthenticationService
@@ -30,4 +33,21 @@ public interface AuthenticationService {
      */
     WmsOperateResponseEntity packageOpeaterResponseBean(String code, boolean flag, String msg);
 
+
+    /**
+     * 获取用户
+     *
+     * @param loginName
+     * @param password
+     * @return
+     */
+    UserModel getUser(String loginName, String password);
+
+    /**
+     * 查询当前登录用户的权限等信息
+     * @return
+     */
+    UserAllPermissionEntity getInfo();
+
+    JSONObject logout();
 }

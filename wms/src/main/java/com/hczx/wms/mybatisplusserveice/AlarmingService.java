@@ -2,6 +2,7 @@ package com.hczx.wms.mybatisplusserveice;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.hczx.wms.entity.alarmingentities.AlarmingInfoEntity;
+import com.hczx.wms.entity.planentities.PlanEquipmentsEntity;
 import com.hczx.wms.model.AlarmingModel;
 
 import java.util.List;

@@ -3,6 +3,7 @@ package com.hczx.wms.dao;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.hczx.wms.model.AlarmRecordModel;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * @ClassName: AlarmRecordDao
@@ -13,4 +14,13 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface AlarmRecordDao extends BaseMapper<AlarmRecordModel> {
+
+    /**
+     *
+     * 获取当前预案最新记录
+     *
+     * @param planId
+     * @return
+     */
+    AlarmRecordModel queryCurrentlarmRecordByPlanId(@Param("planId") String planId);
 }

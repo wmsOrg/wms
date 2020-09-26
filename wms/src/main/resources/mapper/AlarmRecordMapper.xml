@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hczx.wms.dao.AlarmRecordDao">
+
+    <!--获取当前预案最新记录-->
+    <select id="queryCurrentlarmRecordByPlanId" parameterType="java.lang.String" resultType="com.hczx.wms.model.AlarmRecordModel">
+
+        SELECT
+            *
+        FROM
+            alarm_record a
+        WHERE
+            a.scheme_id = #{planId}
+            AND a.occur_date = (SELECT MAX(b.occur_date) FROM alarm_record b WHERE b.scheme_id =  #{planId})
+
+
+    </select>
+
+</mapper>

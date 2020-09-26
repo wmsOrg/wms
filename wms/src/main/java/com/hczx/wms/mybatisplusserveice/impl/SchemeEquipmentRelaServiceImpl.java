@@ -10,6 +10,7 @@ import com.hczx.wms.mybatisplusserveice.SchemeEquipmentRelaService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
@@ -34,6 +35,7 @@ public class SchemeEquipmentRelaServiceImpl extends ServiceImpl<SchemeEquipmentR
     @Autowired
     private SchemeEquipmentRelaDao schemeEquipmentRelaDao;
 
+    @Lazy
     @Autowired
     private SchemeEquipmentRelaService schemeEquipmentRelaService;
 

@@ -1,6 +1,7 @@
 package com.hczx.wms.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.hczx.wms.dao.AlarmRecordDao;
 import com.hczx.wms.dao.AlarmingDao;
 import com.hczx.wms.dao.PlanDao;
 import com.hczx.wms.dao.SchemeDao;
@@ -16,6 +17,7 @@ import com.hczx.wms.entity.planentities.PlanEquipmentsEntity;
 import com.hczx.wms.entity.schemeequipmentrelaentities.EquipmentsInSchemeEntity;
 import com.hczx.wms.framework.cache.EquipmentCache;
 import com.hczx.wms.model.*;
+import com.hczx.wms.mybatisplusserveice.AlarmRecordService;
 import com.hczx.wms.mybatisplusserveice.AlarmSchemeEquipmentRelaService;
 import com.hczx.wms.mybatisplusserveice.AlarmingService;
 import com.hczx.wms.service.AlarmingOperateService;
@@ -26,6 +28,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
@@ -50,9 +53,6 @@ public class AlarmingOperateServiceImpl implements AlarmingOperateService {
     private AlarmingService alarmingService;
 
     @Autowired
-    private AlarmingOperateService alarmingOperateService;
-
-    @Autowired
     private AuthenticationService authenticationService;
 
     @Autowired
@@ -63,6 +63,12 @@ public class AlarmingOperateServiceImpl implements AlarmingOperateService {
 
     @Autowired
     private PlanDao planDao;
+
+    @Autowired
+    private AlarmRecordService alarmRecordService;
+
+    @Autowired
+    private AlarmRecordDao alarmRecordDao;
 
     /**
      * 查询警情信息
@@ -165,7 +171,7 @@ public class AlarmingOperateServiceImpl implements AlarmingOperateService {
      * @return
      */
     @Override
-    public WmsOperateResponseEntity planList(PlanContentQueryEntity planQueryEntity,HttpServletRequest request) {
+    public WmsOperateResponseEntity planList(PlanContentQueryEntity planQueryEntity) {
 
         WmsOperateResponseEntity wmsOperateResponseEntity = new WmsOperateResponseEntity();
 
@@ -186,17 +192,12 @@ public class AlarmingOperateServiceImpl implements AlarmingOperateService {
         //封装成前台展示格式
         if (equipmentLv1inPlanEntities == null || equipmentLv1inPlanEntities.isEmpty()){
 
-            if (planQueryEntity.getOperation().equals("start")){
-                wmsOperateResponseEntity = authenticationService.packageOpeaterResponseBean("4", false, "预案所绑定的设备查询异常:未绑定设备！");
-                return wmsOperateResponseEntity;
-            }
-
             wmsOperateResponseEntity = authenticationService.packageOpeaterResponseBean("9", true, "预案所绑定的设备查询成功！");
             return wmsOperateResponseEntity;
 
         }else {
 
-
+            wmsOperateResponseEntity = authenticationService.packageOpeaterResponseBean("9", true, "预案所绑定的设备查询成功！");
             int equipmentLv1inPlanEntitiesSize = equipmentLv1inPlanEntities.size();
 
             boolean flag= true;
@@ -240,14 +241,6 @@ public class AlarmingOperateServiceImpl implements AlarmingOperateService {
                     inNum = tempInEquipmentLv1inPlanEntities.size();
                 }
 
-                if (planQueryEntity.getOperation().equals("start") && equipmentLv1inPlanEntity.getEquipmentSelectedLv1().equals("1") && outNum>0){
-
-                    flag &= false;
-
-                }else{
-                    flag &= true;
-                }
-
                 categoryEntity = packageCategoryEntity(equipmentLv1inPlanEntity, totalNum,inNum,outNum);
                 categoryEntities.add(categoryEntity);
             }
@@ -258,15 +251,7 @@ public class AlarmingOperateServiceImpl implements AlarmingOperateService {
                 allEquipmentsInPlanEntity.setCategorys(categoryEntities);
             }
 
-            if (flag) {
-                if (planQueryEntity.getOperation().equals("start")){
-                    alarmingOperateService.startPlan(planQueryEntity.getPlanId(),planQueryEntity.getSchemeId(),planQueryEntity.getAlarmingId(),request);
-                }
-                wmsOperateResponseEntity = authenticationService.packageOpeaterResponseBean("9", true, "预案所绑定的设备查询成功！");
-                wmsOperateResponseEntity.setData(allEquipmentsInPlanEntity);
-            }else{
-                wmsOperateResponseEntity = authenticationService.packageOpeaterResponseBean("4", false, "预案尚有未入库的设备，无法开启，请修正！");
-            }
+            wmsOperateResponseEntity.setData(allEquipmentsInPlanEntity);
 
             return wmsOperateResponseEntity;
 
@@ -390,25 +375,109 @@ public class AlarmingOperateServiceImpl implements AlarmingOperateService {
      */
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void startPlan(String planId, String schemeId, String alarmingId, HttpServletRequest request) {
+    public void startPlan(String planId, String schemeId, String alarmingId, HttpServletRequest request, Model model) {
 
-        PlanModel planModel = new PlanModel();
-        planModel.setId(planId);
-        planModel.setUseState("1");
+        QueryWrapper<PlanModel> planModelQueryWrapper = new QueryWrapper<>();
+        planModelQueryWrapper.eq("id",planId).eq("useState","1");
+        PlanModel planModelExit = new PlanModel().selectOne(planModelQueryWrapper);
+        if (planModelExit == null || StringUtils.isBlank(planModelExit.getId())) {
+
+            PlanModel planModel = new PlanModel();
+            planModel.setId(planId);
+            planModel.setUseState("1");
 
 
-        boolean flag = planModel.updateById();
-        if (flag) {
+            boolean flag = planModel.updateById();
+            if (flag) {
 
-            UserModel userModel = (UserModel) request.getSession().getAttribute("LOGIN_USER");
+//                UserModel userModel = (UserModel) request.getSession().getAttribute("LOGIN_USER");
+                List<PlanEquipmentsEntity> planEquipmentsLv1Entities = null;
+                //一级设备
+                try {
+                    planEquipmentsLv1Entities = alarmingDao.queryInOutEquipmentLv1(planId,null);
+                } catch (Exception e) {
+                    logger.error("查询方案"+planId+"中待出库一级设备情况发生异常：",e);
 
-            AlarmRecordModel alarmRecordModel = new AlarmRecordModel();
-            alarmRecordModel.setId(UUID.randomUUID().toString());
-            alarmRecordModel.setSchemeId(planId);
-            alarmRecordModel.setOccurDate(new Date());
-            alarmRecordModel.setCreated_by(userModel.getId());
-            alarmRecordModel.setCreatedDate(new Date());
-            alarmRecordModel.insert();
+                    return;
+                }
+
+                int totalNum = 0;
+
+                if (planEquipmentsLv1Entities != null && !planEquipmentsLv1Entities.isEmpty()) {
+
+                    List<String> allEquipmentIds = planEquipmentsLv1Entities.stream().map(PlanEquipmentsEntity::getEquipmentId).distinct().collect(Collectors.toList());
+                    QueryWrapper<EquipmentModel> queryWrapper = new QueryWrapper<>();
+                    queryWrapper.in("id", allEquipmentIds).eq("validState", "1");
+                    List<EquipmentModel> allEquipmentModelsLv2 = new EquipmentModel().selectList(queryWrapper);
+
+                    if (allEquipmentModelsLv2 != null && !allEquipmentModelsLv2.isEmpty()){
+                        totalNum = planEquipmentsLv1Entities.size() + allEquipmentModelsLv2.size();
+                    }else{
+                        totalNum = planEquipmentsLv1Entities.size();
+                    }
+                }else{
+                    totalNum = 0;
+                }
+
+
+                AlarmRecordModel alarmRecordModel = new AlarmRecordModel();
+                alarmRecordModel.setId(UUID.randomUUID().toString());
+                alarmRecordModel.setSchemeId(planId);
+                alarmRecordModel.setOccurDate(new Date());
+//                alarmRecordModel.setCreated_by(userModel.getId());
+                alarmRecordModel.setSchemeCount(totalNum);
+                alarmRecordModel.setCreatedDate(new Date());
+                alarmRecordModel.insert();
+
+                model.addAttribute("alarmRecordId", alarmRecordModel.getId());
+
+                List<PlanEquipmentsEntity> planEquipmentsEntityList = planDao.queryTreatTheCasesEquipments(planId, "1");
+                EquipmentCacheEntity equipmentCacheEntity = new EquipmentCacheEntity();
+                if (planEquipmentsEntityList != null && !planEquipmentsEntityList.isEmpty()) {
+
+                    int planEquipmentsEntityListSize = planEquipmentsEntityList.size();
+
+                    for (int j = 0; j < planEquipmentsEntityListSize; j++) {
+                        planEquipmentsEntityList.get(j).setWaitOperatingFlag(true);
+                        planEquipmentsEntityList.get(j).setAlarmRecordId(alarmRecordModel.getId());
+                    }
+
+                    List<String> parentEquipmentIds = planEquipmentsEntityList.stream().filter(o -> !StringUtils.isBlank(o.getEquipmentId())).map(PlanEquipmentsEntity::getEquipmentId).distinct().collect(Collectors.toList());
+
+
+                    if (parentEquipmentIds != null && !parentEquipmentIds.isEmpty()) {
+                        QueryWrapper<EquipmentModel> queryWrapper = new QueryWrapper<>();
+                        queryWrapper.in("equipmentPreId", parentEquipmentIds);
+                        List<EquipmentModel> equipmentModels = new EquipmentModel().selectList(queryWrapper);
+                        if (equipmentModels != null && !equipmentModels.isEmpty()) {
+                            int size = equipmentModels.size();
+                            for (int i = 0; i < size; i++) {
+                                PlanEquipmentsEntity planEquipmentsEntity = new PlanEquipmentsEntity();
+                                planEquipmentsEntity.setPlanId(planId);
+                                planEquipmentsEntity.setAlarmingId(alarmingId);
+                                planEquipmentsEntity.setSchemeId(schemeId);
+                                planEquipmentsEntity.setEquipmentId(equipmentModels.get(i).getId());
+                                planEquipmentsEntity.setEquipmentRfid(equipmentModels.get(i).getEquipmentRfid());
+                                planEquipmentsEntity.setEquipmentInBoundState(equipmentModels.get(i).getInboundState());
+                                planEquipmentsEntity.setAlarmRecordId(alarmRecordModel.getId());
+                                planEquipmentsEntity.setWaitOperatingFlag(true);
+                                planEquipmentsEntityList.add(planEquipmentsEntity);
+                            }
+                        }
+                    }
+
+
+                    equipmentCacheEntity.setKey("TreatTheCases");
+                    equipmentCacheEntity.setValue(planEquipmentsEntityList);
+                    EquipmentCache.putCache(planId, equipmentCacheEntity);
+                }
+            }
+        }else{
+
+            AlarmRecordModel alarmRecordModel = alarmRecordDao.queryCurrentlarmRecordByPlanId(planId);
+            if (alarmRecordModel != null){
+                model.addAttribute("alarmRecordId", alarmRecordModel.getId());
+            }
 
             List<PlanEquipmentsEntity> planEquipmentsEntityList = planDao.queryTreatTheCasesEquipments(planId, "1");
             EquipmentCacheEntity equipmentCacheEntity = new EquipmentCacheEntity();
@@ -416,7 +485,7 @@ public class AlarmingOperateServiceImpl implements AlarmingOperateService {
 
                 int planEquipmentsEntityListSize = planEquipmentsEntityList.size();
 
-                for (int j = 0; j < planEquipmentsEntityListSize; j++){
+                for (int j = 0; j < planEquipmentsEntityListSize; j++) {
                     planEquipmentsEntityList.get(j).setWaitOperatingFlag(true);
                     planEquipmentsEntityList.get(j).setAlarmRecordId(alarmRecordModel.getId());
                 }
@@ -449,7 +518,245 @@ public class AlarmingOperateServiceImpl implements AlarmingOperateService {
                 equipmentCacheEntity.setKey("TreatTheCases");
                 equipmentCacheEntity.setValue(planEquipmentsEntityList);
                 EquipmentCache.putCache(planId, equipmentCacheEntity);
+                logger.info("123");
             }
+
         }
+    }
+
+    /**
+     * 关闭警情
+     *
+     * @param planId
+     * @param schemeId
+     * @param alarmingId
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void closePlan(String planId, String schemeId, String alarmingId, HttpServletRequest request, Model model) {
+
+        QueryWrapper<PlanModel> planModelQueryWrapper = new QueryWrapper<>();
+        planModelQueryWrapper.eq("id",planId).eq("useState","1");
+        PlanModel planModelExit = new PlanModel().selectOne(planModelQueryWrapper);
+        if (planModelExit == null || StringUtils.isBlank(planModelExit.getId())) {
+            return;
+        }else{
+            AlarmRecordModel alarmRecordModel = alarmRecordDao.queryCurrentlarmRecordByPlanId(planId);
+            if (alarmRecordModel != null){
+                model.addAttribute("alarmRecordId", alarmRecordModel.getId());
+            }
+
+            //需要收回的设备
+            List<PlanEquipmentsEntity> planEquipmentsEntityList = planDao.queryTreatTheCasesEquipments(planId, "1");
+
+            EquipmentCacheEntity equipmentCacheEntity = new EquipmentCacheEntity();
+            if (planEquipmentsEntityList != null && !planEquipmentsEntityList.isEmpty()) {
+
+                int planEquipmentsEntityListSize = planEquipmentsEntityList.size();
+
+                for (int j = 0; j < planEquipmentsEntityListSize; j++) {
+                    planEquipmentsEntityList.get(j).setWaitOperatingFlag(true);
+                    planEquipmentsEntityList.get(j).setAlarmRecordId(alarmRecordModel.getId());
+                }
+
+                List<String> parentEquipmentIds = planEquipmentsEntityList.stream().filter(o -> !StringUtils.isBlank(o.getEquipmentId())).map(PlanEquipmentsEntity::getEquipmentId).distinct().collect(Collectors.toList());
+
+
+                if (parentEquipmentIds != null && !parentEquipmentIds.isEmpty()) {
+                    QueryWrapper<EquipmentModel> queryWrapper = new QueryWrapper<>();
+                    queryWrapper.in("equipmentPreId", parentEquipmentIds);
+                    List<EquipmentModel> equipmentModels = new EquipmentModel().selectList(queryWrapper);
+                    if (equipmentModels != null && !equipmentModels.isEmpty()) {
+                        int size = equipmentModels.size();
+                        for (int i = 0; i < size; i++) {
+                            PlanEquipmentsEntity planEquipmentsEntity = new PlanEquipmentsEntity();
+                            planEquipmentsEntity.setPlanId(planId);
+                            planEquipmentsEntity.setAlarmingId(alarmingId);
+                            planEquipmentsEntity.setSchemeId(schemeId);
+                            planEquipmentsEntity.setEquipmentId(equipmentModels.get(i).getId());
+                            planEquipmentsEntity.setEquipmentRfid(equipmentModels.get(i).getEquipmentRfid());
+                            planEquipmentsEntity.setEquipmentInBoundState(equipmentModels.get(i).getInboundState());
+                            planEquipmentsEntity.setAlarmRecordId(alarmRecordModel.getId());
+                            planEquipmentsEntity.setWaitOperatingFlag(true);
+                            planEquipmentsEntityList.add(planEquipmentsEntity);
+                        }
+                    }
+                }
+
+
+                equipmentCacheEntity.setKey("SettleTheCases");
+                equipmentCacheEntity.setValue(planEquipmentsEntityList);
+                EquipmentCache.putCache(planId, equipmentCacheEntity);
+            }
+
+
+        }
+    }
+
+    /**
+     * 出库完毕
+     *
+     * @param planQueryEntity
+     * @return
+     */
+    @Transactional
+    @Override
+    public WmsOperateResponseEntity outover(PlanContentQueryEntity planQueryEntity) {
+        WmsOperateResponseEntity wmsOperateResponseEntity = new WmsOperateResponseEntity();
+
+        EquipmentCacheEntity equipmentCacheEntity = EquipmentCache.getCacheInfo(planQueryEntity.getPlanId());
+        List<PlanEquipmentsEntity> planEquipmentsEntities = (List<PlanEquipmentsEntity>)equipmentCacheEntity.getValue();
+        int outNum = 0;
+
+        if (planEquipmentsEntities!= null && !planEquipmentsEntities.isEmpty()){
+            List<PlanEquipmentsEntity> outPlanEquipmentsEntitys = planEquipmentsEntities.stream().filter(o->o.getWaitOperatingFlag().equals(false)).distinct().collect(Collectors.toList());
+
+            if (outPlanEquipmentsEntitys != null && !outPlanEquipmentsEntitys.isEmpty()){
+                outNum = outPlanEquipmentsEntitys.size();
+            }else{
+                outNum = 0;
+            }
+        }else{
+            outNum = 0;
+        }
+
+
+//        List<PlanEquipmentsEntity> planEquipmentsLv1Entities = null;
+//        //一级设备
+//        try {
+//            planEquipmentsLv1Entities = alarmingDao.queryInOutEquipmentLv1(planQueryEntity.getPlanId(),null);
+//        } catch (Exception e) {
+//            logger.error("查询方案"+planQueryEntity.getPlanId()+"中待出库一级设备情况发生异常：",e);
+//            wmsOperateResponseEntity = authenticationService.packageOpeaterResponseBean("4", false, "查询方案："+planQueryEntity.getPlanId()+"中待出库一级设备情况发生异常:"+e.getMessage());
+//            return wmsOperateResponseEntity;
+//        }
+//
+//        int totalNum = 0;
+//        int outNum = 0;
+//
+//        if (planEquipmentsLv1Entities != null && !planEquipmentsLv1Entities.isEmpty()) {
+//            List<PlanEquipmentsEntity> outPlanEquipmentsLv1Entities = planEquipmentsLv1Entities.stream().filter(o -> !StringUtils.isBlank(o.getInoutState()) && o.getInoutState().equals("0")).distinct().collect(Collectors.toList());
+//
+//            List<String> allEquipmentIds = planEquipmentsLv1Entities.stream().map(PlanEquipmentsEntity::getEquipmentId).distinct().collect(Collectors.toList());
+//            QueryWrapper<EquipmentModel> queryWrapper = new QueryWrapper<>();
+//            queryWrapper.in("id", allEquipmentIds).eq("validState", "1");
+//            List<EquipmentModel> allEquipmentModelsLv2 = new EquipmentModel().selectList(queryWrapper);
+//
+//            if (outPlanEquipmentsLv1Entities != null && !outPlanEquipmentsLv1Entities.isEmpty()) {
+//                if (allEquipmentModelsLv2 != null && !allEquipmentModelsLv2.isEmpty()) {
+//
+//                    List<EquipmentModel> outEquipmentModelsLv2 = allEquipmentModelsLv2.stream().filter(o -> !StringUtils.isBlank(o.getInboundState()) && o.getInboundState().equals("0")).distinct().collect(Collectors.toList());
+//                    if (outEquipmentModelsLv2 != null && !outEquipmentModelsLv2.isEmpty()) {
+//                        outNum = outEquipmentModelsLv2.size()+outPlanEquipmentsLv1Entities.size();
+//
+//                    }else{
+//                        outNum = outPlanEquipmentsLv1Entities.size();
+//                    }
+//                }else{
+//                    outNum = outPlanEquipmentsLv1Entities.size();
+//                }
+//            }else{
+//                outNum = 0;
+//            }
+//            totalNum = planEquipmentsLv1Entities.size();
+//        }else{
+//            totalNum = 0;
+//        }
+
+        AlarmRecordModel alarmRecordModel = new AlarmRecordModel();
+        alarmRecordModel.setId(planQueryEntity.getAlarmRecordId());
+        alarmRecordModel.setOutCount(outNum);
+//        alarmRecordModel.setSchemeCount(totalNum);
+        alarmRecordModel.updateById();
+
+        wmsOperateResponseEntity = authenticationService.packageOpeaterResponseBean("9", true, "方案："+planQueryEntity.getPlanId()+"中设备出库成功关闭");
+        EquipmentCache.clearAll();
+        return wmsOperateResponseEntity;
+
+    }
+
+    /**
+     * 入库完毕
+     *
+     * @param planQueryEntity
+     * @return
+     */
+    @Transactional
+    @Override
+    public WmsOperateResponseEntity inover(PlanContentQueryEntity planQueryEntity) {
+        WmsOperateResponseEntity wmsOperateResponseEntity = new WmsOperateResponseEntity();
+        EquipmentCacheEntity equipmentCacheEntity = EquipmentCache.getCacheInfo(planQueryEntity.getPlanId());
+        List<PlanEquipmentsEntity> planEquipmentsEntities = (List<PlanEquipmentsEntity>)equipmentCacheEntity.getValue();
+        int inNum = 0;
+
+        if (planEquipmentsEntities!= null && !planEquipmentsEntities.isEmpty()){
+            List<PlanEquipmentsEntity> inPlanEquipmentsEntitys = planEquipmentsEntities.stream().filter(o->o.getWaitOperatingFlag().equals(false)).distinct().collect(Collectors.toList());
+
+            if (inPlanEquipmentsEntitys != null && !inPlanEquipmentsEntitys.isEmpty()){
+                inNum = inPlanEquipmentsEntitys.size();
+            }else{
+                inNum = 0;
+            }
+        }else{
+            inNum = 0;
+        }
+
+//        List<PlanEquipmentsEntity> planEquipmentsLv1Entities = null;
+//        //一级设备出库
+//        try {
+//            planEquipmentsLv1Entities = alarmingDao.queryInOutEquipmentLv1(planQueryEntity.getPlanId(),null);
+//        } catch (Exception e) {
+//            logger.error("查询方案"+planQueryEntity.getPlanId()+"中待入库一级设备情况发生异常：",e);
+//            wmsOperateResponseEntity = authenticationService.packageOpeaterResponseBean("4", false, "查询方案："+planQueryEntity.getPlanId()+"中待入库一级设备情况发生异常:"+e.getMessage());
+//            return wmsOperateResponseEntity;
+//        }
+//
+//        int totalNum = 0;
+//        int inNum = 0;
+//
+//        if (planEquipmentsLv1Entities != null && !planEquipmentsLv1Entities.isEmpty()) {
+//            List<PlanEquipmentsEntity> outPlanEquipmentsLv1Entities = planEquipmentsLv1Entities.stream().filter(o -> !StringUtils.isBlank(o.getInoutState()) && o.getInoutState().equals("1")).distinct().collect(Collectors.toList());
+//
+//            List<String> allEquipmentIds = planEquipmentsLv1Entities.stream().map(PlanEquipmentsEntity::getEquipmentId).distinct().collect(Collectors.toList());
+//            QueryWrapper<EquipmentModel> queryWrapper = new QueryWrapper<>();
+//            queryWrapper.in("id", allEquipmentIds).eq("validState", "1");
+//            List<EquipmentModel> allEquipmentModelsLv2 = new EquipmentModel().selectList(queryWrapper);
+//
+//            if (outPlanEquipmentsLv1Entities != null && !outPlanEquipmentsLv1Entities.isEmpty()) {
+//                if (allEquipmentModelsLv2 != null && !allEquipmentModelsLv2.isEmpty()) {
+//
+//                    List<EquipmentModel> outEquipmentModelsLv2 = allEquipmentModelsLv2.stream().filter(o -> !StringUtils.isBlank(o.getInboundState()) && o.getInboundState().equals("1")).distinct().collect(Collectors.toList());
+//                    if (outEquipmentModelsLv2 != null && !outEquipmentModelsLv2.isEmpty()) {
+//                        inNum = outEquipmentModelsLv2.size()+outPlanEquipmentsLv1Entities.size();
+//
+//                    }else{
+//                        inNum = outPlanEquipmentsLv1Entities.size();
+//                    }
+//                }else{
+//                    inNum = outPlanEquipmentsLv1Entities.size();
+//                }
+//            }else{
+//                inNum = 0;
+//            }
+//            totalNum = planEquipmentsLv1Entities.size();
+//        }else{
+//            totalNum = 0;
+//        }
+
+        AlarmRecordModel alarmRecordModel = new AlarmRecordModel();
+        alarmRecordModel.setId(planQueryEntity.getAlarmRecordId());
+        alarmRecordModel.setInCount(inNum);
+        alarmRecordModel.updateById();
+
+        PlanModel planModel = new PlanModel();
+        planModel.setId(planQueryEntity.getPlanId());
+        planModel.setUseState("0");
+        planModel.updateById();
+
+        wmsOperateResponseEntity = authenticationService.packageOpeaterResponseBean("9", true, "方案："+planQueryEntity.getPlanId()+"中设备出库成功关闭");
+
+        EquipmentCache.clearAll();
+
+        return wmsOperateResponseEntity;
     }
 }

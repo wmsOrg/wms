@@ -1,7 +1,7 @@
 $(function () {
     initPage();
 
-    // setInterval(function(){ initPage(); }, 3000);
+    setInterval(function(){ initPage(); }, 3000);
 
 
 });
@@ -42,7 +42,7 @@ function initPage() {
 
                             if(data.equipmentSelectedLv1 != "1") {
                                 htmlContent += "          <li class=\"category\">\n" +
-                                    "            <div>\n" +
+                                    // "            <div>\n" +
                                     "            <a href=\"javascript:;\" onclick=\"searchEquipment('" + equipmentParentId + "');return false;\" class=\"clearfix\" style='width: 85%'>\n" +
                                     "              <div class=\"icon-bg-up bg-gray f-l\"></div>\n" +
                                     "              <div class=\"icon-bg-down bg-gray f-l\"></div>\n" +
@@ -53,13 +53,13 @@ function initPage() {
                                     "            </a>\n" +
                                     "            <button>全部出去</button>\n" +
                                     "            <button>箱子出库</button>\n" +
-                                    "            </div>\n" +
+                                    // "            </div>\n" +
                                     "          </li>";
                             }else{
                                 if (data.equipmentInLv1 == '1') {
                                     if (data.equipmentLv2Number == data.equipmentLv2InNumber) {
                                         htmlContent += "          <li class=\"category\">\n" +
-                                            "            <div>\n" +
+                                            // "            <div>\n" +
                                             "            <a href=\"javascript:;\" onclick=\"searchEquipment('" + equipmentParentId + "');return false;\" class=\"clearfix\">\n" +
                                             "              <div class=\"icon-bg-up bg-green f-l\"></div>\n" +
                                             "              <div class=\"icon-bg-down bg-green f-l\"></div>\n" +
@@ -70,11 +70,11 @@ function initPage() {
                                             "            </a>\n" +
                                             "            <button>全部出去</button>\n" +
                                             "            <button>箱子出库</button>\n" +
-                                            "            </div>\n" +
+                                            // "            </div>\n" +
                                             "          </li>";
                                     }else {
                                         htmlContent += "          <li class=\"category\">\n" +
-                                            "            <div>\n" +
+                                            // "            <div>\n" +
                                             "            <a href=\"javascript:;\" onclick=\"searchEquipment('" + equipmentParentId + "');return false;\" class=\"clearfix\">\n" +
                                             "              <div class=\"icon-bg-up bg-green f-l\"></div>\n" +
                                             "              <div class=\"icon-bg-down bg-red f-l\"></div>\n" +
@@ -85,12 +85,12 @@ function initPage() {
                                             "            </a>\n" +
                                             "            <button>全部出去</button>\n" +
                                             "            <button>箱子出库</button>\n" +
-                                            "            </div>\n" +
+                                            // "            </div>\n" +
                                             "          </li>";
                                     }
                                 }else{
                                     htmlContent += "          <li class=\"category\">\n" +
-                                        "            <div>\n" +
+                                        // "            <div>\n" +
                                         "            <a href=\"javascript:;\" onclick=\"searchEquipment('" + equipmentParentId + "');return false;\" class=\"clearfix\">\n" +
                                         "              <div class=\"icon-bg-up bg-red f-l\"></div>\n" +
                                         "              <div class=\"icon-bg-down bg-red f-l\"></div>\n" +
@@ -101,7 +101,7 @@ function initPage() {
                                         "            </a>\n" +
                                         "            <button>全部出去</button>\n" +
                                         "            <button>箱子出库</button>\n" +
-                                        "            </div>\n" +
+                                        // "            </div>\n" +
                                         "          </li>";
                                 }
                             }
@@ -130,5 +130,65 @@ function outover() {
     var planId = $("#planId").val();
     var schemeId = $("#schemeId").val();
     var alarmingId = $("#alarmingId").val();
+    var alarmRecordId = $("#alarmRecordId").val();
+
+
+    var articleFrom = {};
+    articleFrom.alarmingId = alarmingId;
+    articleFrom.planId = planId;
+    articleFrom.schemeId = schemeId;
+    articleFrom.alarmRecordId = alarmRecordId;
+
+    $.ajax({
+        url: '/wms/outover',
+        type: 'post',
+        data: JSON.stringify(articleFrom),
+        dataType: "JSON",
+        async: true,
+        processData: false,	//不处理发送的数据
+        contentType: 'application/json',
+        success: function (result) {
+
+
+            layer.msg(result.msg);
+        },
+        error: function (error) {
+            layer.msg('系统错误' + error);
+        }
+    });
+
+}
+
+function inover() {
+
+    var planId = $("#planId").val();
+    var schemeId = $("#schemeId").val();
+    var alarmingId = $("#alarmingId").val();
+    var alarmRecordId = $("#alarmRecordId").val();
+
+
+    var articleFrom = {};
+    articleFrom.alarmingId = alarmingId;
+    articleFrom.planId = planId;
+    articleFrom.schemeId = schemeId;
+    articleFrom.alarmRecordId = alarmRecordId;
+
+    $.ajax({
+        url: '/wms/inover',
+        type: 'post',
+        data: JSON.stringify(articleFrom),
+        dataType: "JSON",
+        async: true,
+        processData: false,	//不处理发送的数据
+        contentType: 'application/json',
+        success: function (result) {
+
+
+            layer.msg(result.msg);
+        },
+        error: function (error) {
+            layer.msg('系统错误' + error);
+        }
+    });
 
 }

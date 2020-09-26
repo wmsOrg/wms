@@ -2,6 +2,8 @@ package com.hczx.wms.entity.planentities;
 
 import com.sun.org.apache.xpath.internal.operations.Bool;
 
+import java.util.Objects;
+
 /**
  * @ClassName: PlanQueryEntity
  * @Description:
@@ -24,6 +26,8 @@ public class PlanEquipmentsEntity {
     private String equipmentRfid;
 
     private String equipmentInBoundState;
+
+    private String inoutState;
 
     private Boolean waitOperatingFlag;
 
@@ -89,5 +93,35 @@ public class PlanEquipmentsEntity {
 
     public void setWaitOperatingFlag(Boolean waitOperatingFlag) {
         this.waitOperatingFlag = waitOperatingFlag;
+    }
+
+    public String getInoutState() {
+        return inoutState;
+    }
+
+    public void setInoutState(String inoutState) {
+        this.inoutState = inoutState;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PlanEquipmentsEntity that = (PlanEquipmentsEntity) o;
+        return Objects.equals(planId, that.planId) &&
+                Objects.equals(alarmRecordId, that.alarmRecordId) &&
+                Objects.equals(alarmingId, that.alarmingId) &&
+                Objects.equals(schemeId, that.schemeId) &&
+                Objects.equals(equipmentId, that.equipmentId) &&
+                Objects.equals(equipmentRfid, that.equipmentRfid) &&
+                Objects.equals(equipmentInBoundState, that.equipmentInBoundState) &&
+                Objects.equals(inoutState, that.inoutState) &&
+                Objects.equals(waitOperatingFlag, that.waitOperatingFlag);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(planId, alarmRecordId, alarmingId, schemeId, equipmentId, equipmentRfid, equipmentInBoundState, inoutState, waitOperatingFlag);
     }
 }

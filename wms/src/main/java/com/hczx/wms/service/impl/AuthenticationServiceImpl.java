@@ -1,12 +1,19 @@
 package com.hczx.wms.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.hczx.wms.dao.UserDao;
 import com.hczx.wms.entity.authenticationentities.AuthenticationEntity;
+import com.hczx.wms.entity.authenticationentities.UserAllPermissionEntity;
 import com.hczx.wms.entity.common.WmsOperateResponseEntity;
+import com.hczx.wms.framework.config.shiro.entity.Constants;
 import com.hczx.wms.model.UserModel;
 import com.hczx.wms.mybatisplusserveice.UserService;
 import com.hczx.wms.service.AuthenticationService;
+import com.hczx.wms.util.CommonUtil;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.session.Session;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -117,5 +124,58 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         wmsOperateResponseEntity.setMsg(msg);
         wmsOperateResponseEntity.setFlag(flag);
         return wmsOperateResponseEntity;
+    }
+
+    /**
+     * 获取用户
+     *
+     * @param loginName
+     * @param password
+     * @return
+     */
+    @Override
+    public UserModel getUser(String loginName, String password) {
+
+        //拼装账号密码条件构造器
+        QueryWrapper<UserModel> userModelQueryWrapper = new QueryWrapper<>();
+        userModelQueryWrapper.eq("loginName", loginName).eq("password", password);
+
+        UserModel userModel = userDao.selectOne(userModelQueryWrapper);
+
+        return userModel;
+    }
+
+    /**
+     * 查询当前登录用户的权限等信息
+     */
+    @Override
+    public UserAllPermissionEntity getInfo() {
+        //从session获取用户信息
+        Session session = SecurityUtils.getSubject().getSession();
+        UserModel userInfo = (UserModel) session.getAttribute(Constants.SESSION_USER_INFO);
+        String username = userInfo.getLoginName();
+
+        UserAllPermissionEntity userAllPermissionEntity = userService.getUserPermission(username);
+
+        if (userAllPermissionEntity != null) {
+
+            session.setAttribute(Constants.SESSION_USER_PERMISSION, userAllPermissionEntity);
+
+//            info.put("userPermission", userAllPermissionEntity);
+        }
+        return userAllPermissionEntity;
+    }
+
+    /**
+     * 退出登录
+     */
+    @Override
+    public JSONObject logout() {
+        try {
+            Subject currentUser = SecurityUtils.getSubject();
+            currentUser.logout();
+        } catch (Exception e) {
+        }
+        return CommonUtil.successJson();
     }
 }

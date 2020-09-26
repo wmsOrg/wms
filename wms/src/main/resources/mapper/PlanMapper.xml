@@ -45,7 +45,8 @@
             LEFT JOIN equipment ON(ser.equipmentId = equipment.id)
         WHERE
             plan.id = #{planId}
-            AND useState = #{useState}
+            AND plan.useState = #{useState}
+            AND equipment.validState = '1'
     </select>
 
 </mapper>

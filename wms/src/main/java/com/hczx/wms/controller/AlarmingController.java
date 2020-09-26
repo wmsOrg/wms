@@ -213,12 +213,7 @@ public class AlarmingController {
             return wmsOperateResponseEntity;
         }
 
-        if (StringUtils.isBlank(planQueryEntity.getOperation())){
-            wmsOperateResponseEntity = authenticationService.packageOpeaterResponseBean("4", false, "预案所绑定的设备查询失败：无法查询到具体操作类型！");
-            return wmsOperateResponseEntity;
-        }
-
-        wmsOperateResponseEntity = alarmingOperateService.planList(planQueryEntity,request);
+        wmsOperateResponseEntity = alarmingOperateService.planList(planQueryEntity);
         return wmsOperateResponseEntity;
 
     }
@@ -288,6 +283,68 @@ public class AlarmingController {
 
 
         wmsOperateResponseEntity = alarmingOperateService.delAlarming(ids);
+        return wmsOperateResponseEntity;
+
+    }
+
+    /**
+     * 出库完毕操作
+     *
+     * @param planQueryEntity
+     * @return
+     */
+    @RequestMapping(value = "/outover",method = RequestMethod.POST)
+    public WmsOperateResponseEntity outover(@RequestBody PlanContentQueryEntity planQueryEntity){
+
+        WmsOperateResponseEntity wmsOperateResponseEntity = new WmsOperateResponseEntity();
+
+        if (StringUtils.isBlank(planQueryEntity.getSchemeId())){
+            wmsOperateResponseEntity = authenticationService.packageOpeaterResponseBean("4", false, "出库完毕操作失败：无法查询到具体方案唯一标识！");
+            return wmsOperateResponseEntity;
+        }
+
+        if (StringUtils.isBlank(planQueryEntity.getAlarmingId())){
+            wmsOperateResponseEntity = authenticationService.packageOpeaterResponseBean("4", false, "出库完毕操作失败：无法查询到具体警情唯一标识！");
+            return wmsOperateResponseEntity;
+        }
+
+        if (StringUtils.isBlank(planQueryEntity.getPlanId())){
+            wmsOperateResponseEntity = authenticationService.packageOpeaterResponseBean("4", false, "出库完毕操作失败：无法查询到具体预案唯一标识！");
+            return wmsOperateResponseEntity;
+        }
+
+        wmsOperateResponseEntity = alarmingOperateService.outover(planQueryEntity);
+        return wmsOperateResponseEntity;
+
+    }
+
+    /**
+     * 入库完毕操作
+     *
+     * @param planQueryEntity
+     * @return
+     */
+    @RequestMapping(value = "/inover",method = RequestMethod.POST)
+    public WmsOperateResponseEntity inover(@RequestBody PlanContentQueryEntity planQueryEntity){
+
+        WmsOperateResponseEntity wmsOperateResponseEntity = new WmsOperateResponseEntity();
+
+        if (StringUtils.isBlank(planQueryEntity.getSchemeId())){
+            wmsOperateResponseEntity = authenticationService.packageOpeaterResponseBean("4", false, "入库完毕操作失败：无法查询到具体方案唯一标识！");
+            return wmsOperateResponseEntity;
+        }
+
+        if (StringUtils.isBlank(planQueryEntity.getAlarmingId())){
+            wmsOperateResponseEntity = authenticationService.packageOpeaterResponseBean("4", false, "入库完毕操作失败：无法查询到具体警情唯一标识！");
+            return wmsOperateResponseEntity;
+        }
+
+        if (StringUtils.isBlank(planQueryEntity.getPlanId())){
+            wmsOperateResponseEntity = authenticationService.packageOpeaterResponseBean("4", false, "入库完毕操作失败：无法查询到具体预案唯一标识！");
+            return wmsOperateResponseEntity;
+        }
+
+        wmsOperateResponseEntity = alarmingOperateService.inover(planQueryEntity);
         return wmsOperateResponseEntity;
 
     }
